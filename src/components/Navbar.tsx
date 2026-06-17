@@ -44,13 +44,13 @@ export default function Navbar() {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link href={`/${locale}`} className="flex items-center gap-2.5">
-            <div className="w-11 h-11 shrink-0 flex items-center justify-center">
+            <div className="w-11 h-11 rounded-full overflow-hidden bg-white shrink-0 shadow-sm ring-1 ring-gray-100">
               <Image
                 src="/logo.png"
                 alt="Nibedita Yoga Training Centre"
                 width={44}
                 height={44}
-                className="object-contain drop-shadow-sm"
+                className="w-full h-full object-cover"
               />
             </div>
             <div className="hidden sm:flex flex-col leading-tight">

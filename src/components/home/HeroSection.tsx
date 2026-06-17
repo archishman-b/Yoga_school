@@ -79,16 +79,18 @@ export default function HeroSection() {
           {/* Hero visual */}
           <div className="relative flex justify-center">
             <div className="relative w-80 h-80 lg:w-96 lg:h-96">
-              {/* Logo centred in a soft gradient ring */}
-              <div className="w-full h-full rounded-full bg-gradient-to-br from-saffron-100 via-white to-teal-100 flex items-center justify-center shadow-2xl border border-saffron-100">
-                <Image
-                  src="/logo.png"
-                  alt="Nibedita Yoga Training Centre"
-                  width={260}
-                  height={260}
-                  className="object-contain drop-shadow-xl"
-                  priority
-                />
+              {/* Logo in a circular frame — overflow-hidden clips transparent PNG corners */}
+              <div className="w-full h-full rounded-full bg-gradient-to-br from-saffron-50 via-white to-teal-50 flex items-center justify-center shadow-2xl border border-saffron-100">
+                <div className="w-56 h-56 lg:w-64 lg:h-64 rounded-full overflow-hidden bg-white shadow-lg">
+                  <Image
+                    src="/logo.png"
+                    alt="Nibedita Yoga Training Centre"
+                    width={256}
+                    height={256}
+                    className="w-full h-full object-cover"
+                    priority
+                  />
+                </div>
               </div>
               {/* Floating card */}
               <div className="absolute -bottom-4 -left-4 bg-white rounded-2xl shadow-xl p-4 flex items-center gap-3">
