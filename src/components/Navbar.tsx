@@ -43,17 +43,24 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link href={`/${locale}`} className="flex items-center gap-2">
-            <Image
-              src="/logo.png"
-              alt="Nibedita Yoga Training Centre"
-              width={44}
-              height={44}
-              className="rounded-full object-cover"
-            />
-            <span className="font-semibold text-saffron-600 text-base leading-tight hidden sm:block">
-              Nibedita Yoga Training Centre
-            </span>
+          <Link href={`/${locale}`} className="flex items-center gap-2.5">
+            <div className="w-11 h-11 shrink-0 flex items-center justify-center">
+              <Image
+                src="/logo.png"
+                alt="Nibedita Yoga Training Centre"
+                width={44}
+                height={44}
+                className="object-contain drop-shadow-sm"
+              />
+            </div>
+            <div className="hidden sm:flex flex-col leading-tight">
+              <span className="font-bold text-gray-900 text-sm tracking-tight">
+                Nibedita Yoga
+              </span>
+              <span className="text-xs text-saffron-600 font-medium tracking-wide">
+                Training Centre
+              </span>
+            </div>
           </Link>
 
           {/* Desktop nav */}

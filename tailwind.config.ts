@@ -39,6 +39,7 @@ const config: Config = {
         sans: ["var(--font-inter)", "system-ui", "sans-serif"],
         devanagari: ["var(--font-noto-devanagari)", "sans-serif"],
         bengali: ["var(--font-noto-bengali)", "sans-serif"],
+        rozha: ["var(--font-rozha)", "serif"],
       },
     },
   },

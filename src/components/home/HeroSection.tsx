@@ -1,7 +1,8 @@
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useLocale } from 'next-intl';
-import { ArrowRight, Star } from 'lucide-react';
+import { ArrowRight, MapPin } from 'lucide-react';
 
 export default function HeroSection() {
   const t = useTranslations('hero');
@@ -13,21 +14,33 @@ export default function HeroSection() {
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-20 right-10 w-72 h-72 bg-saffron-100/60 rounded-full blur-3xl" />
         <div className="absolute bottom-20 left-10 w-64 h-64 bg-teal-100/60 rounded-full blur-3xl" />
+        {/* Mandala-inspired rings */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] border border-saffron-100 rounded-full opacity-40" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[820px] h-[820px] border border-teal-50 rounded-full opacity-30" />
       </div>
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           {/* Text content */}
           <div>
-            {/* Trust badge */}
-            <div className="inline-flex items-center gap-2 bg-saffron-50 border border-saffron-200 rounded-full px-4 py-1.5 text-sm text-saffron-700 font-medium mb-6">
-              <Star size={14} fill="currentColor" />
-              <span>Trusted by 500+ students across all ages</span>
+            {/* School name — Indic display font (Rozha One) */}
+            <div className="mb-8">
+              <h1 className="font-rozha text-5xl sm:text-6xl lg:text-7xl text-gray-900 leading-[1.1] tracking-wide">
+                Nibedita Yoga
+              </h1>
+              <h1 className="font-rozha text-4xl sm:text-5xl lg:text-6xl text-saffron-600 leading-[1.1] tracking-wide">
+                Training Centre
+              </h1>
+              {/* Bengali name — local identity */}
+              <p className="font-bengali text-xl sm:text-2xl text-teal-700 mt-2 opacity-85 tracking-wide">
+                নিবেদিতা যোগ প্রশিক্ষণ কেন্দ্র
+              </p>
+              <div className="flex items-center gap-1.5 mt-3 text-sm text-gray-500">
+                <MapPin size={13} className="text-saffron-400" />
+                <span>Hindmotor, Hooghly, West Bengal</span>
+              </div>
             </div>
 
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight mb-6">
-              {t('tagline')}
-            </h1>
             <p className="text-lg text-gray-600 mb-8 leading-relaxed max-w-xl">
               {t('subtagline')}
             </p>
@@ -63,12 +76,19 @@ export default function HeroSection() {
             </div>
           </div>
 
-          {/* Hero image / visual */}
+          {/* Hero visual */}
           <div className="relative flex justify-center">
             <div className="relative w-80 h-80 lg:w-96 lg:h-96">
-              {/* Placeholder for a hero image — replace with <Image> when you have the photo */}
-              <div className="w-full h-full rounded-3xl bg-gradient-to-br from-saffron-200 to-teal-200 flex items-center justify-center shadow-2xl">
-                <span className="text-8xl">🧘</span>
+              {/* Logo centred in a soft gradient ring */}
+              <div className="w-full h-full rounded-full bg-gradient-to-br from-saffron-100 via-white to-teal-100 flex items-center justify-center shadow-2xl border border-saffron-100">
+                <Image
+                  src="/logo.png"
+                  alt="Nibedita Yoga Training Centre"
+                  width={260}
+                  height={260}
+                  className="object-contain drop-shadow-xl"
+                  priority
+                />
               </div>
               {/* Floating card */}
               <div className="absolute -bottom-4 -left-4 bg-white rounded-2xl shadow-xl p-4 flex items-center gap-3">

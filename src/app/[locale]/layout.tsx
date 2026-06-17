@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Inter, Noto_Sans_Devanagari, Noto_Sans_Bengali } from 'next/font/google';
+import { Inter, Noto_Sans_Devanagari, Noto_Sans_Bengali, Rozha_One } from 'next/font/google';
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages } from 'next-intl/server';
 import { notFound } from 'next/navigation';
@@ -27,6 +27,13 @@ const notoBengali = Noto_Sans_Bengali({
   variable: '--font-noto-bengali',
   display: 'swap',
   weight: ['400', '500', '600', '700'],
+});
+
+const rozhaOne = Rozha_One({
+  subsets: ['latin'],
+  variable: '--font-rozha',
+  display: 'swap',
+  weight: '400',
 });
 
 export const metadata: Metadata = {
@@ -67,7 +74,7 @@ export default async function LocaleLayout({ children, params: { locale } }: Pro
       : inter.variable;
 
   return (
-    <html lang={locale} className={`${inter.variable} ${notoDevanagari.variable} ${notoBengali.variable}`}>
+    <html lang={locale} className={`${inter.variable} ${notoDevanagari.variable} ${notoBengali.variable} ${rozhaOne.variable}`}>
       <body className={`${fontClass} font-sans bg-white text-gray-900 antialiased`}>
         <NextIntlClientProvider messages={messages}>
           <Navbar />
