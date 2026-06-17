@@ -1,0 +1,83 @@
+{
+  "nav": {
+    "home": "Home",
+    "yoga": "Yoga",
+    "courses": "Courses",
+    "events": "Events",
+    "members": "Members",
+    "login": "Login",
+    "logout": "Logout",
+    "langToggle": "EN"
+  },
+  "hero": {
+    "tagline": "Transform Your Life Through the Ancient Science of Yoga",
+    "subtagline": "Expert guidance in Hatha, Vinyasa & Pranayama. Batches for all levels, all ages.",
+    "cta": "Book a Free Trial Class",
+    "learnMore": "Learn More"
+  },
+  "about": {
+    "heading": "About the School",
+    "schoolDesc": "Ananda Yoga Kendra has been a sanctuary for sincere practitioners since its founding. Rooted in classical yoga tradition and informed by modern understanding, we offer a complete path — from beginner asana to advanced pranayama, philosophy, and meditation.",
+    "teacherHeading": "About the Teacher",
+    "teacherName": "Your Teacher Name",
+    "teacherBio": "With over 15 years of dedicated practice and teaching, our founder brings deep grounding in the classical yoga tradition alongside a warm, accessible teaching style. Certified in [Your Certifications], with training under [Your Lineage], the teaching draws on the full breadth of the yoga tradition.",
+    "yearsExp": "Years of Experience",
+    "studentsCount": "Students Taught",
+    "certifications": "Certifications"
+  },
+  "testimonials": {
+    "heading": "What Our Students Say"
+  },
+  "contact": {
+    "heading": "Get in Touch",
+    "subheading": "Have a question? Want to visit? Send us a message and we'll respond within 24 hours.",
+    "name": "Your Name",
+    "phone": "Phone Number",
+    "email": "Email Address",
+    "message": "Your Message",
+    "submit": "Send Message",
+    "success": "Thank you! We'll be in touch soon.",
+    "error": "Something went wrong. Please try again."
+  },
+  "yoga": {
+    "heading": "The History & Science of Yoga",
+    "subheading": "Deepen your understanding — from ancient philosophy to modern neuroscience.",
+    "readMore": "Read Article",
+    "allTags": "All Topics",
+    "backToList": "← Back to Articles"
+  },
+  "courses": {
+    "heading": "Asana Guide & Self-Help Library",
+    "subheading": "Find the right practice for your health goal. Filter by need, explore by pose.",
+    "allTargets": "All Goals",
+    "difficulty": "Difficulty",
+    "benefits": "Benefits",
+    "steps": "How to Practise",
+    "contraindications": "Contraindications",
+    "backToList": "← Back to Asanas",
+    "healthTargets": {
+      "weight_loss": "Weight Loss",
+      "diabetes": "Diabetes Management",
+      "back_pain": "Back Pain",
+      "stress_anxiety": "Stress & Anxiety",
+      "hypertension": "Hypertension",
+      "flexibility": "Flexibility",
+      "strength": "Strength Building",
+      "sleep": "Sleep Improvement",
+      "digestion": "Digestion",
+      "womens_health": "Women's Health",
+      "senior_wellness": "Senior Wellness",
+      "post_injury": "Post-Injury Recovery"
+    }
+  },
+  "footer": {
+    "address": "Your School Address, Your City",
+    "phone": "+91 XXXXXXXXXX",
+    "email": "info@anandayogakendra.com",
+    "rights": "© {year} Ananda Yoga Kendra. All rights reserved.",
+    "tagline": "Rooted in tradition. Open to all."
+  },
+  "whatsapp": {
+    "tooltip": "Chat on WhatsApp"
+  }
+}
