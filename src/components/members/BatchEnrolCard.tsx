@@ -4,23 +4,23 @@ import { useState } from 'react';
 import { createClient } from '@/lib/supabase/client';
 import type { Batch } from '@/lib/supabase/types';
 import { cn } from '@/lib/utils';
-import { CalendarDays, Users, CheckCircle2 } from 'lucide-react';
+import { CheckCircle2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 
-const LEVEL_COLOURS: Record<string, string> = {
-  Beginner: 'bg-green-100 text-green-700',
-  Intermediate: 'bg-yellow-100 text-yellow-700',
-  Advanced: 'bg-red-100 text-red-700',
+type Props = {
+  batch: Batch;
+  isEnrolled: boolean;
+  memberId: string;
+  locale: string;
+  compact?: boolean;   // inline button only, no card wrapper
+  disabled?: boolean;  // batch full
 };
 
-type Props = { batch: Batch; isEnrolled: boolean; memberId: string; locale: string };
-
-export default function BatchEnrolCard({ batch, isEnrolled, memberId, locale }: Props) {
+export default function BatchEnrolCard({ batch, isEnrolled, memberId, locale, compact, disabled }: Props) {
   const router = useRouter();
   const [status, setStatus] = useState<'idle' | 'loading' | 'done' | 'error'>(
     isEnrolled ? 'done' : 'idle'
   );
-  const isFull = batch.enrolled >= batch.capacity;
 
   const handleEnrol = async () => {
     setStatus('loading');
@@ -31,56 +31,47 @@ export default function BatchEnrolCard({ batch, isEnrolled, memberId, locale }: 
       start_date: new Date().toISOString().split('T')[0],
       status: 'active',
     });
-    if (error) {
-      setStatus('error');
-    } else {
-      setStatus('done');
-      router.refresh();
-    }
+    if (error) setStatus('error');
+    else { setStatus('done'); router.refresh(); }
   };
 
+  const isDone = status === 'done' || isEnrolled;
+
+  const button = isDone ? (
+    <div className="flex items-center gap-1.5 text-teal-600 text-sm font-medium">
+      <CheckCircle2 size={15} /> Enrolled
+    </div>
+  ) : (
+    <button
+      onClick={handleEnrol}
+      disabled={status === 'loading' || !!disabled}
+      className={cn(
+        'px-4 py-1.5 rounded-lg text-sm font-semibold transition-colors',
+        disabled
+          ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+          : 'bg-saffron-500 hover:bg-saffron-600 text-white',
+        status === 'loading' && 'opacity-60 cursor-wait'
+      )}
+    >
+      {status === 'loading' ? 'Enrolling…' : disabled ? 'Full' : 'Enrol'}
+    </button>
+  );
+
+  if (compact) return (
+    <div>
+      {button}
+      {status === 'error' && <p className="text-red-500 text-xs mt-1">Try again.</p>}
+    </div>
+  );
+
+  // Full card (legacy usage)
   return (
     <div className={cn('card p-5 flex flex-col gap-3', isEnrolled && 'border-teal-200 bg-teal-50/30')}>
       <div className="flex items-start justify-between">
         <h3 className="font-bold text-gray-900 text-sm leading-snug pr-2">{batch.name_en}</h3>
-        <span className={cn('px-2.5 py-0.5 rounded-full text-xs font-medium shrink-0', LEVEL_COLOURS[batch.level ?? 'Beginner'])}>
-          {batch.level}
-        </span>
       </div>
-
-      <div className="space-y-1.5 text-xs text-gray-500">
-        <div className="flex items-center gap-1.5">
-          <CalendarDays size={13} className="text-gray-400" />
-          {batch.timing} · {batch.days}
-        </div>
-        <div className="flex items-center gap-1.5">
-          <Users size={13} className="text-gray-400" />
-          {batch.enrolled}/{batch.capacity} seats filled
-          {isFull && <span className="text-red-500 font-medium ml-1">· Full</span>}
-        </div>
-      </div>
-
-      {/* Seat bar */}
-      <div className="h-1.5 bg-gray-100 rounded-full overflow-hidden">
-        <div
-          className={cn('h-full rounded-full', isFull ? 'bg-red-400' : 'bg-teal-500')}
-          style={{ width: `${Math.min(100, (batch.enrolled / batch.capacity) * 100)}%` }}
-        />
-      </div>
-
-      {status === 'done' || isEnrolled ? (
-        <div className="flex items-center gap-1.5 text-teal-600 text-sm font-medium">
-          <CheckCircle2 size={16} /> Enrolled
-        </div>
-      ) : (
-        <button
-          onClick={handleEnrol}
-          disabled={status === 'loading' || isFull}
-          className="btn-primary w-full justify-center disabled:opacity-50"
-        >
-          {status === 'loading' ? 'Enrolling...' : isFull ? 'Batch Full' : 'Enrol Now'}
-        </button>
-      )}
+      <div className="text-xs text-gray-500">{batch.timing} · {batch.days}</div>
+      {button}
       {status === 'error' && <p className="text-red-500 text-xs">Could not enrol. Try again.</p>}
     </div>
   );
