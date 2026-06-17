@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
 import { useTranslations, useLocale } from 'next-intl';
 import { useState } from 'react';
@@ -43,9 +44,15 @@ export default function Navbar() {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link href={`/${locale}`} className="flex items-center gap-2">
-            <span className="text-2xl">🪷</span>
-            <span className="font-semibold text-saffron-600 text-lg leading-tight hidden sm:block">
-              Ananda Yoga Kendra
+            <Image
+              src="/logo.png"
+              alt="Nibedita Yoga Training Centre"
+              width={44}
+              height={44}
+              className="rounded-full object-cover"
+            />
+            <span className="font-semibold text-saffron-600 text-base leading-tight hidden sm:block">
+              Nibedita Yoga Training Centre
             </span>
           </Link>
 
