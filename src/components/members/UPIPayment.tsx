@@ -7,7 +7,7 @@ import { Upload, CheckCircle2, AlertCircle, Copy } from 'lucide-react';
 // ── Replace these with your actual UPI details ──────────────────
 const UPI_ID = 'yogaschool@upi';           // e.g. name@okaxis
 const UPI_QR_URL = '/upi-qr.png';          // put your QR image in /public/upi-qr.png
-const SCHOOL_NAME = 'Ananda Yoga Kendra';
+const SCHOOL_NAME = 'Nibedita Yoga Training Centre';
 // ─────────────────────────────────────────────────────────────────
 
 type FeeRecord = { id: string; month: string; amount: number; status: string };

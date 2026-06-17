@@ -1,7 +1,7 @@
 // Replace GOOGLE_MAPS_EMBED_URL with your embed URL from:
 // Google Maps → Share → Embed a map → copy the src URL
 const GOOGLE_MAPS_EMBED_URL =
-  'https://maps.google.com/maps?q=Your+School+Name+Your+City&t=&z=15&ie=UTF8&iwloc=&output=embed';
+  'https://maps.google.com/maps?q=22.686103,88.347538&z=16&ie=UTF8&iwloc=&output=embed';
 
 export default function MapSection() {
   return (
@@ -13,7 +13,7 @@ export default function MapSection() {
           </p>
           <h2 className="text-3xl font-bold text-gray-900">Come Visit the Studio</h2>
           <p className="text-gray-500 mt-3">
-            We are conveniently located at [Your Address]. Parking available.
+            Ground Floor, Siddhaye Apartment, Debaipukur Road, Hindmotor, Hooghly
           </p>
         </div>
 

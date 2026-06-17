@@ -6,9 +6,9 @@ import EnquiryForm from '@/components/home/EnquiryForm';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Ananda Yoga Kendra — Authentic Yoga in Your City',
+  title: 'Nibedita Yoga Training Centre — Authentic Yoga in Hindmotor, Hooghly',
   description:
-    'Join Ananda Yoga Kendra for expert Hatha, Vinyasa, and Pranayama classes. All levels welcome. Book a free trial class today.',
+    'Join Nibedita Yoga Training Centre for expert Hatha, Vinyasa, and Pranayama classes in Hindmotor, Hooghly. All levels welcome. Book a free trial class today.',
 };
 
 export default function HomePage() {

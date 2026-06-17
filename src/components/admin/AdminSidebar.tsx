@@ -34,7 +34,7 @@ export default function AdminSidebar({ locale }: { locale: string }) {
     <aside className="w-56 shrink-0 bg-white border-r border-gray-100 flex flex-col min-h-screen sticky top-0">
       <div className="px-5 py-5 border-b border-gray-100">
         <span className="text-xs font-semibold text-gray-400 uppercase tracking-widest">Admin</span>
-        <p className="font-bold text-gray-900 text-sm mt-0.5">Ananda Yoga Kendra</p>
+        <p className="font-bold text-gray-900 text-sm mt-0.5">Nibedita Yoga Training Centre</p>
       </div>
 
       <nav className="flex-1 px-3 py-4 space-y-0.5">

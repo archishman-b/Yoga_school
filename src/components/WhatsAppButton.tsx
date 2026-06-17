@@ -4,7 +4,7 @@ import { MessageCircle } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
 // Replace with the school's actual WhatsApp number (country code + number, no +, no spaces)
-const WHATSAPP_NUMBER = '91XXXXXXXXXX';
+const WHATSAPP_NUMBER = '918017112877';
 
 export default function WhatsAppButton() {
   const t = useTranslations('whatsapp');

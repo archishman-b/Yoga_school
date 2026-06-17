@@ -53,7 +53,7 @@ function EmbedBlock({ url }: { url: string }) {
 }
 
 // ─── share helpers ───────────────────────────────────────────────
-const WHATSAPP_NUMBER = '919999999999'; // replace with school number
+const WHATSAPP_NUMBER = '918017112877';
 
 function shareWhatsApp(text: string, url: string) {
   const msg = encodeURIComponent(`${text}\n${url}`);
@@ -100,7 +100,7 @@ export default function EventCard({ event, locale }: Props) {
         </div>
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 flex-wrap">
-            <span className="font-semibold text-gray-900 text-sm truncate">Ananda Yoga Kendra</span>
+            <span className="font-semibold text-gray-900 text-sm truncate">Nibedita Yoga Training Centre</span>
             {event.pinned && (
               <span className="flex items-center gap-1 text-xs text-saffron-600 font-medium">
                 <Pin size={11} /> Pinned
