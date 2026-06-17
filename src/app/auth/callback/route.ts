@@ -5,7 +5,7 @@ export async function GET(request: Request) {
   const { searchParams, origin } = new URL(request.url);
   const code = searchParams.get('code');
   // next param lets us redirect back to where the user was trying to go
-  const next = searchParams.get('next') ?? '/en/members/dashboard';
+  const next = searchParams.get('next') ?? '/en/members';
 
   if (code) {
     const supabase = createClient();

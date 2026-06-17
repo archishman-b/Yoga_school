@@ -30,7 +30,7 @@ export default function LoginForm({ locale }: Props) {
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: `${window.location.origin}/auth/callback?next=/${locale}/members/dashboard`,
+        redirectTo: `${window.location.origin}/auth/callback?next=/${locale}/members`,
       },
     });
     if (error) {
@@ -48,7 +48,7 @@ export default function LoginForm({ locale }: Props) {
     const { error } = await supabase.auth.signInWithOtp({
       email,
       options: {
-        emailRedirectTo: `${window.location.origin}/auth/callback?next=/${locale}/members/dashboard`,
+        emailRedirectTo: `${window.location.origin}/auth/callback?next=/${locale}/members`,
       },
     });
     if (error) {
