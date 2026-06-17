@@ -31,14 +31,14 @@ const notoBengali = Noto_Sans_Bengali({
 
 export const metadata: Metadata = {
   title: {
-    template: '%s | Ananda Yoga Kendra',
-    default: 'Ananda Yoga Kendra — Authentic Yoga in [Your City]',
+    template: '%s | Nibedita Yoga Training Centre',
+    default: 'Nibedita Yoga Training Centre — Authentic Yoga in Hindmotor, Hooghly',
   },
   description:
-    'Expert instruction in Hatha, Vinyasa & Pranayama. Batches for all levels, all ages. Book a free trial class today.',
+    'Expert instruction in Hatha, Vinyasa & Pranayama at Nibedita Yoga Training Centre, Hindmotor, Hooghly. Batches for all levels, all ages. Book a free trial class today.',
   openGraph: {
-    title: 'Ananda Yoga Kendra',
-    description: 'Transform your life through the ancient science of yoga.',
+    title: 'Nibedita Yoga Training Centre',
+    description: 'Transform your life through the ancient science of yoga. Classes in Hindmotor, Hooghly.',
     type: 'website',
   },
 };
