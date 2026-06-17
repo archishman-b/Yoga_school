@@ -13,6 +13,9 @@ export type Profile = {
   role: 'member' | 'admin';
   status: 'active' | 'suspended';
   joined_date: string | null;
+  gender: 'male' | 'female' | 'other' | 'prefer_not_to_say' | null;
+  date_of_birth: string | null;
+  medical_conditions: string | null;
   created_at: string;
 };
 
@@ -41,6 +44,16 @@ export type Enrollment = {
   start_date: string | null;
   status: 'active' | 'paused' | 'cancelled';
   notes: string | null;
+  created_at: string;
+};
+
+export type EnrollmentPause = {
+  id: string;
+  enrollment_id: string;
+  member_id: string;
+  paused_at: string;
+  resumed_at: string | null;
+  reason: string | null;
   created_at: string;
 };
 
@@ -85,4 +98,17 @@ export type Enquiry = {
   preferred_time: string | null;
   status: 'new' | 'contacted' | 'replied';
   created_at: string;
+};
+
+export type Testimonial = {
+  id: string;
+  member_id: string;
+  body: string;
+  rating: number | null;           // 1–5
+  status: 'pending' | 'approved' | 'rejected';
+  display_order: number | null;    // non-null = shown on landing page, value = sequence
+  created_at: string;
+  updated_at: string;
+  // joined from profiles
+  member?: Pick<Profile, 'full_name' | 'photo_url'>;
 };

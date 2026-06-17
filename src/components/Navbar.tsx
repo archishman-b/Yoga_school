@@ -23,14 +23,19 @@ export default function Navbar() {
   const router = useRouter();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [user, setUser] = useState<User | null>(null);
+  const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
     const supabase = createClient();
-    // Get current session
-    supabase.auth.getUser().then(({ data }) => setUser(data.user));
-    // Listen for auth changes (login/logout)
+    const loadUser = async (uid: string | undefined) => {
+      if (!uid) { setIsAdmin(false); return; }
+      const { data } = await supabase.from('profiles').select('role').eq('id', uid).single();
+      setIsAdmin(data?.role === 'admin');
+    };
+    supabase.auth.getUser().then(({ data }) => { setUser(data.user); loadUser(data.user?.id); });
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       setUser(session?.user ?? null);
+      loadUser(session?.user?.id);
     });
     return () => subscription.unsubscribe();
   }, []);
@@ -63,19 +68,29 @@ export default function Navbar() {
 
   const AuthButton = () =>
     user ? (
-      <Link
-        href={`/${locale}/members`}
-        className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-teal-50 border border-teal-200 text-teal-800 text-sm font-medium hover:bg-teal-100 transition-colors"
-      >
-        {avatarUrl ? (
-          <img src={avatarUrl} alt={displayName} className="w-6 h-6 rounded-full object-cover" />
-        ) : (
-          <div className="w-6 h-6 rounded-full bg-teal-600 text-white flex items-center justify-center text-xs font-bold">
-            {initials || <LayoutDashboard size={12} />}
-          </div>
+      <div className="flex items-center gap-2">
+        {isAdmin && (
+          <Link
+            href={`/${locale}/admin`}
+            className="px-3 py-1.5 rounded-lg bg-saffron-50 text-saffron-700 border border-saffron-200 text-xs font-semibold hover:bg-saffron-100 transition-colors"
+          >
+            Admin
+          </Link>
         )}
-        <span>My Portal</span>
-      </Link>
+        <Link
+          href={`/${locale}/members`}
+          className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-teal-50 border border-teal-200 text-teal-800 text-sm font-medium hover:bg-teal-100 transition-colors"
+        >
+          {avatarUrl ? (
+            <img src={avatarUrl} alt={displayName} className="w-6 h-6 rounded-full object-cover" />
+          ) : (
+            <div className="w-6 h-6 rounded-full bg-teal-600 text-white flex items-center justify-center text-xs font-bold">
+              {initials || <LayoutDashboard size={12} />}
+            </div>
+          )}
+          <span>My Portal</span>
+        </Link>
+      </div>
     ) : (
       <Link
         href={`/${locale}/members`}
