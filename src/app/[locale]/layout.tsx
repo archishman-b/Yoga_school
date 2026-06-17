@@ -66,16 +66,17 @@ export default async function LocaleLayout({ children, params: { locale } }: Pro
 
   const messages = await getMessages();
 
-  const fontClass =
-    locale === 'hi'
-      ? notoDevanagari.variable
-      : locale === 'bn'
-      ? notoBengali.variable
-      : inter.variable;
+  // fontFamily drives which Tailwind font-family class is active on the body.
+  // font-sans = Inter (Latin), font-devanagari = Noto Sans Devanagari, font-bengali = Noto Sans Bengali.
+  // All four font CSS variables are always loaded on <html> so mixed-script content still works.
+  const bodyFont =
+    locale === 'hi' ? 'font-devanagari' :
+    locale === 'bn' ? 'font-bengali' :
+    'font-sans';
 
   return (
     <html lang={locale} className={`${inter.variable} ${notoDevanagari.variable} ${notoBengali.variable} ${rozhaOne.variable}`}>
-      <body className={`${fontClass} font-sans bg-white text-gray-900 antialiased`}>
+      <body className={`${bodyFont} bg-white text-gray-900 antialiased`}>
         <NextIntlClientProvider messages={messages}>
           <Navbar />
           <main>{children}</main>
