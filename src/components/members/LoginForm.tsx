@@ -30,8 +30,7 @@ export default function LoginForm({ locale }: Props) {
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        // Encode next path into the redirect URL — Supabase preserves query params on the redirectTo
-      redirectTo: `${window.location.origin}/auth/callback?next=%2F${locale}%2Fmembers`,
+        redirectTo: `${window.location.origin}/auth/callback`,
       },
     });
     if (error) {
@@ -49,7 +48,7 @@ export default function LoginForm({ locale }: Props) {
     const { error } = await supabase.auth.signInWithOtp({
       email,
       options: {
-        emailRedirectTo: `${window.location.origin}/auth/callback?next=/${locale}/members`,
+        emailRedirectTo: `${window.location.origin}/auth/callback`,
       },
     });
     if (error) {
