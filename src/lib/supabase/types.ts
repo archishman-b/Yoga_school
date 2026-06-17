@@ -27,7 +27,8 @@ export type Batch = {
   enrolled: number;
   instructor: string | null;
   level: 'Beginner' | 'Intermediate' | 'Advanced' | null;
-  status: 'active' | 'paused' | 'ended';
+  fee_monthly: number | null;
+  status: 'active' | 'paused' | 'ended' | 'cancelled';
   created_at: string;
 };
 

@@ -31,10 +31,11 @@ export default function MemberSidebar({ locale }: Props) {
     <nav className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
       <div className="p-4 bg-gradient-to-br from-teal-700 to-teal-900 text-white">
         <div className="flex items-center gap-2">
-          <span className="text-2xl">🪷</span>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/logo.png" alt="" className="w-9 h-9 rounded-full object-cover shrink-0" />
           <div>
             <p className="font-semibold text-sm">Member Portal</p>
-            <p className="text-teal-300 text-xs">Ananda Yoga Kendra</p>
+            <p className="text-teal-300 text-xs">Nibedita Yoga Training Centre</p>
           </div>
         </div>
       </div>

@@ -1,5 +1,5 @@
 -- ============================================================
--- Ananda Yoga Kendra — Supabase Schema
+-- Nibedita Yoga Training Centre — Supabase Schema
 -- Paste this entire file into Supabase → SQL Editor → Run
 -- ============================================================
 
@@ -198,12 +198,16 @@ create policy "batches: public read"  on public.batches for select using (true);
 create policy "batches: admin write"  on public.batches for all    using (public.is_admin());
 
 -- ---- enrollments ----
-create policy "enrollments: member read" on public.enrollments for select using (auth.uid() = member_id);
-create policy "enrollments: admin all"   on public.enrollments for all    using (public.is_admin());
+create policy "enrollments: member read"   on public.enrollments for select using (auth.uid() = member_id);
+-- Members must be able to insert their own enrollment (BatchEnrolCard)
+create policy "enrollments: member insert" on public.enrollments for insert with check (auth.uid() = member_id);
+create policy "enrollments: admin all"     on public.enrollments for all    using (public.is_admin());
 
 -- ---- fee_records ----
-create policy "fees: member read"  on public.fee_records for select using (auth.uid() = member_id);
-create policy "fees: admin all"    on public.fee_records for all    using (public.is_admin());
+create policy "fees: member read"   on public.fee_records for select using (auth.uid() = member_id);
+-- Members can update their own fee row to upload a payment screenshot
+create policy "fees: member update" on public.fee_records for update using (auth.uid() = member_id);
+create policy "fees: admin all"     on public.fee_records for all    using (public.is_admin());
 
 -- ---- events ----
 create policy "events: public read" on public.events for select using (true);
@@ -262,6 +266,6 @@ create policy "storage: admin view screenshots"
 -- ============================================================
 insert into public.batches (name_en, name_hi, name_bn, timing, days, capacity, level, instructor, status)
 values
-  ('Morning Hatha — Beginner', 'सुबह हठ — शुरुआती', 'সকালের হাঠ — শিক্ষানবিশ', '6:00 AM – 7:00 AM', 'Mon, Wed, Fri', 15, 'Beginner',    'Your Teacher Name', 'active'),
-  ('Morning Vinyasa — Intermediate', 'सुबह विनयास — मध्यम', 'সকালের বিনয়াস — মধ্যবর্তী', '7:30 AM – 8:30 AM', 'Mon, Wed, Fri', 12, 'Intermediate', 'Your Teacher Name', 'active'),
-  ('Evening Gentle — All Levels', 'शाम का कोमल — सभी स्तर', 'সন্ধ্যার মৃদু — সব স্তর', '6:00 PM – 7:00 PM', 'Tue, Thu, Sat', 18, 'Beginner', 'Your Teacher Name', 'active');
+  ('Morning Hatha — Beginner', 'सुबह हठ — शुरुआती', 'সকালের হাঠ — শিক্ষানবিশ', '6:00 AM – 7:00 AM', 'Mon, Wed, Fri', 15, 'Beginner',    'Rekha Nath', 'active'),
+  ('Morning Vinyasa — Intermediate', 'सुबह विनयास — मध्यम', 'সকালের বিনয়াস — মধ্যবর্তী', '7:30 AM – 8:30 AM', 'Mon, Wed, Fri', 12, 'Intermediate', 'Rekha Nath', 'active'),
+  ('Evening Gentle — All Levels', 'शाम का कोमल — सभी स्तर', 'সন্ধ্যার মৃদু — সব স্তর', '6:00 PM – 7:00 PM', 'Tue, Thu, Sat', 18, 'Beginner', 'Rekha Nath', 'active');

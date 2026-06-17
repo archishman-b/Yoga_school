@@ -1,6 +1,5 @@
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
-import Image from 'next/image';
 import { useLocale } from 'next-intl';
 import { ArrowRight, MapPin } from 'lucide-react';
 
@@ -79,18 +78,17 @@ export default function HeroSection() {
           {/* Hero visual */}
           <div className="relative flex justify-center">
             <div className="relative w-80 h-80 lg:w-96 lg:h-96">
-              {/* Logo in a circular frame — overflow-hidden clips transparent PNG corners */}
-              <div className="w-full h-full rounded-full bg-gradient-to-br from-saffron-50 via-white to-teal-50 flex items-center justify-center shadow-2xl border border-saffron-100">
-                <div className="w-56 h-56 lg:w-64 lg:h-64 rounded-full overflow-hidden bg-white shadow-lg">
-                  <Image
-                    src="/logo.png"
-                    alt="Nibedita Yoga Training Centre"
-                    width={256}
-                    height={256}
-                    className="w-full h-full object-cover"
-                    priority
-                  />
-                </div>
+              {/* Outer decorative ring */}
+              <div className="absolute inset-0 rounded-full bg-gradient-to-br from-saffron-100 via-white to-teal-100 shadow-2xl border border-saffron-100" />
+              {/* Logo: overflow-hidden clips the transparent PNG corners to a circle.
+                  scale-[1.15] zooms the logo so its circular edge fills the frame. */}
+              <div className="absolute inset-4 rounded-full bg-white overflow-hidden shadow-lg">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src="/logo.png"
+                  alt="Nibedita Yoga Training Centre"
+                  className="w-full h-full object-cover scale-[1.15]"
+                />
               </div>
               {/* Floating card */}
               <div className="absolute -bottom-4 -left-4 bg-white rounded-2xl shadow-xl p-4 flex items-center gap-3">

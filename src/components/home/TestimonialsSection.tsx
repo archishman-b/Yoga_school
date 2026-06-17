@@ -4,7 +4,7 @@ import { Quote } from 'lucide-react';
 const testimonials = [
   {
     quote:
-      'Joining Ananda Yoga Kendra was the best decision I made for my health. My back pain of 10 years is almost completely gone.',
+      'Joining Nibedita Yoga Training Centre was the best decision I made for my health. My back pain of 10 years is almost completely gone.',
     name: 'Priya Sharma',
     role: 'School Teacher, Delhi',
     avatar: '👩',

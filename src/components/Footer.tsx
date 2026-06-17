@@ -15,8 +15,12 @@ export default function Footer() {
           {/* Brand */}
           <div>
             <div className="flex items-center gap-2 mb-3">
-              <span className="text-2xl">🪷</span>
-              <span className="text-white font-semibold text-lg">Ananda Yoga Kendra</span>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/logo.png" alt="" className="w-10 h-10 rounded-full object-cover" />
+              <div>
+                <p className="text-white font-semibold text-sm leading-tight">Nibedita Yoga</p>
+                <p className="text-saffron-400 text-xs">Training Centre</p>
+              </div>
             </div>
             <p className="text-sm text-gray-400 italic">{t('tagline')}</p>
           </div>
