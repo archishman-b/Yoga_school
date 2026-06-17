@@ -28,6 +28,8 @@ export type Batch = {
   instructor: string | null;
   level: 'Beginner' | 'Intermediate' | 'Advanced' | null;
   fee_monthly: number | null;
+  mode: 'online' | 'offline';
+  display_fill_pct: number;
   status: 'active' | 'paused' | 'ended' | 'cancelled';
   created_at: string;
 };
