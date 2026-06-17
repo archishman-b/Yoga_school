@@ -1,5 +1,4 @@
 import type { Metadata } from 'next';
-import { Inter, Noto_Sans_Devanagari, Noto_Sans_Bengali, Rozha_One } from 'next/font/google';
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages } from 'next-intl/server';
 import { notFound } from 'next/navigation';
@@ -7,34 +6,7 @@ import { routing } from '@/i18n/routing';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import WhatsAppButton from '@/components/WhatsAppButton';
-import '../globals.css';
-
-const inter = Inter({
-  subsets: ['latin'],
-  variable: '--font-inter',
-  display: 'swap',
-});
-
-const notoDevanagari = Noto_Sans_Devanagari({
-  subsets: ['devanagari'],
-  variable: '--font-noto-devanagari',
-  display: 'swap',
-  weight: ['400', '500', '600', '700'],
-});
-
-const notoBengali = Noto_Sans_Bengali({
-  subsets: ['bengali'],
-  variable: '--font-noto-bengali',
-  display: 'swap',
-  weight: ['400', '500', '600', '700'],
-});
-
-const rozhaOne = Rozha_One({
-  subsets: ['latin'],
-  variable: '--font-rozha',
-  display: 'swap',
-  weight: '400',
-});
+import LocaleWrapper from '@/components/LocaleWrapper';
 
 export const metadata: Metadata = {
   title: {
@@ -66,24 +38,18 @@ export default async function LocaleLayout({ children, params: { locale } }: Pro
 
   const messages = await getMessages();
 
-  // fontFamily drives which Tailwind font-family class is active on the body.
-  // font-sans = Inter (Latin), font-devanagari = Noto Sans Devanagari, font-bengali = Noto Sans Bengali.
-  // All four font CSS variables are always loaded on <html> so mixed-script content still works.
-  const bodyFont =
-    locale === 'hi' ? 'font-devanagari' :
-    locale === 'bn' ? 'font-bengali' :
-    'font-sans';
-
+  // <html> and <body> live in the root layout (src/app/layout.tsx).
+  // LocaleWrapper (client component) sets html[lang] and the correct
+  // body font-family class after hydration. suppressHydrationWarning on
+  // both elements (in root layout) suppresses the one-frame mismatch.
   return (
-    <html lang={locale} className={`${inter.variable} ${notoDevanagari.variable} ${notoBengali.variable} ${rozhaOne.variable}`}>
-      <body className={`${bodyFont} bg-white text-gray-900 antialiased`}>
-        <NextIntlClientProvider messages={messages}>
-          <Navbar />
-          <main>{children}</main>
-          <Footer />
-          <WhatsAppButton />
-        </NextIntlClientProvider>
-      </body>
-    </html>
+    <NextIntlClientProvider messages={messages}>
+      <LocaleWrapper locale={locale}>
+        <Navbar />
+        <main>{children}</main>
+        <Footer />
+        <WhatsAppButton />
+      </LocaleWrapper>
+    </NextIntlClientProvider>
   );
 }
