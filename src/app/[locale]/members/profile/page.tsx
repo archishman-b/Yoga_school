@@ -6,6 +6,8 @@ import TestimonialForm from '@/components/members/TestimonialForm';
 import { Wifi, Building2, Clock, CheckCircle2, AlertCircle, XCircle, MessageSquareQuote } from 'lucide-react';
 import type { Metadata } from 'next';
 
+export const dynamic = 'force-dynamic';
+
 export const metadata: Metadata = { title: 'My Profile' };
 type Props = { params: { locale: string } };
 

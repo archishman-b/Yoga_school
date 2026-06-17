@@ -2,7 +2,8 @@
 
 import { useState, useTransition } from 'react';
 import { createClient } from '@/lib/supabase/client';
-import { Save, ChevronDown, ChevronUp } from 'lucide-react';
+import { Save, ChevronDown, ChevronUp, Trash2 } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 type Batch = {
   id: string;
@@ -34,7 +35,9 @@ function fillLabel(pct: number) {
 }
 
 export default function BatchEditor({ batch }: Props) {
+  const router = useRouter();
   const [open, setOpen] = useState(false);
+  const [deleted, setDeleted] = useState(false);
   const [form, setForm] = useState({
     timing:           batch.timing       ?? '',
     days:             batch.days         ?? '',
@@ -59,6 +62,19 @@ export default function BatchEditor({ batch }: Props) {
     });
   };
 
+  const deleteBatch = () => {
+    if (!confirm(`Delete batch ${batch.batch_code}? This cannot be undone. Any enrollments in this batch will also be removed.`)) return;
+    start(async () => {
+      const supabase = createClient();
+      await supabase.from('enrollments').delete().eq('batch_id', batch.id);
+      await supabase.from('batches').delete().eq('id', batch.id);
+      setDeleted(true);
+      router.refresh();
+    });
+  };
+
+  if (deleted) return null;
+
   const modeIcon = batch.mode === 'online' ? '📡' : '🏛️';
   const statusColor = form.status === 'active' ? 'text-teal-600' : form.status === 'paused' ? 'text-amber-600' : 'text-gray-400';
 
@@ -80,6 +96,12 @@ export default function BatchEditor({ batch }: Props) {
         </div>
         <span className="text-xs text-gray-400">{fillLabel(form.display_fill_pct)}</span>
         {open ? <ChevronUp size={15} className="text-gray-400 shrink-0" /> : <ChevronDown size={15} className="text-gray-400 shrink-0" />}
+        {/* Delete — stop propagation so it doesn't toggle expand */}
+        <span onClick={e => { e.stopPropagation(); deleteBatch(); }}
+          className="p-1.5 rounded-lg text-gray-300 hover:text-red-500 hover:bg-red-50 transition-colors cursor-pointer shrink-0"
+          title="Delete batch">
+          <Trash2 size={14} />
+        </span>
       </button>
 
       {/* Expanded editor */}

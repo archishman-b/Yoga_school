@@ -5,6 +5,7 @@ import RollOffToggle from '@/components/members/RollOffToggle';
 import { Wifi, Building2 } from 'lucide-react';
 import type { Metadata } from 'next';
 
+export const dynamic = 'force-dynamic';
 export const metadata: Metadata = { title: 'My Batches' };
 type Props = { params: { locale: string } };
 

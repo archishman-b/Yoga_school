@@ -2,11 +2,12 @@
 
 import { useState } from 'react';
 import { createClient } from '@/lib/supabase/client';
-import { Mail, ArrowRight, CheckCircle2 } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
+import { Mail, Lock, Eye, EyeOff, ArrowRight, CheckCircle2 } from 'lucide-react';
 
 type Props = { locale: string };
 
-// Google "G" SVG icon
 function GoogleIcon() {
   return (
     <svg width="20" height="20" viewBox="0 0 48 48" aria-hidden="true">
@@ -18,62 +19,63 @@ function GoogleIcon() {
   );
 }
 
+type Mode = 'password' | 'magic';
+
 export default function LoginForm({ locale }: Props) {
-  const [email, setEmail] = useState('');
-  const [step, setStep] = useState<'idle' | 'loading-google' | 'loading-otp' | 'sent'>('idle');
-  const [error, setError] = useState('');
+  const router = useRouter();
+  const [mode,     setMode]     = useState<Mode>('password');
+  const [email,    setEmail]    = useState('');
+  const [password, setPassword] = useState('');
+  const [showPw,   setShowPw]   = useState(false);
+  const [loading,  setLoading]  = useState<string | null>(null);
+  const [sent,     setSent]     = useState(false);
+  const [error,    setError]    = useState('');
 
   const handleGoogle = async () => {
-    setStep('loading-google');
-    setError('');
+    setLoading('google'); setError('');
     const supabase = createClient();
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
-      options: {
-        redirectTo: `${window.location.origin}/auth/callback`,
-      },
+      options: { redirectTo: `${window.location.origin}/auth/callback` },
     });
-    if (error) {
-      setError(error.message);
-      setStep('idle');
-    }
-    // On success, browser redirects to Google — no state update needed
+    if (error) { setError(error.message); setLoading(null); }
   };
 
-  const handleOtp = async (e: React.FormEvent) => {
+  const handlePassword = async (e: React.FormEvent) => {
     e.preventDefault();
-    setStep('loading-otp');
-    setError('');
+    setLoading('password'); setError('');
+    const supabase = createClient();
+    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    setLoading(null);
+    if (error) { setError(error.message); return; }
+    router.push(`/${locale}/members`);
+    router.refresh();
+  };
+
+  const handleMagicLink = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading('magic'); setError('');
     const supabase = createClient();
     const { error } = await supabase.auth.signInWithOtp({
       email,
-      options: {
-        emailRedirectTo: `${window.location.origin}/auth/callback`,
-      },
+      options: { emailRedirectTo: `${window.location.origin}/auth/callback` },
     });
-    if (error) {
-      setError(error.message);
-      setStep('idle');
-    } else {
-      setStep('sent');
-    }
+    setLoading(null);
+    if (error) { setError(error.message); return; }
+    setSent(true);
   };
 
-  if (step === 'sent') {
+  if (sent) {
     return (
-      <div className="bg-white/10 backdrop-blur rounded-2xl p-8 text-center text-white">
-        <CheckCircle2 size={48} className="text-teal-400 mx-auto mb-4" />
-        <h2 className="text-xl font-bold mb-2">Check your email</h2>
+      <div className="bg-white/10 backdrop-blur rounded-2xl p-8 text-center text-white space-y-4">
+        <CheckCircle2 size={48} className="text-teal-400 mx-auto" />
+        <h2 className="text-xl font-bold">Check your email</h2>
         <p className="text-gray-300 text-sm">
-          We've sent a magic login link to{' '}
-          <span className="text-white font-medium">{email}</span>.<br />
-          Click the link to sign in — it expires in 1 hour.
+          Magic link sent to <span className="text-white font-medium">{email}</span>.<br/>
+          Click it to sign in — expires in 1 hour.
         </p>
-        <button
-          onClick={() => setStep('idle')}
-          className="mt-6 text-teal-400 text-sm hover:text-teal-300 underline"
-        >
-          Use a different method
+        <button onClick={() => setSent(false)} className="text-teal-400 text-sm hover:text-teal-300 underline">
+          Try a different method
         </button>
       </div>
     );
@@ -81,57 +83,93 @@ export default function LoginForm({ locale }: Props) {
 
   return (
     <div className="bg-white/10 backdrop-blur rounded-2xl p-8 space-y-5">
-      {/* Google Sign-In */}
-      <button
-        type="button"
-        onClick={handleGoogle}
-        disabled={step === 'loading-google'}
-        className="w-full flex items-center justify-center gap-3 py-3 bg-white hover:bg-gray-50 disabled:opacity-60 text-gray-800 font-semibold rounded-xl transition-colors shadow-sm"
-      >
+
+      {/* Google */}
+      <button type="button" onClick={handleGoogle} disabled={!!loading}
+        className="w-full flex items-center justify-center gap-3 py-3 bg-white hover:bg-gray-50 disabled:opacity-60 text-gray-800 font-semibold rounded-xl transition-colors shadow-sm">
         <GoogleIcon />
-        {step === 'loading-google' ? 'Redirecting…' : 'Continue with Google'}
+        {loading === 'google' ? 'Redirecting…' : 'Continue with Google'}
       </button>
 
-      {/* Divider */}
       <div className="flex items-center gap-3">
         <div className="flex-1 h-px bg-white/20" />
-        <span className="text-xs text-gray-400">or use email</span>
+        <span className="text-xs text-gray-400">or</span>
         <div className="flex-1 h-px bg-white/20" />
       </div>
 
-      {/* Magic Link */}
-      <form onSubmit={handleOtp} className="space-y-4">
-        <div>
-          <label className="block text-sm font-medium text-gray-300 mb-1.5">
-            Email address
-          </label>
-          <div className="relative">
-            <Mail size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
-            <input
-              type="email"
-              required
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="you@example.com"
-              className="w-full pl-10 pr-4 py-3 rounded-xl bg-white/10 border border-white/20 text-white placeholder-gray-500 focus:outline-none focus:border-teal-400 transition-colors"
-            />
-          </div>
-        </div>
-
-        {error && <p className="text-red-400 text-sm">{error}</p>}
-
-        <button
-          type="submit"
-          disabled={step === 'loading-otp'}
-          className="w-full flex items-center justify-center gap-2 py-3 bg-saffron-500 hover:bg-saffron-600 disabled:opacity-60 text-white font-semibold rounded-xl transition-colors"
-        >
-          {step === 'loading-otp' ? 'Sending…' : <><ArrowRight size={18} /> Send Magic Link</>}
+      {/* Mode toggle */}
+      <div className="flex rounded-xl overflow-hidden border border-white/20 text-sm font-medium">
+        <button onClick={() => setMode('password')}
+          className={`flex-1 py-2 transition-colors ${mode === 'password' ? 'bg-white/20 text-white' : 'text-gray-400 hover:text-gray-200'}`}>
+          Email & Password
         </button>
+        <button onClick={() => setMode('magic')}
+          className={`flex-1 py-2 transition-colors ${mode === 'magic' ? 'bg-white/20 text-white' : 'text-gray-400 hover:text-gray-200'}`}>
+          Magic Link
+        </button>
+      </div>
 
-        <p className="text-xs text-gray-500 text-center">
-          No password needed. We email you a secure one-time link.
-        </p>
-      </form>
+      {/* Email + Password */}
+      {mode === 'password' && (
+        <form onSubmit={handlePassword} className="space-y-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-300 mb-1.5">Email</label>
+            <div className="relative">
+              <Mail size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+              <input type="email" required value={email} onChange={e => setEmail(e.target.value)}
+                placeholder="you@example.com"
+                className="w-full pl-9 pr-4 py-3 rounded-xl bg-white/10 border border-white/20 text-white placeholder-gray-500 focus:outline-none focus:border-teal-400 transition-colors" />
+            </div>
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-300 mb-1.5">Password</label>
+            <div className="relative">
+              <Lock size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+              <input type={showPw ? 'text' : 'password'} required value={password} onChange={e => setPassword(e.target.value)}
+                placeholder="Your password"
+                className="w-full pl-9 pr-10 py-3 rounded-xl bg-white/10 border border-white/20 text-white placeholder-gray-500 focus:outline-none focus:border-teal-400 transition-colors" />
+              <button type="button" onClick={() => setShowPw(v => !v)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-200">
+                {showPw ? <EyeOff size={16}/> : <Eye size={16}/>}
+              </button>
+            </div>
+          </div>
+          {error && <p className="text-red-400 text-sm">{error}</p>}
+          <button type="submit" disabled={!!loading}
+            className="w-full flex items-center justify-center gap-2 py-3 bg-saffron-500 hover:bg-saffron-600 disabled:opacity-60 text-white font-semibold rounded-xl transition-colors">
+            {loading === 'password' ? 'Signing in…' : <><ArrowRight size={18}/> Sign In</>}
+          </button>
+        </form>
+      )}
+
+      {/* Magic Link */}
+      {mode === 'magic' && (
+        <form onSubmit={handleMagicLink} className="space-y-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-300 mb-1.5">Email</label>
+            <div className="relative">
+              <Mail size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+              <input type="email" required value={email} onChange={e => setEmail(e.target.value)}
+                placeholder="you@example.com"
+                className="w-full pl-9 pr-4 py-3 rounded-xl bg-white/10 border border-white/20 text-white placeholder-gray-500 focus:outline-none focus:border-teal-400 transition-colors" />
+            </div>
+          </div>
+          {error && <p className="text-red-400 text-sm">{error}</p>}
+          <button type="submit" disabled={!!loading}
+            className="w-full flex items-center justify-center gap-2 py-3 bg-saffron-500 hover:bg-saffron-600 disabled:opacity-60 text-white font-semibold rounded-xl transition-colors">
+            {loading === 'magic' ? 'Sending…' : <><ArrowRight size={18}/> Send Magic Link</>}
+          </button>
+          <p className="text-xs text-gray-500 text-center">No password needed — we email you a secure one-time link.</p>
+        </form>
+      )}
+
+      {/* Sign up link */}
+      <p className="text-center text-xs text-gray-400 pt-1">
+        New here?{' '}
+        <Link href={`/${locale}/members/signup`} className="text-teal-400 hover:text-teal-300 underline font-medium">
+          Create an account
+        </Link>
+      </p>
     </div>
   );
 }
