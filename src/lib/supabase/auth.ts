@@ -18,11 +18,31 @@ export async function getSessionAndProfile(): Promise<{
 
   if (!session) return null;
 
-  const { data: profile } = await supabase
+  let { data: profile } = await supabase
     .from('profiles')
     .select('*')
     .eq('id', session.user.id)
     .single();
+
+  // Profile missing — can happen for OAuth sign-ins if the DB trigger hasn't
+  // been applied yet, or on the very first sign-in before the trigger fires.
+  // Create a minimal profile row so the user isn't permanently locked out.
+  if (!profile) {
+    const meta = session.user.user_metadata ?? {};
+    const { data: created } = await supabase
+      .from('profiles')
+      .insert({
+        id: session.user.id,
+        email: session.user.email,
+        full_name: meta.full_name ?? meta.name ?? null,
+        photo_url: meta.avatar_url ?? null,
+        role: 'member',
+        status: 'active',
+      })
+      .select()
+      .single();
+    profile = created;
+  }
 
   if (!profile) return null;
 
