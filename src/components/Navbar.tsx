@@ -4,9 +4,11 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
 import { useTranslations, useLocale } from 'next-intl';
-import { useState } from 'react';
-import { Menu, X } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Menu, X, LayoutDashboard } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { createClient } from '@/lib/supabase/client';
+import type { User } from '@supabase/supabase-js';
 
 const LOCALES = [
   { code: 'en', label: 'EN' },
@@ -20,6 +22,18 @@ export default function Navbar() {
   const pathname = usePathname();
   const router = useRouter();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [user, setUser] = useState<User | null>(null);
+
+  useEffect(() => {
+    const supabase = createClient();
+    // Get current session
+    supabase.auth.getUser().then(({ data }) => setUser(data.user));
+    // Listen for auth changes (login/logout)
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null);
+    });
+    return () => subscription.unsubscribe();
+  }, []);
 
   const navLinks = [
     { href: `/${locale}`, label: t('home') },
@@ -32,11 +46,44 @@ export default function Navbar() {
   function switchLocale() {
     const currentIndex = LOCALES.findIndex((l) => l.code === locale);
     const nextLocale = LOCALES[(currentIndex + 1) % LOCALES.length].code;
-    // Replace locale prefix in pathname
     const segments = pathname.split('/');
     segments[1] = nextLocale;
     router.push(segments.join('/'));
   }
+
+  // Avatar initials from Google display name or email
+  const displayName = user?.user_metadata?.full_name ?? user?.email ?? '';
+  const initials = displayName
+    .split(' ')
+    .map((w: string) => w[0])
+    .slice(0, 2)
+    .join('')
+    .toUpperCase();
+  const avatarUrl = user?.user_metadata?.avatar_url as string | undefined;
+
+  const AuthButton = () =>
+    user ? (
+      <Link
+        href={`/${locale}/members`}
+        className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-teal-50 border border-teal-200 text-teal-800 text-sm font-medium hover:bg-teal-100 transition-colors"
+      >
+        {avatarUrl ? (
+          <img src={avatarUrl} alt={displayName} className="w-6 h-6 rounded-full object-cover" />
+        ) : (
+          <div className="w-6 h-6 rounded-full bg-teal-600 text-white flex items-center justify-center text-xs font-bold">
+            {initials || <LayoutDashboard size={12} />}
+          </div>
+        )}
+        <span>My Portal</span>
+      </Link>
+    ) : (
+      <Link
+        href={`/${locale}/members`}
+        className="px-4 py-2 rounded-lg bg-saffron-500 text-white text-sm font-medium hover:bg-saffron-600 transition-colors"
+      >
+        {t('login')}
+      </Link>
+    );
 
   return (
     <header className="sticky top-0 z-50 bg-white/95 backdrop-blur border-b border-gray-100 shadow-sm">
@@ -81,7 +128,7 @@ export default function Navbar() {
             ))}
           </nav>
 
-          {/* Right side: lang toggle + login */}
+          {/* Right side: lang toggle + auth */}
           <div className="hidden md:flex items-center gap-3">
             <button
               onClick={switchLocale}
@@ -89,12 +136,7 @@ export default function Navbar() {
             >
               {LOCALES[(LOCALES.findIndex((l) => l.code === locale) + 1) % LOCALES.length].label}
             </button>
-            <Link
-              href={`/${locale}/members`}
-              className="px-4 py-2 rounded-lg bg-saffron-500 text-white text-sm font-medium hover:bg-saffron-600 transition-colors"
-            >
-              {t('login')}
-            </Link>
+            <AuthButton />
           </div>
 
           {/* Mobile menu button */}
@@ -134,13 +176,7 @@ export default function Navbar() {
               >
                 {LOCALES[(LOCALES.findIndex((l) => l.code === locale) + 1) % LOCALES.length].label}
               </button>
-              <Link
-                href={`/${locale}/members`}
-                className="px-4 py-2 rounded-lg bg-saffron-500 text-white text-sm font-medium"
-                onClick={() => setMobileOpen(false)}
-              >
-                {t('login')}
-              </Link>
+              <AuthButton />
             </div>
           </nav>
         </div>
