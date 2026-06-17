@@ -20,7 +20,7 @@ export default function LoginForm({ locale }: Props) {
     const { error } = await supabase.auth.signInWithOtp({
       email,
       options: {
-        emailRedirectTo: `${window.location.origin}/${locale}/members`,
+        emailRedirectTo: `${window.location.origin}/auth/callback?next=/${locale}/members/dashboard`,
       },
     });
 
