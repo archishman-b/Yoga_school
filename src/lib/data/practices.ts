@@ -37,13 +37,21 @@ export type Practice = {
 // Admin can override these via Supabase programme_practice_mappings table.
 
 export const DEFAULT_PROGRAMME_MAPPINGS: Record<string, string[]> = {
-  'naval-correction':   ['pawanmuktasana', 'bhujangasana', 'dhanurasana', 'kapal-bhati', 'navasana', 'ardha-matsyendrasana'],
-  'growth-development': ['tadasana', 'sarvangasana', 'trikonasana', 'surya-namaskar', 'chakrasana', 'halasana'],
-  'height-enhancement': ['tadasana', 'trikonasana', 'halasana', 'chakrasana', 'viparita-karani', 'utkatasana'],
-  'anti-ageing':        ['sarvangasana', 'sirsasana', 'setu-bandha-sarvangasana', 'viparita-karani', 'anulom-vilom', 'kapal-bhati'],
+  // Naval Correction — abdominal tone, spinal alignment, postural correction
+  'naval-correction':   ['tadasana', 'bhujangasana', 'shalabhasana', 'setu-bandha-sarvangasana', 'pawanmuktasana', 'ardha-matsyendrasana'],
+  // Growth & Development — endocrine stimulation, full-body development (teens)
+  'growth-development': ['surya-namaskar', 'tadasana', 'trikonasana', 'sarvangasana', 'chakrasana', 'halasana'],
+  // Height Enhancement — spinal decompression, stretch, posture
+  'height-enhancement': ['tadasana', 'trikonasana', 'utkatasana', 'chakrasana', 'halasana', 'viparita-karani'],
+  // Anti-Ageing & Vitality — circulation, glandular function, rejuvenation
+  'anti-ageing':        ['sarvangasana', 'sirsasana', 'viparita-karani', 'setu-bandha-sarvangasana', 'anulom-vilom', 'kapal-bhati'],
+  // Weight Management — metabolic activation, calorie burn, digestive fire
   'weight-management':  ['surya-namaskar', 'kapal-bhati', 'vastrika', 'utkatasana', 'navasana', 'trikonasana'],
-  'healthy-ageing':     ['tadasana', 'balasana', 'sukhasana', 'setu-bandha-sarvangasana', 'viparita-karani', 'savasana'],
+  // Healthy Ageing — gentle mobility, balance, joint health (seniors)
+  'healthy-ageing':     ['tadasana', 'setu-bandha-sarvangasana', 'sukhasana', 'balasana', 'viparita-karani', 'savasana'],
+  // Busy Lifestyles — maximum benefit in minimum time, stress relief
   'busy-lifestyle':     ['surya-namaskar', 'anulom-vilom', 'kapal-bhati', 'uttanasana', 'bhujangasana', 'savasana'],
+  // Digestive Health — abdominal massage, gut motility, liver stimulation
   'digestive-health':   ['pawanmuktasana', 'malasana', 'ardha-matsyendrasana', 'kapal-bhati', 'dhanurasana', 'navasana'],
 };
 

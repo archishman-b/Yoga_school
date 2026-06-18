@@ -146,16 +146,14 @@ export default function Navbar() {
       >
         {/* Logo */}
         <Link href={`/${locale}`} className="flex items-center gap-3 text-ink no-underline flex-none">
-          {/* Lotus badge */}
-          <span
-            className="w-[42px] h-[42px] rounded-full flex-none grid place-items-center text-[#fff5e8]"
-            style={{
-              background: 'radial-gradient(circle at 50% 40%, #F4A04A, #E8740C 60%, #C95E08)',
-              boxShadow: '0 4px 14px -4px rgba(232,116,12,0.6)',
-            }}
-          >
-            <LotusIcon size={24} />
-          </span>
+          {/* School logo */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/logo.png"
+            alt="Nibedita Yoga Training Centre"
+            className="w-[42px] h-[42px] rounded-full object-cover flex-none"
+            style={{ boxShadow: '0 4px 14px -4px rgba(232,116,12,0.6)' }}
+          />
           {/* Brand name */}
           <span className="hidden sm:block leading-[1.05]">
             <span className="block font-rozha text-[18px] tracking-[0.2px] text-ink">Nibedita Yoga</span>

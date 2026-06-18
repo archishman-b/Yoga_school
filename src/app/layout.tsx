@@ -4,7 +4,7 @@
 // suppressHydrationWarning is needed because [locale]/layout.tsx sets
 // lang and className on these elements after hydration.
 
-import { DM_Sans, Noto_Serif_Bengali, Noto_Sans_Devanagari, Rozha_One } from 'next/font/google';
+import { DM_Sans, Noto_Serif_Bengali, Noto_Sans_Devanagari, Rozha_One, Yatra_One } from 'next/font/google';
 import './globals.css';
 
 // Primary UI/body font — matches design prototype (replaces Inter)
@@ -30,6 +30,13 @@ const notoBengali = Noto_Serif_Bengali({
   weight: ['400', '500', '600', '700'],
 });
 
+const yatraOne = Yatra_One({
+  subsets: ['latin'],
+  variable: '--font-yatra',
+  display: 'swap',
+  weight: '400',
+});
+
 const rozhaOne = Rozha_One({
   subsets: ['latin'],
   variable: '--font-rozha',
@@ -41,7 +48,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html
       suppressHydrationWarning
-      className={`${dmSans.variable} ${notoDevanagari.variable} ${notoBengali.variable} ${rozhaOne.variable}`}
+      className={`${dmSans.variable} ${notoDevanagari.variable} ${notoBengali.variable} ${rozhaOne.variable} ${yatraOne.variable}`}
     >
       <body
         suppressHydrationWarning

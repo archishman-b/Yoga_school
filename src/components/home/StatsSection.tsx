@@ -1,5 +1,6 @@
-// StatsSection — dark teal gradient bar with three animated stats
-// Pass 3: static numbers (JS count-up animation added in Pass 4)
+'use client';
+
+import { useEffect, useRef } from 'react';
 
 function LotusIcon({ size = 22, className = '' }: { size?: number; className?: string }) {
   return (
@@ -16,32 +17,74 @@ function LotusIcon({ size = 22, className = '' }: { size?: number; className?: s
 }
 
 const STATS = [
-  { value: '15+', label: 'Years Teaching' },
-  { value: '500+', label: 'Happy Students' },
-  { value: '3', label: 'Batch Levels' },
+  { value: 15, suffix: '+', label: 'Years Teaching' },
+  { value: 500, suffix: '+', label: 'Happy Students' },
+  { value: 3, suffix: '', label: 'Batch Levels' },
 ];
 
+function easeOutQuart(t: number): number {
+  return 1 - Math.pow(1 - t, 4);
+}
+
 export default function StatsSection() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const firedRef = useRef(false);
+
+  useEffect(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    const section = sectionRef.current;
+    if (!section) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && !firedRef.current) {
+          firedRef.current = true;
+          observer.disconnect();
+
+          const spans = section.querySelectorAll<HTMLElement>('[data-count-to]');
+          spans.forEach((el) => {
+            const target = parseInt(el.dataset.countTo ?? '0', 10);
+            const suffix = el.dataset.countSuffix ?? '';
+            const DURATION = 2200;
+            const startTime = performance.now();
+
+            const step = (now: number) => {
+              const elapsed = now - startTime;
+              const progress = Math.min(elapsed / DURATION, 1);
+              el.textContent = String(Math.round(easeOutQuart(progress) * target)) + suffix;
+              if (progress < 1) requestAnimationFrame(step);
+            };
+            requestAnimationFrame(step);
+          });
+        }
+      },
+      { threshold: 0.25 }
+    );
+
+    observer.observe(section);
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <section
       id="stats"
+      ref={sectionRef}
       aria-label="School statistics"
       style={{ background: 'linear-gradient(120deg, #0D6B6E, #0A5557)' }}
     >
       <div className="max-w-[980px] mx-auto px-[clamp(18px,5vw,56px)] py-[clamp(36px,5vw,56px)]">
         <div className="flex flex-wrap items-center justify-center gap-0">
           {STATS.map((stat, idx) => (
-            <div key={stat.value} className="flex items-center">
-              {/* Stat item */}
+            <div key={stat.label} className="flex items-center">
               <div className="flex flex-col items-center px-[clamp(28px,5vw,64px)] py-2 text-center">
-                {/* Animated number — Pass 4 will wire up count-up JS via data attrs */}
                 <span
                   className="block font-rozha text-saffron-400 leading-none"
                   style={{ fontSize: 'clamp(44px, 7vw, 68px)' }}
-                  data-count-to={stat.value.replace('+', '')}
-                  data-count-suffix={stat.value.includes('+') ? '+' : ''}
+                  data-count-to={String(stat.value)}
+                  data-count-suffix={stat.suffix}
                 >
-                  {stat.value}
+                  {stat.value}{stat.suffix}
                 </span>
                 <span
                   className="mt-2 uppercase tracking-[2px] font-semibold"
@@ -51,7 +94,6 @@ export default function StatsSection() {
                 </span>
               </div>
 
-              {/* Lotus separator — shown between items, not after last */}
               {idx < STATS.length - 1 && (
                 <LotusIcon
                   size={22}

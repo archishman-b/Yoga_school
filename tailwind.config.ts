@@ -61,6 +61,8 @@ const config: Config = {
         bengali:    ["var(--font-noto-bengali)", "serif"],
         // Hindi / Devanagari script
         devanagari: ["var(--font-noto-devanagari)", "sans-serif"],
+        // Yatra One — Indic display font for hero branding
+        yatra:      ["var(--font-yatra)", "serif"],
       },
 
       borderRadius: {
