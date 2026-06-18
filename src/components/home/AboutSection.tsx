@@ -137,10 +137,13 @@ export default function AboutSection() {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 items-start">
             {/* Photo + mini stats */}
             <div className="flex flex-col items-center gap-5">
-              <div className="w-48 h-48 rounded-full bg-gradient-to-br from-teal-300 to-teal-600 flex items-center justify-center shadow-teal text-6xl">
-                🧘‍♀️
-              </div>
-              {/* TODO: replace emoji with <img src="/rekha-nath.jpg" /> once photo provided */}
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/rekhanath.JPG"
+                alt="Rekha Nath — Founder &amp; Lead Instructor, Nibedita Yoga Training Centre"
+                className="w-48 h-48 rounded-full object-cover object-top shadow-teal"
+                style={{ border: '3px solid rgba(13,107,110,0.18)' }}
+              />
               <div className="flex gap-3 text-center">
                 {[
                   { icon: <Award size={16}/>, val: '15+', lbl: 'Years' },
