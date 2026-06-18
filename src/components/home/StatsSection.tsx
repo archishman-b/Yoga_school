@@ -17,8 +17,8 @@ function LotusIcon({ size = 22, className = '' }: { size?: number; className?: s
 }
 
 const STATS = [
-  { value: 15, suffix: '+', label: 'Years Teaching' },
-  { value: 500, suffix: '+', label: 'Happy Students' },
+  { value: 26, suffix: '+', label: 'Years Teaching' },
+  { value: 12000, suffix: '+', label: 'Happy Students' },
   { value: 3, suffix: '', label: 'Batch Levels' },
 ];
 
