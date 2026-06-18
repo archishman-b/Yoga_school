@@ -13,8 +13,19 @@ export default function MapSection() {
           </p>
           <h2 className="text-3xl font-bold text-gray-900">Come Visit the Studio</h2>
           <p className="text-gray-500 mt-3">
-            Ground Floor, Siddhaye Apartment, Debaipukur Road, Hindmotor, Hooghly
+            12/1, Debaipukur Road, P.O. Hindmotor, Dist. Hooghly, West Bengal — PIN 712 233
           </p>
+          <div className="flex items-center justify-center gap-6 mt-4 text-sm flex-wrap">
+            <a href="tel:03326943100" className="flex items-center gap-1.5 text-teal-600 hover:text-teal-700 font-medium">
+              📞 (033) 2694 3100
+            </a>
+            <a href="tel:+918017112877" className="flex items-center gap-1.5 text-teal-600 hover:text-teal-700 font-medium">
+              📱 +91 80171 12877
+            </a>
+            <a href="tel:+919123991667" className="flex items-center gap-1.5 text-teal-600 hover:text-teal-700 font-medium">
+              📱 +91 91239 91667
+            </a>
+          </div>
         </div>
 
         <div className="rounded-2xl overflow-hidden shadow-lg border border-gray-200 h-80 lg:h-96">

@@ -10,20 +10,22 @@
     "langToggle": "EN"
   },
   "hero": {
-    "tagline": "Transform Your Life Through the Ancient Science of Yoga",
-    "subtagline": "Expert guidance in Hatha, Vinyasa & Pranayama. Batches for all levels, all ages.",
+    "tagline": "Yoga for all group, all profession and all religions",
+    "subtagline": "No special equipment. No prior experience. Just the willingness to begin. Classes for all ages, all levels, all backgrounds.",
     "cta": "Book a Free Trial Class",
     "learnMore": "Learn More"
   },
   "about": {
-    "heading": "About the School",
-    "schoolDesc": "Nibedita Yoga Training Centre has been a sanctuary for sincere practitioners since its founding. Rooted in classical yoga tradition and informed by modern understanding, we offer a complete path — from beginner asana to advanced pranayama, philosophy, and meditation.",
-    "teacherHeading": "About the Teacher",
+    "heading": "Yoga for everyone. No special equipment. No prior experience. Just sincerity.",
+    "schoolDesc": "Nibedita Yoga Training Centre was founded with a single conviction: that yoga belongs to everyone — every profession, every age, every background. You need no special clothing, no equipment, and no prior experience. Just the willingness to begin.\n\nOur practice works on every dimension of health simultaneously. The asanas strengthen muscles and joints, tone the spine, and keep the skeletal system supple — while working on the internal organs, glands, and nervous system to keep every system of the body functioning at its full strength.",
+    "teacherHeading": "Lead Instructor & Founder",
     "teacherName": "Rekha Nath",
-    "teacherBio": "With years of dedicated practice and teaching, Rekha Nath brings deep grounding in the classical yoga tradition alongside a warm, accessible teaching style. Her teaching draws on the full breadth of the yoga tradition, making it approachable for students of all ages and backgrounds.",
-    "yearsExp": "Years of Experience",
+    "teacherBio": "Nibedita Yoga Training Centre was established to develop three dimensions of health — mental, physical, and social well-being — while keeping the body's four main systems — circulatory, respiratory, excretory, and digestive — fit, healthy, and strong.\n\nWhether you come seeking fitness, relief from a specific condition, or simply a steadier life — these goals are all achievable through sincere, regular practice.",
+    "founderQuote": "A complete science of life that originated in India many thousands of years ago. It is the oldest system of personal development in the world.",
+    "founderAttribution": "— Rekha Nath, Founder",
+    "yearsExp": "Years Teaching",
     "studentsCount": "Students Taught",
-    "certifications": "Certifications"
+    "certifications": "Course Specialisations"
   },
   "testimonials": {
     "heading": "What Our Students Say"
@@ -47,16 +49,16 @@
     "backToList": "← Back to Articles"
   },
   "courses": {
-    "heading": "Asana Guide & Self-Help Library",
-    "subheading": "Find the right practice for your health goal. Filter by need, explore by pose.",
+    "heading": "Courses & Self-Help Library",
+    "subheading": "Eight therapeutic programmes. Fifty asanas. Guided by the oldest system of personal development the world has ever known.",
     "allTargets": "All Goals",
     "difficulty": "Difficulty",
     "benefits": "Benefits",
     "steps": "How to Practise",
     "contraindications": "Contraindications",
-    "backToList": "← Back to Asanas",
+    "backToList": "← Back to Courses",
     "healthTargets": {
-      "weight_loss": "Weight Loss",
+      "weight_loss": "Weight Management",
       "diabetes": "Diabetes Management",
       "back_pain": "Back Pain",
       "stress_anxiety": "Stress & Anxiety",
@@ -64,18 +66,27 @@
       "flexibility": "Flexibility",
       "strength": "Strength Building",
       "sleep": "Sleep Improvement",
-      "digestion": "Digestion",
+      "digestion": "Digestive Health",
       "womens_health": "Women's Health",
       "senior_wellness": "Senior Wellness",
-      "post_injury": "Post-Injury Recovery"
+      "post_injury": "Post-Injury Recovery",
+      "energy": "Energy & Vitality",
+      "respiratory": "Respiratory Health",
+      "growth": "Growth & Development",
+      "anti_ageing": "Anti-Ageing",
+      "therapeutic": "Therapeutic Yoga",
+      "mental_clarity": "Mental Clarity",
+      "circulation": "Circulation"
     }
   },
   "footer": {
-    "address": "Ground Floor, Siddhaye Apartment, Debaipukur Road, Hindmotor, Hooghly, West Bengal 712233",
-    "phone": "+91 8017112877",
+    "address": "12/1, Debaipukur Road, P.O. Hindmotor, Dist. Hooghly, West Bengal — PIN 712 233",
+    "phone1": "(033) 2694 3100",
+    "phone2": "+91 80171 12877",
+    "phone3": "+91 91239 91667",
     "email": "",
     "rights": "© {year} Nibedita Yoga Training Centre. All rights reserved.",
-    "tagline": "Rooted in tradition. Open to all."
+    "tagline": "Yoga for all group, all profession and all religions. — Rekha Nath"
   },
   "whatsapp": {
     "tooltip": "Chat on WhatsApp"

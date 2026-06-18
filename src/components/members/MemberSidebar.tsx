@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
 import { useRouter } from 'next/navigation';
-import { User, CalendarDays, CreditCard, LogOut, LayoutDashboard } from 'lucide-react';
+import { User, CalendarDays, CreditCard, LogOut, LayoutDashboard, Leaf } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 type Props = { locale: string };
@@ -14,10 +14,11 @@ export default function MemberSidebar({ locale }: Props) {
   const router = useRouter();
 
   const links = [
-    { href: `/${locale}/members`, label: 'Dashboard', icon: <LayoutDashboard size={18} /> },
-    { href: `/${locale}/members/profile`, label: 'My Profile', icon: <User size={18} /> },
-    { href: `/${locale}/members/batches`, label: 'My Batches', icon: <CalendarDays size={18} /> },
-    { href: `/${locale}/members/fees`, label: 'Fee Records', icon: <CreditCard size={18} /> },
+    { href: `/${locale}/members`,          label: 'Dashboard',       icon: <LayoutDashboard size={18} /> },
+    { href: `/${locale}/members/profile`,  label: 'My Profile',      icon: <User size={18} /> },
+    { href: `/${locale}/members/batches`,  label: 'My Batches',      icon: <CalendarDays size={18} /> },
+    { href: `/${locale}/members/fees`,     label: 'Fee Records',     icon: <CreditCard size={18} /> },
+    { href: `/${locale}/members/wellness`, label: 'Wellness Guide',  icon: <Leaf size={18} /> },
   ];
 
   const handleLogout = async () => {

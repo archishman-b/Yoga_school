@@ -10,7 +10,14 @@ export type HealthTarget =
   | 'digestion'
   | 'womens_health'
   | 'senior_wellness'
-  | 'post_injury';
+  | 'post_injury'
+  | 'energy'
+  | 'respiratory'
+  | 'growth'
+  | 'anti_ageing'
+  | 'therapeutic'
+  | 'mental_clarity'
+  | 'circulation';
 
 export type Difficulty = 'Beginner' | 'Intermediate' | 'Advanced';
 
@@ -33,19 +40,28 @@ export type Asana = {
 };
 
 export const healthTargetLabels: Record<HealthTarget, string> = {
-  weight_loss: 'Weight Loss',
-  diabetes: 'Diabetes Management',
-  back_pain: 'Back Pain',
+  weight_loss:    'Weight Management',
+  diabetes:       'Diabetes Management',
+  back_pain:      'Back Pain',
   stress_anxiety: 'Stress & Anxiety',
-  hypertension: 'Hypertension',
-  flexibility: 'Flexibility',
-  strength: 'Strength Building',
-  sleep: 'Sleep Improvement',
-  digestion: 'Digestion',
-  womens_health: "Women's Health",
-  senior_wellness: 'Senior Wellness',
-  post_injury: 'Post-Injury Recovery',
+  hypertension:   'Hypertension',
+  flexibility:    'Flexibility',
+  strength:       'Strength Building',
+  sleep:          'Sleep Improvement',
+  digestion:      'Digestive Health',
+  womens_health:  "Women's Health",
+  senior_wellness:'Senior Wellness',
+  post_injury:    'Post-Injury Recovery',
+  energy:         'Energy & Vitality',
+  respiratory:    'Respiratory Health',
+  growth:         'Growth & Development',
+  anti_ageing:    'Anti-Ageing',
+  therapeutic:    'Therapeutic Yoga',
+  mental_clarity: 'Mental Clarity',
+  circulation:    'Circulation',
 };
+
+export const allHealthTargets: HealthTarget[] = Object.keys(healthTargetLabels) as HealthTarget[];
 
 export const asanas: Asana[] = [
   {
@@ -568,8 +584,4 @@ export const asanas: Asana[] = [
   },
 ];
 
-export const allHealthTargets: HealthTarget[] = [
-  'weight_loss', 'diabetes', 'back_pain', 'stress_anxiety',
-  'hypertension', 'flexibility', 'strength', 'sleep',
-  'digestion', 'womens_health', 'senior_wellness', 'post_injury',
-];
+// allHealthTargets is defined above with healthTargetLabels — do not duplicate

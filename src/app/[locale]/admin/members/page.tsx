@@ -154,12 +154,12 @@ export default async function AdminMembersPage({ params: { locale } }: Props) {
                     <FeePill status={fee?.status} />
                   </td>
 
-                  {/* Medical flag */}
+                  {/* Health flag */}
                   <td className="px-4 py-3 text-center">
-                    {m.medical_conditions
-                      ? <span title={m.medical_conditions} className="inline-flex items-center gap-1 text-amber-600 cursor-help">
+                    {(m.medical_conditions || m.cardiovascular_conditions || m.doctor_referral)
+                      ? <span title={[m.medical_conditions, m.cardiovascular_conditions].filter(Boolean).join(' · ')}
+                              className="inline-flex items-center gap-1 text-amber-600 cursor-help">
                           <AlertTriangle size={14} />
-                          <span className="text-xs sr-only">{m.medical_conditions}</span>
                         </span>
                       : <span className="text-gray-200 text-xs">✓</span>}
                   </td>
@@ -178,20 +178,58 @@ export default async function AdminMembersPage({ params: { locale } }: Props) {
         )}
       </div>
 
-      {/* Medical conditions detail panel */}
-      {(members ?? []).some((m: any) => m.medical_conditions) && (
-        <div className="card p-5 space-y-3">
+      {/* Health information detail panel (For Office Use) */}
+      {(members ?? []).some((m: any) =>
+        m.medical_conditions || m.cardiovascular_conditions || m.ailments || m.doctor_referral
+      ) && (
+        <div className="card p-5 space-y-4">
           <h2 className="font-semibold text-gray-900 text-sm flex items-center gap-2">
-            <AlertTriangle size={15} className="text-amber-500" /> Medical Conditions on File
+            <AlertTriangle size={15} className="text-amber-500" /> Health Information on File
           </h2>
-          <div className="space-y-2">
-            {(members ?? []).filter((m: any) => m.medical_conditions).map((m: any) => (
-              <div key={m.id} className="flex gap-3 text-sm">
-                <span className="font-medium text-gray-800 w-40 shrink-0">{m.full_name ?? m.email}</span>
-                <span className="text-gray-500">{m.medical_conditions}</span>
-              </div>
-            ))}
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm min-w-[680px]">
+              <thead>
+                <tr className="text-xs text-gray-400 uppercase tracking-wide border-b border-gray-100">
+                  <th className="text-left pb-2 pr-4 font-medium">Member</th>
+                  <th className="text-left pb-2 pr-4 font-medium">Health Conditions</th>
+                  <th className="text-left pb-2 pr-4 font-medium">Cardiovascular</th>
+                  <th className="text-center pb-2 pr-4 font-medium">Dr. Ref.</th>
+                  <th className="text-center pb-2 pr-4 font-medium">Prev. Yoga</th>
+                  <th className="text-left pb-2 pr-4 font-medium">Therapeutic Ailments</th>
+                  <th className="text-left pb-2 font-medium">Naval Assessment</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-gray-50">
+                {(members ?? [])
+                  .filter((m: any) => m.medical_conditions || m.cardiovascular_conditions || m.ailments || m.doctor_referral)
+                  .map((m: any) => (
+                  <tr key={m.id} className="hover:bg-gray-50/50">
+                    <td className="py-2.5 pr-4 font-medium text-gray-800 w-36">{m.full_name ?? m.email}</td>
+                    <td className="py-2.5 pr-4 text-gray-500 text-xs max-w-[180px]">{m.medical_conditions ?? '—'}</td>
+                    <td className="py-2.5 pr-4 text-xs">
+                      {m.cardiovascular_conditions
+                        ? <span className="px-1.5 py-0.5 bg-red-50 text-red-700 rounded">{m.cardiovascular_conditions}</span>
+                        : '—'}
+                    </td>
+                    <td className="py-2.5 pr-4 text-center text-xs">{m.doctor_referral ? '✅' : '—'}</td>
+                    <td className="py-2.5 pr-4 text-center text-xs">{m.previous_yoga ? '✅' : '—'}</td>
+                    <td className="py-2.5 pr-4 text-gray-500 text-xs max-w-[160px]">{m.ailments ?? '—'}</td>
+                    <td className="py-2.5 text-xs">
+                      {m.naval_assessment_result
+                        ? <span className={`px-1.5 py-0.5 rounded font-medium ${m.naval_assessment_result === 'displaced' ? 'bg-amber-50 text-amber-700' : 'bg-green-50 text-green-700'}`}>
+                            {m.naval_assessment_result}
+                          </span>
+                        : <span className="text-gray-300 italic">Pending assessment</span>}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
+          <p className="text-xs text-gray-400">
+            Naval assessment result and instructor notes are set by admin after the initial in-person assessment.
+            Use the Supabase dashboard or a future admin detail page to update these fields.
+          </p>
         </div>
       )}
     </div>
