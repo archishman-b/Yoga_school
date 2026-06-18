@@ -24,7 +24,7 @@ export default async function AdminOverviewPage({ params: { locale } }: Props) {
     supabase.from('enquiries').select('*', { count: 'exact', head: true }).eq('status', 'new'),
     supabase.from('fee_records').select('*', { count: 'exact', head: true }).in('status', ['pending', 'overdue']),
     supabase.from('testimonials').select('*', { count: 'exact', head: true }).eq('status', 'pending'),
-    supabase.from('batches').select('id, timing, mode, display_fill_pct, status').eq('status', 'active'),
+    supabase.from('batches').select('id, timing, mode, display_fill_pct, status').eq('status', 'active').order('timing', { ascending: true }),
   ]);
 
   const stats = [

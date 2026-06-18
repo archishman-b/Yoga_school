@@ -20,7 +20,7 @@ const links = [
 export default function AdminNav({ locale }: Props) {
   const path = usePathname();
   return (
-    <nav className="bg-white border-b border-gray-200 sticky top-0 z-30">
+    <nav className="bg-cream border-b border-teal-600/15 sticky top-[72px] z-30">
       <div className="max-w-7xl mx-auto px-4 flex items-center gap-1 overflow-x-auto py-2">
         <span className="text-sm font-semibold text-gray-400 mr-3 shrink-0">Admin</span>
         {links.map(({ href, label, icon: Icon }) => {
