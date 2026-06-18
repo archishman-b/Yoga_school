@@ -67,26 +67,40 @@ export default function HeroSection() {
           Hindmotor · Hooghly · West Bengal
         </span>
 
-        {/* H1 — two lines */}
+        {/* H1 — two lines, locale-aware fonts */}
         <h1
           className="m-0 font-normal leading-[1.02] tracking-[-0.5px]"
           style={{ fontSize: 'clamp(46px, 8.5vw, 108px)' }}
         >
-          {/* Line 1: "Nibedita Yoga" — Nibedita in Yatra One (Indic display font) */}
+          {/* Line 1: school name — Yatra One for EN, native script font for HI/BN */}
           <span
             className="block text-ink animate-nyc-fadein"
             style={{ animationDelay: '0.4s' }}
           >
-            <span className="font-yatra">Nibedita</span>
-            {' '}
-            <span className="font-rozha">Yoga</span>
+            {locale === 'hi' ? (
+              <span className="font-devanagari">{t('titleLine1')}</span>
+            ) : locale === 'bn' ? (
+              <span className="font-bengali">{t('titleLine1')}</span>
+            ) : (
+              <>
+                <span className="font-yatra">Nibedita</span>
+                {' '}
+                <span className="font-rozha">Yoga</span>
+              </>
+            )}
           </span>
-          {/* Line 2: "Training Centre" — gradient saffron */}
+          {/* Line 2: subtitle — gradient saffron */}
           <span
             className="block font-rozha text-gradient-saffron animate-nyc-fadein"
             style={{ animationDelay: '0.8s' }}
           >
-            Training Centre
+            {locale === 'hi' ? (
+              <span className="font-devanagari">{t('titleLine2')}</span>
+            ) : locale === 'bn' ? (
+              <span className="font-bengali">{t('titleLine2')}</span>
+            ) : (
+              t('titleLine2')
+            )}
           </span>
         </h1>
 
