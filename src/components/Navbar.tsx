@@ -44,6 +44,7 @@ export default function Navbar() {
     { href: `/${locale}`, label: t('home') },
     { href: `/${locale}/yoga`, label: t('yoga') },
     { href: `/${locale}/courses`, label: t('courses') },
+    { href: `/${locale}/library`, label: t('library') },
     { href: `/${locale}/events`, label: t('events') },
     { href: `/${locale}/members`, label: t('members') },
   ];

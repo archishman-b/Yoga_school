@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Users, CalendarDays, IndianRupee, MessageSquare, Megaphone, Quote, LayoutDashboard } from 'lucide-react';
+import { Users, CalendarDays, IndianRupee, MessageSquare, Megaphone, Quote, LayoutDashboard, BookOpen } from 'lucide-react';
 
 type Props = { locale: string };
 
@@ -14,6 +14,7 @@ const links = [
   { href: '/admin/enquiries',    label: 'Enquiries',     icon: MessageSquare },
   { href: '/admin/events',       label: 'Events',        icon: Megaphone },
   { href: '/admin/testimonials', label: 'Testimonials',  icon: Quote },
+  { href: '/admin/programmes',   label: 'Programmes',    icon: BookOpen },
 ];
 
 export default function AdminNav({ locale }: Props) {

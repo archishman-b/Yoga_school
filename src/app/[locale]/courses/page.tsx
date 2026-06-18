@@ -1,8 +1,8 @@
 import { useLocale } from 'next-intl';
 import Link from 'next/link';
-import { asanas, allHealthTargets, healthTargetLabels, type HealthTarget } from '@/lib/data/asanas';
-import AsanaCard from '@/components/courses/AsanaCard';
-import HealthFilter from '@/components/courses/HealthFilter';
+import { healthTargetLabels, type HealthTarget } from '@/lib/data/asanas';
+import { practiceTypeCounts } from '@/lib/data/practices';
+import ProgrammeCardsClient from '@/components/library/ProgrammeCardsClient';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -11,7 +11,7 @@ export const metadata: Metadata = {
     'Eight therapeutic yoga programmes including Naval Correction, Weight Management, Anti-Ageing, Digestive Health, and more. Plus a complete asana library with 50 postures.',
 };
 
-type Props = { searchParams: { target?: string; section?: string } };
+type Props = { searchParams: Record<string, string> };
 
 // ── 8 specialisation programmes ──────────────────────────────────────────────
 const PROGRAMMES = [
@@ -148,12 +148,8 @@ const PILLARS = [
   },
 ];
 
-export default function CoursesPage({ searchParams }: Props) {
+export default function CoursesPage({ searchParams: _searchParams }: Props) {
   const locale = useLocale();
-  const activeTarget = searchParams.target as HealthTarget | undefined;
-  const filtered = activeTarget
-    ? asanas.filter((a) => a.health_targets.includes(activeTarget))
-    : asanas;
 
   return (
     <div className="min-h-screen bg-white">
@@ -179,9 +175,9 @@ export default function CoursesPage({ searchParams }: Props) {
             <a href="#curriculum" className="px-4 py-2 bg-white/20 hover:bg-white/30 rounded-full transition-colors">
               Curriculum ↓
             </a>
-            <a href="#asanas" className="px-4 py-2 bg-white/20 hover:bg-white/30 rounded-full transition-colors">
-              Asana Library ↓
-            </a>
+            <Link href={`/${locale}/library`} className="px-4 py-2 bg-white/30 hover:bg-white/40 rounded-full transition-colors font-semibold">
+              Practice Library →
+            </Link>
           </div>
         </div>
       </div>
@@ -202,38 +198,7 @@ export default function CoursesPage({ searchParams }: Props) {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-            {PROGRAMMES.map((p) => (
-              <div
-                key={p.id}
-                className={`relative border-2 rounded-2xl p-5 flex flex-col gap-3 hover:shadow-md transition-shadow ${p.colour}`}
-              >
-                {('highlight' in p) && (p as any).highlight && (
-                  <span className="absolute -top-2.5 left-4 text-xs font-bold bg-amber-500 text-white px-2 py-0.5 rounded-full">
-                    Signature
-                  </span>
-                )}
-                <div className="text-3xl">{p.emoji}</div>
-                <div className="flex-1">
-                  <h3 className="font-bold text-gray-900 leading-snug mb-1.5">{p.name}</h3>
-                  <p className="text-sm text-gray-600 leading-relaxed">{p.subtitle}</p>
-                </div>
-                <div className="flex flex-wrap gap-1.5">
-                  {p.tagLabels.map((tag) => (
-                    <span key={tag} className={`text-xs font-medium px-2 py-0.5 rounded-full ${p.badge}`}>
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-                <a
-                  href={`/${locale}#contact?programme=${encodeURIComponent(p.enquiry)}`}
-                  className="mt-1 text-center text-xs font-semibold py-2 px-3 bg-white border border-gray-200 hover:border-teal-400 hover:text-teal-700 rounded-xl transition-colors"
-                >
-                  Enquire / Learn More
-                </a>
-              </div>
-            ))}
-          </div>
+          <ProgrammeCardsClient programmes={[...PROGRAMMES]} locale={locale} />
 
           <div className="mt-6 text-sm text-gray-500 bg-gray-50 rounded-xl p-4 flex gap-3">
             <span className="text-lg">ℹ️</span>
@@ -399,48 +364,74 @@ export default function CoursesPage({ searchParams }: Props) {
           </div>
         </section>
 
-        {/* ── Asana Library ── */}
-        <section id="asanas" className="py-12 border-t border-gray-100">
-          <div className="mb-6">
-            <p className="text-saffron-600 font-semibold text-sm uppercase tracking-widest mb-2">
-              Pillar 3
-            </p>
-            <h2 className="text-2xl font-bold text-gray-900">Asana Library</h2>
-            <p className="text-gray-500 mt-1 text-sm">
-              Browse and filter by health goal. All 50 postures from the school's curriculum will be
-              catalogued here — priority 20 below.
-            </p>
-          </div>
+        {/* ── Practice Library CTA ── */}
+        <section id="library" className="py-12 border-t border-gray-100">
+          <div className="rounded-3xl overflow-hidden border-2 border-teal-100 bg-gradient-to-br from-teal-50 via-white to-saffron-50">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-0">
+              {/* Left: text + stats */}
+              <div className="p-8 lg:p-12 flex flex-col justify-center">
+                <p className="text-teal-600 font-semibold text-sm uppercase tracking-widest mb-3">
+                  Complete Reference Guide
+                </p>
+                <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-4 leading-snug">
+                  Yogic Practice Library
+                </h2>
+                <p className="text-gray-600 leading-relaxed mb-6">
+                  Every pranayama, preparatory exercise, asana, and kriya taught at Nibedita Yoga Training Centre —
+                  with step-by-step instructions, benefits, and health-goal filters. Use it as a reference guide
+                  between classes, or explore before you join.
+                </p>
 
-          {/* Health-target filter */}
-          <div className="sticky top-16 z-30 bg-white border-b border-gray-100 shadow-sm -mx-4 px-4 py-3 mb-8 overflow-x-auto">
-            <HealthFilter
-              targets={allHealthTargets}
-              labels={healthTargetLabels}
-              activeTarget={activeTarget}
-              allLabel="All Goals"
-              locale={locale}
-            />
-          </div>
+                {/* Stats row */}
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-8">
+                  {[
+                    { count: practiceTypeCounts.pranayama, label: 'Pranayamas', colour: 'bg-sky-50 border-sky-100 text-sky-800' },
+                    { count: practiceTypeCounts.exercise,  label: 'Exercises',  colour: 'bg-teal-50 border-teal-100 text-teal-800' },
+                    { count: practiceTypeCounts.asana,     label: 'Asanas',     colour: 'bg-saffron-50 border-saffron-100 text-saffron-800' },
+                    { count: practiceTypeCounts.kriya,     label: 'Kriyas',     colour: 'bg-purple-50 border-purple-100 text-purple-800' },
+                  ].map(({ count, label, colour }) => (
+                    <div key={label} className={`text-center border rounded-xl py-3 px-2 ${colour}`}>
+                      <p className="text-2xl font-bold leading-none">{count}</p>
+                      <p className="text-xs font-semibold mt-1 opacity-80">{label}</p>
+                    </div>
+                  ))}
+                </div>
 
-          <p className="text-sm text-gray-500 mb-6">
-            Showing <span className="font-semibold text-gray-900">{filtered.length}</span> practices
-            {activeTarget && (
-              <span> for <span className="text-saffron-600 font-medium">{healthTargetLabels[activeTarget]}</span></span>
-            )}
-          </p>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-            {filtered.map((asana) => (
-              <AsanaCard key={asana.slug} asana={asana} locale={locale} />
-            ))}
-          </div>
+                <div className="flex flex-wrap gap-3">
+                  <Link
+                    href={`/${locale}/library`}
+                    className="px-6 py-3 bg-teal-600 hover:bg-teal-700 text-white font-semibold rounded-full transition-colors text-sm"
+                  >
+                    Browse Practice Library →
+                  </Link>
+                  <a
+                    href={`/${locale}#contact`}
+                    className="px-6 py-3 bg-white border-2 border-gray-200 hover:border-teal-400 text-gray-700 hover:text-teal-700 font-semibold rounded-full transition-colors text-sm"
+                  >
+                    Enquire to Join
+                  </a>
+                </div>
+              </div>
 
-          {filtered.length === 0 && (
-            <div className="text-center py-16 text-gray-400">
-              <p className="text-4xl mb-3">🧘</p>
-              <p>No asanas match this filter. <Link href={`/${locale}/courses`} className="text-teal-600 underline">Clear filter</Link></p>
+              {/* Right: feature bullets */}
+              <div className="bg-white/60 p-8 lg:p-12 border-t lg:border-t-0 lg:border-l border-teal-100 flex flex-col justify-center gap-4">
+                {[
+                  { icon: '🔍', title: 'Filter by health goal', desc: 'Find practices for your specific condition — weight, digestion, stress, flexibility, and more.' },
+                  { icon: '📖', title: 'Step-by-step guides', desc: 'Full instructions, contraindications, and duration for every practice.' },
+                  { icon: '🗂️', title: 'Organised by type', desc: 'Pranayamas, preparatory exercises, asanas, and kriyas — all in one place.' },
+                  { icon: '🔗', title: 'Linked to your programme', desc: 'Click "Learn More" on any programme card above to see which practices it covers.' },
+                ].map(({ icon, title, desc }) => (
+                  <div key={title} className="flex gap-4">
+                    <span className="text-2xl shrink-0 mt-0.5">{icon}</span>
+                    <div>
+                      <p className="font-semibold text-gray-900 text-sm mb-0.5">{title}</p>
+                      <p className="text-sm text-gray-500 leading-relaxed">{desc}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
-          )}
+          </div>
         </section>
 
       </div>
