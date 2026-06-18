@@ -17,7 +17,7 @@ export default async function SignupPage({ params: { locale } }: Props) {
         <div className="text-center mb-8">
           <span className="text-5xl">🪷</span>
           <h1 className="text-2xl font-bold text-white mt-4">Join Nibedita Yoga</h1>
-          <p className="text-gray-400 mt-2 text-sm">
+          <p className="text-ink/40 mt-2 text-sm">
             Create your member account to enroll in batches and track your journey.
           </p>
         </div>

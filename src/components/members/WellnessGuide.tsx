@@ -75,15 +75,15 @@ export default function WellnessGuide() {
 
       {/* ── Section intro ── */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900">Wellness Guidelines</h1>
-        <p className="text-gray-500 text-sm mt-1">
+        <h1 className="text-2xl font-bold text-ink">Wellness Guidelines</h1>
+        <p className="text-ink/55 text-sm mt-1">
           Official guidelines from the school's prospectus — your complete guide to supporting
           your practice with the right habits.
         </p>
       </div>
 
       {/* ── Siva Samhita quote ── */}
-      <div className="relative bg-gradient-to-br from-teal-900 to-teal-800 rounded-2xl p-8 text-white text-center overflow-hidden">
+      <div className="relative bg-gradient-to-br from-teal-900 to-teal-800 rounded-card p-8 text-white text-center overflow-hidden">
         <div className="absolute top-4 left-6 text-teal-600 text-8xl font-serif leading-none opacity-30 select-none">"</div>
         <div className="relative z-10">
           <p className="text-xl sm:text-2xl font-light italic leading-relaxed mb-4">
@@ -95,13 +95,13 @@ export default function WellnessGuide() {
       </div>
 
       {/* ── Water Drinking Protocol ── */}
-      <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
-        <div className="px-6 py-4 border-b border-gray-100 bg-blue-50">
-          <h2 className="font-semibold text-gray-900 flex items-center gap-2">
+      <div className="bg-cream rounded-card border border-teal-600/10 shadow-card overflow-hidden">
+        <div className="px-6 py-4 border-b border-teal-600/10 bg-blue-50">
+          <h2 className="font-semibold text-ink flex items-center gap-2">
             <span className="text-xl">💧</span>
             Daily Water Drinking Protocol
           </h2>
-          <p className="text-xs text-gray-500 mt-0.5">
+          <p className="text-xs text-ink/55 mt-0.5">
             7 glasses per day at specific intervals — a cornerstone of the school's wellness approach
           </p>
         </div>
@@ -113,14 +113,14 @@ export default function WellnessGuide() {
                 {i < WATER_SCHEDULE.length - 1 && (
                   <div className="hidden sm:block absolute right-0 top-6 w-full border-t-2 border-dashed border-blue-200 z-0" />
                 )}
-                <div className="relative z-10 flex flex-col items-center text-center bg-white">
+                <div className="relative z-10 flex flex-col items-center text-center bg-cream">
                   <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center text-xl mb-2">
                     {w.icon}
                   </div>
                   <span className="text-xs font-bold text-blue-700 bg-blue-50 rounded-full px-2 py-0.5 mb-1.5">
                     {w.amount}
                   </span>
-                  <p className="text-xs text-gray-500 leading-tight">{w.time}</p>
+                  <p className="text-xs text-ink/55 leading-tight">{w.time}</p>
                 </div>
               </div>
             ))}
@@ -128,20 +128,20 @@ export default function WellnessGuide() {
           <p className="text-center text-sm text-blue-600 font-semibold mt-6">
             Total: 7 glasses per day — at specific, timed intervals
           </p>
-          <p className="text-center text-xs text-gray-400 mt-1">
+          <p className="text-center text-xs text-ink/40 mt-1">
             This is not just "drink more water" — the timing is precise and intentional.
           </p>
         </div>
       </div>
 
       {/* ── Food Timing ── */}
-      <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
-        <div className="px-6 py-4 border-b border-gray-100 bg-orange-50">
-          <h2 className="font-semibold text-gray-900 flex items-center gap-2">
+      <div className="bg-cream rounded-card border border-teal-600/10 shadow-card overflow-hidden">
+        <div className="px-6 py-4 border-b border-teal-600/10 bg-orange-50">
+          <h2 className="font-semibold text-ink flex items-center gap-2">
             <span className="text-xl">🕐</span>
             Recommended Meal Timing
           </h2>
-          <p className="text-xs text-gray-500 mt-0.5">
+          <p className="text-xs text-ink/55 mt-0.5">
             Aligned with the school's yoga schedule for maximum benefit
           </p>
         </div>
@@ -149,13 +149,13 @@ export default function WellnessGuide() {
           {FOOD_TIMING.map(f => (
             <div key={f.meal} className="px-5 py-6 text-center">
               <div className="text-3xl mb-2">{f.icon}</div>
-              <p className="font-semibold text-gray-900 text-sm">{f.meal}</p>
+              <p className="font-semibold text-ink text-sm">{f.meal}</p>
               <p className="text-xs text-saffron-600 font-medium mt-1">{f.time}</p>
             </div>
           ))}
         </div>
-        <div className="px-6 py-3 bg-gray-50 border-t border-gray-100">
-          <p className="text-xs text-gray-500">
+        <div className="px-6 py-3 bg-cream-dark/50 border-t border-teal-600/10">
+          <p className="text-xs text-ink/55">
             <strong>Remember:</strong> Asanas must be practised on an empty stomach. Allow at least
             4 hours after a meal before practice.
           </p>
@@ -164,26 +164,26 @@ export default function WellnessGuide() {
 
       {/* ── Yogic Diet — 3 food types ── */}
       <div>
-        <h2 className="font-semibold text-gray-900 text-lg mb-1">Yogic Diet Philosophy</h2>
-        <p className="text-sm text-gray-500 mb-5">
+        <h2 className="font-semibold text-ink text-lg mb-1">Yogic Diet Philosophy</h2>
+        <p className="text-sm text-ink/55 mb-5">
           Yogic science classifies all food into three categories. What we eat nourishes the body —
           but the essence of food also forms the mind.
         </p>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
           {FOOD_TYPES.map(f => (
-            <div key={f.type} className={`border-2 rounded-2xl p-5 space-y-3 ${f.colour}`}>
+            <div key={f.type} className={`border-2 rounded-card p-5 space-y-3 ${f.colour}`}>
               <div className="flex items-center gap-3">
                 <span className="text-3xl">{f.icon}</span>
                 <div>
                   <span className={`text-xs font-bold px-2 py-0.5 rounded-full ${f.badge}`}>{f.ratio}</span>
-                  <h3 className="font-bold text-gray-900 mt-1">{f.type}</h3>
-                  <p className="text-xs text-gray-600">{f.subtitle}</p>
+                  <h3 className="font-bold text-ink mt-1">{f.type}</h3>
+                  <p className="text-xs text-ink/70">{f.subtitle}</p>
                 </div>
               </div>
-              <p className="text-sm text-gray-700 leading-relaxed">{f.desc}</p>
-              <div className="bg-white/60 rounded-xl px-3 py-2">
-                <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">Examples</p>
-                <p className="text-xs text-gray-600 leading-relaxed">{f.examples}</p>
+              <p className="text-sm text-ink/80 leading-relaxed">{f.desc}</p>
+              <div className="bg-cream/60 rounded-xl px-3 py-2">
+                <p className="text-xs font-semibold text-ink/55 uppercase tracking-wide mb-1">Examples</p>
+                <p className="text-xs text-ink/70 leading-relaxed">{f.examples}</p>
               </div>
             </div>
           ))}
@@ -195,13 +195,13 @@ export default function WellnessGuide() {
       </div>
 
       {/* ── Practice Rules ── */}
-      <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
-        <div className="px-6 py-4 border-b border-gray-100">
-          <h2 className="font-semibold text-gray-900 flex items-center gap-2">
+      <div className="bg-cream rounded-card border border-teal-600/10 shadow-card overflow-hidden">
+        <div className="px-6 py-4 border-b border-teal-600/10">
+          <h2 className="font-semibold text-ink flex items-center gap-2">
             <span className="text-xl">📋</span>
             Practice Guidelines
           </h2>
-          <p className="text-xs text-gray-500 mt-0.5">
+          <p className="text-xs text-ink/55 mt-0.5">
             Official guidelines from the school's prospectus — please read carefully
           </p>
         </div>
@@ -211,7 +211,7 @@ export default function WellnessGuide() {
               <span className="shrink-0 w-6 h-6 bg-teal-100 text-teal-700 text-xs font-bold rounded-full flex items-center justify-center mt-0.5">
                 {i + 1}
               </span>
-              <p className="text-sm text-gray-700 leading-relaxed">{rule}</p>
+              <p className="text-sm text-ink/80 leading-relaxed">{rule}</p>
             </li>
           ))}
         </ul>

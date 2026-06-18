@@ -40,18 +40,18 @@ export default async function ProfilePage({ params: { locale } }: Props) {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-gray-900">My Profile</h1>
-        <p className="text-gray-500 text-sm mt-1">Keep your details up to date.</p>
+        <h1 className="text-2xl font-bold text-ink">My Profile</h1>
+        <p className="text-ink/55 text-sm mt-1">Keep your details up to date.</p>
       </div>
 
       <ProfileForm profile={profile} locale={locale} />
 
       {/* Enrollments + Roll-off */}
       {enrollments && enrollments.length > 0 && (
-        <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
-          <div className="px-6 py-4 border-b border-gray-100">
-            <h2 className="font-semibold text-gray-900">My Batches</h2>
-            <p className="text-xs text-gray-400 mt-0.5">Roll off if you need a break — your profile and history stay safe.</p>
+        <div className="bg-cream rounded-card border border-teal-600/10 shadow-card overflow-hidden">
+          <div className="px-6 py-4 border-b border-teal-600/10">
+            <h2 className="font-semibold text-ink">My Batches</h2>
+            <p className="text-xs text-ink/40 mt-0.5">Roll off if you need a break — your profile and history stay safe.</p>
           </div>
           <div className="divide-y divide-gray-50">
             {enrollments.map((enr: any) => {
@@ -65,8 +65,8 @@ export default async function ProfilePage({ params: { locale } }: Props) {
                         {batch?.mode === 'online' ? <Wifi size={17}/> : <Building2 size={17}/>}
                       </div>
                       <div>
-                        <p className="font-semibold text-gray-900 text-sm">{batch?.timing}</p>
-                        <p className="text-gray-400 text-xs capitalize">{batch?.mode} · {batch?.days}</p>
+                        <p className="font-semibold text-ink text-sm">{batch?.timing}</p>
+                        <p className="text-ink/40 text-xs capitalize">{batch?.mode} · {batch?.days}</p>
                       </div>
                     </div>
                     <div className="flex items-center gap-2 flex-wrap justify-end">
@@ -85,9 +85,9 @@ export default async function ProfilePage({ params: { locale } }: Props) {
                   </div>
                   {pauseHistory.length > 0 && (
                     <div className="ml-12 space-y-1">
-                      <p className="text-xs font-medium text-gray-400 uppercase tracking-wide">Session History</p>
+                      <p className="text-xs font-medium text-ink/40 uppercase tracking-wide">Session History</p>
                       {pauseHistory.map((p: any) => (
-                        <div key={p.id} className="flex items-center gap-2 text-xs text-gray-500">
+                        <div key={p.id} className="flex items-center gap-2 text-xs text-ink/55">
                           <span className="w-1.5 h-1.5 rounded-full bg-amber-400 shrink-0" />
                           <span>
                             Rolled off {new Date(p.paused_at).toLocaleDateString('en-IN', { day:'numeric', month:'short', year:'numeric' })}
@@ -107,13 +107,13 @@ export default async function ProfilePage({ params: { locale } }: Props) {
 
       {/* Fee Records */}
       {fees && fees.length > 0 && (
-        <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
-          <div className="px-6 py-4 border-b border-gray-100">
-            <h2 className="font-semibold text-gray-900">Fee Records</h2>
+        <div className="bg-cream rounded-card border border-teal-600/10 shadow-card overflow-hidden">
+          <div className="px-6 py-4 border-b border-teal-600/10">
+            <h2 className="font-semibold text-ink">Fee Records</h2>
           </div>
           <table className="w-full text-sm">
             <thead>
-              <tr className="text-xs text-gray-400 uppercase tracking-wide bg-gray-50 border-b border-gray-100">
+              <tr className="text-xs text-ink/40 uppercase tracking-wide bg-cream-dark/50 border-b border-teal-600/10">
                 <th className="text-left px-6 py-2 font-medium">Month</th>
                 <th className="text-left px-4 py-2 font-medium">Amount</th>
                 <th className="text-left px-4 py-2 font-medium">Status</th>
@@ -122,11 +122,11 @@ export default async function ProfilePage({ params: { locale } }: Props) {
             </thead>
             <tbody className="divide-y divide-gray-50">
               {fees.map((fee: any) => (
-                <tr key={fee.id} className="hover:bg-gray-50/50">
-                  <td className="px-6 py-3 font-medium text-gray-800">{fee.month}</td>
-                  <td className="px-4 py-3 text-gray-600">₹{fee.amount?.toLocaleString('en-IN')}</td>
+                <tr key={fee.id} className="hover:bg-cream-dark/50/50">
+                  <td className="px-6 py-3 font-medium text-ink">{fee.month}</td>
+                  <td className="px-4 py-3 text-ink/70">₹{fee.amount?.toLocaleString('en-IN')}</td>
                   <td className="px-4 py-3"><FeeStatusBadge status={fee.status} /></td>
-                  <td className="px-4 py-3 text-gray-400 text-xs hidden sm:table-cell">
+                  <td className="px-4 py-3 text-ink/40 text-xs hidden sm:table-cell">
                     {fee.paid_date ? new Date(fee.paid_date).toLocaleDateString('en-IN', { day:'numeric', month:'short', year:'numeric' }) : '—'}
                   </td>
                 </tr>
@@ -137,12 +137,12 @@ export default async function ProfilePage({ params: { locale } }: Props) {
       )}
 
       {/* Testimonial */}
-      <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
-        <div className="px-6 py-4 border-b border-gray-100 flex items-center gap-2">
+      <div className="bg-cream rounded-card border border-teal-600/10 shadow-card overflow-hidden">
+        <div className="px-6 py-4 border-b border-teal-600/10 flex items-center gap-2">
           <MessageSquareQuote size={18} className="text-teal-600" />
           <div>
-            <h2 className="font-semibold text-gray-900">Share Your Experience</h2>
-            <p className="text-xs text-gray-400 mt-0.5">
+            <h2 className="font-semibold text-ink">Share Your Experience</h2>
+            <p className="text-xs text-ink/40 mt-0.5">
               {testimonial ? 'Edit your testimonial below.' : 'Your words help others find their yoga journey.'}
             </p>
           </div>

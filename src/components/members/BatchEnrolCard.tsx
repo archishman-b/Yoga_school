@@ -48,7 +48,7 @@ export default function BatchEnrolCard({ batch, isEnrolled, memberId, locale, co
       className={cn(
         'px-4 py-1.5 rounded-lg text-sm font-semibold transition-colors',
         disabled
-          ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+          ? 'bg-cream-dark text-ink/40 cursor-not-allowed'
           : 'bg-saffron-500 hover:bg-saffron-600 text-white',
         status === 'loading' && 'opacity-60 cursor-wait'
       )}
@@ -68,9 +68,9 @@ export default function BatchEnrolCard({ batch, isEnrolled, memberId, locale, co
   return (
     <div className={cn('card p-5 flex flex-col gap-3', isEnrolled && 'border-teal-200 bg-teal-50/30')}>
       <div className="flex items-start justify-between">
-        <h3 className="font-bold text-gray-900 text-sm leading-snug pr-2">{batch.name_en}</h3>
+        <h3 className="font-bold text-ink text-sm leading-snug pr-2">{batch.name_en}</h3>
       </div>
-      <div className="text-xs text-gray-500">{batch.timing} · {batch.days}</div>
+      <div className="text-xs text-ink/55">{batch.timing} · {batch.days}</div>
       {button}
       {status === 'error' && <p className="text-red-500 text-xs">Could not enrol. Try again.</p>}
     </div>

@@ -17,7 +17,7 @@ function AvailabilityPill({ pct }: { pct: number }) {
                 { label: 'Full',        bar: 'bg-red-500',   bg: 'bg-red-50 text-red-700' };
   return (
     <div className="flex items-center gap-2">
-      <div className="flex-1 h-1.5 rounded-full bg-gray-100 overflow-hidden">
+      <div className="flex-1 h-1.5 rounded-full bg-cream-dark overflow-hidden">
         <div className={`h-full rounded-full ${config.bar}`} style={{ width: `${pct}%` }} />
       </div>
       <span className={`text-xs font-semibold px-2 py-0.5 rounded-full whitespace-nowrap ${config.bg}`}>
@@ -60,28 +60,28 @@ export default async function BatchesPage({ params: { locale } }: Props) {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-2xl font-bold text-gray-900">Batches</h1>
-        <p className="text-gray-500 text-sm mt-1">
-          Monthly fee: <span className="font-semibold text-gray-700">₹200</span> · You can be enrolled in up to <span className="font-semibold text-gray-700">{maxEnrollments}</span> {maxEnrollments === 1 ? 'batch' : 'batches'} at a time.
+        <h1 className="text-2xl font-bold text-ink">Batches</h1>
+        <p className="text-ink/55 text-sm mt-1">
+          Monthly fee: <span className="font-semibold text-ink/80">₹200</span> · You can be enrolled in up to <span className="font-semibold text-ink/80">{maxEnrollments}</span> {maxEnrollments === 1 ? 'batch' : 'batches'} at a time.
         </p>
       </div>
 
       {/* Current enrollments */}
       {activeEnrollments.length > 0 && (
-        <div className="bg-teal-50 border border-teal-200 rounded-2xl p-5 space-y-3">
+        <div className="bg-teal-50 border border-teal-200 rounded-card p-5 space-y-3">
           <h2 className="font-semibold text-teal-900 text-sm">Your Current Enrollment{activeEnrollments.length > 1 ? 's' : ''}</h2>
           {activeEnrollments.map((enr: any) => {
             const batch = (batches ?? []).find((b: any) => b.id === enr.batch_id);
             if (!batch) return null;
             return (
-              <div key={enr.id} className="flex items-center justify-between gap-3 bg-white rounded-xl px-4 py-3 border border-teal-100">
+              <div key={enr.id} className="flex items-center justify-between gap-3 bg-cream rounded-xl px-4 py-3 border border-teal-100">
                 <div className="flex items-center gap-3">
                   <div className="w-8 h-8 rounded-lg bg-teal-100 text-teal-600 flex items-center justify-center shrink-0">
                     {batch.mode === 'online' ? <Wifi size={15}/> : <Building2 size={15}/>}
                   </div>
                   <div>
-                    <p className="font-semibold text-gray-900 text-sm">{batch.timing}</p>
-                    <p className="text-gray-400 text-xs capitalize">{batch.mode} · {batch.days}</p>
+                    <p className="font-semibold text-ink text-sm">{batch.timing}</p>
+                    <p className="text-ink/40 text-xs capitalize">{batch.mode} · {batch.days}</p>
                   </div>
                 </div>
                 <RollOffToggle
@@ -104,15 +104,15 @@ export default async function BatchesPage({ params: { locale } }: Props) {
       {/* Timetable */}
       {TIME_SLOTS.map(({ label, slots }) => (
         <div key={label}>
-          <h2 className="font-semibold text-gray-700 text-sm uppercase tracking-wide mb-3">{label}</h2>
+          <h2 className="font-semibold text-ink/80 text-sm uppercase tracking-wide mb-3">{label}</h2>
           <div className="space-y-3">
             {slots.map((slot) => {
               const pair = byTiming.get(slot);
               if (!pair) return null;
               return (
                 <div key={slot} className="card overflow-hidden">
-                  <div className="px-5 py-3 bg-gray-50 border-b border-gray-100">
-                    <span className="font-semibold text-gray-800">{slot}</span>
+                  <div className="px-5 py-3 bg-cream-dark/50 border-b border-teal-600/10">
+                    <span className="font-semibold text-ink">{slot}</span>
                   </div>
                   <div className="grid grid-cols-1 sm:grid-cols-2 divide-y sm:divide-y-0 sm:divide-x divide-gray-100">
                     {(['online','offline'] as const).map((mode) => {
@@ -127,7 +127,7 @@ export default async function BatchesPage({ params: { locale } }: Props) {
                       return (
                         <div key={mode} className={`p-5 space-y-3 ${isEnrolled ? 'bg-teal-50/40' : ''}`}>
                           <div className="flex items-center justify-between">
-                            <div className="flex items-center gap-2 text-sm font-semibold text-gray-700">
+                            <div className="flex items-center gap-2 text-sm font-semibold text-ink/80">
                               {mode === 'online'
                                 ? <><Wifi size={15} className="text-teal-600"/> Online</>
                                 : <><Building2 size={15} className="text-saffron-600"/> In-Class</>}
@@ -140,7 +140,7 @@ export default async function BatchesPage({ params: { locale } }: Props) {
                           <AvailabilityPill pct={batch.display_fill_pct ?? 40} />
 
                           <div className="flex items-center justify-between pt-1">
-                            <span className="text-sm text-gray-500">₹{batch.fee_monthly ?? 200}/mo</span>
+                            <span className="text-sm text-ink/55">₹{batch.fee_monthly ?? 200}/mo</span>
                             {isEnrolled ? (
                               <RollOffToggle
                                 enrollmentId={enrollment.id}

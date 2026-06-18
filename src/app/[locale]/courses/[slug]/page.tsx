@@ -39,7 +39,7 @@ export default function AsanaDetailPage({ params }: Props) {
   const steps = asana[`steps_${l}`]?.length > 1 ? asana[`steps_${l}`] : asana.steps_en;
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-cream">
       {/* Hero */}
       <div className="bg-gradient-to-br from-saffron-600 to-orange-700 text-white py-12 px-4">
         <div className="max-w-4xl mx-auto">
@@ -69,21 +69,21 @@ export default function AsanaDetailPage({ params }: Props) {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 py-12 grid grid-cols-1 lg:grid-cols-3 gap-10">
         {/* Steps */}
         <div className="lg:col-span-2">
-          <h2 className="text-xl font-bold text-gray-900 mb-5">How to Practise</h2>
+          <h2 className="text-xl font-bold text-ink mb-5">How to Practise</h2>
           <ol className="space-y-4">
             {steps.map((step, i) => (
               <li key={i} className="flex gap-4">
                 <span className="flex-shrink-0 w-8 h-8 bg-saffron-100 text-saffron-700 rounded-full flex items-center justify-center text-sm font-bold">
                   {i + 1}
                 </span>
-                <p className="text-gray-700 leading-relaxed pt-1">{step}</p>
+                <p className="text-ink/80 leading-relaxed pt-1">{step}</p>
               </li>
             ))}
           </ol>
 
           {/* Contraindications */}
           {asana.contraindications && (
-            <div className="mt-10 p-5 rounded-2xl bg-amber-50 border border-amber-200">
+            <div className="mt-10 p-5 rounded-card bg-amber-50 border border-amber-200">
               <div className="flex items-center gap-2 mb-2">
                 <AlertTriangle size={18} className="text-amber-600" />
                 <h3 className="font-semibold text-amber-800">Cautions & Contraindications</h3>
@@ -96,7 +96,7 @@ export default function AsanaDetailPage({ params }: Props) {
         {/* Sidebar */}
         <div className="space-y-6">
           {/* Benefits */}
-          <div className="bg-teal-50 rounded-2xl p-5 border border-teal-100">
+          <div className="bg-teal-50 rounded-card p-5 border border-teal-100">
             <h3 className="font-bold text-teal-800 mb-4 flex items-center gap-2">
               <CheckCircle2 size={18} className="text-teal-600" />
               Benefits
@@ -113,7 +113,7 @@ export default function AsanaDetailPage({ params }: Props) {
 
           {/* Health targets */}
           <div>
-            <h3 className="font-bold text-gray-900 mb-3">Good for</h3>
+            <h3 className="font-bold text-ink mb-3">Good for</h3>
             <div className="flex flex-wrap gap-2">
               {asana.health_targets.map((target) => (
                 <Link

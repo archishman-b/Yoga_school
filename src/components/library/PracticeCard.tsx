@@ -35,8 +35,8 @@ export default function PracticeCard({ practice, locale, compact = false }: Prop
     <Link
       href={`/${locale}/library/${practice.slug}`}
       className={cn(
-        'group flex flex-col bg-white border border-gray-100 rounded-2xl overflow-hidden',
-        'hover:shadow-md hover:border-saffron-200 transition-all',
+        'group flex flex-col bg-cream border border-teal-600/10 rounded-card overflow-hidden',
+        'hover:shadow-card-hover hover:border-saffron-200 transition-all',
       )}
     >
       {/* Image / placeholder */}
@@ -65,7 +65,7 @@ export default function PracticeCard({ practice, locale, compact = false }: Prop
 
         {/* Name */}
         <h3 className={cn(
-          'font-bold text-gray-900 group-hover:text-saffron-600 transition-colors leading-snug',
+          'font-bold text-ink group-hover:text-saffron-600 transition-colors leading-snug',
           compact ? 'text-sm mb-1' : 'text-base mb-1.5',
         )}>
           {practice.name_en}
@@ -73,12 +73,12 @@ export default function PracticeCard({ practice, locale, compact = false }: Prop
 
         {/* Native script name */}
         {practice.name_hi && (
-          <p className="text-gray-400 text-xs mb-2">{practice.name_hi}</p>
+          <p className="text-ink/40 text-xs mb-2">{practice.name_hi}</p>
         )}
 
         {/* Description */}
         {!compact && (
-          <p className="text-gray-500 text-sm leading-relaxed line-clamp-2 flex-1">
+          <p className="text-ink/55 text-sm leading-relaxed line-clamp-2 flex-1">
             {practice.description_en}
           </p>
         )}
@@ -95,13 +95,13 @@ export default function PracticeCard({ practice, locale, compact = false }: Prop
           {practice.health_targets.slice(0, compact ? 2 : 3).map((target) => (
             <span
               key={target}
-              className="px-1.5 py-0.5 rounded bg-gray-50 text-gray-400 text-xs border border-gray-100"
+              className="px-1.5 py-0.5 rounded bg-cream-dark/50 text-ink/40 text-xs border border-teal-600/10"
             >
               {target.replace(/_/g, ' ')}
             </span>
           ))}
           {practice.health_targets.length > (compact ? 2 : 3) && (
-            <span className="px-1.5 py-0.5 text-gray-400 text-xs">
+            <span className="px-1.5 py-0.5 text-ink/40 text-xs">
               +{practice.health_targets.length - (compact ? 2 : 3)}
             </span>
           )}

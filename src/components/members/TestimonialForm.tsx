@@ -57,7 +57,7 @@ export default function TestimonialForm({ memberId, existing }: Props) {
   return (
     <form onSubmit={submit} className="space-y-4">
       {existing && (
-        <div className="flex items-center gap-2 text-sm text-gray-600">
+        <div className="flex items-center gap-2 text-sm text-ink/70">
           <span>Your testimonial</span>
           {statusPill}
         </div>
@@ -76,11 +76,11 @@ export default function TestimonialForm({ memberId, existing }: Props) {
           >
             <Star
               size={22}
-              className={n <= (hover || rating) ? 'text-amber-400 fill-amber-400' : 'text-gray-300'}
+              className={n <= (hover || rating) ? 'text-amber-400 fill-amber-400' : 'text-ink/30'}
             />
           </button>
         ))}
-        {rating > 0 && <span className="text-xs text-gray-400 ml-1">{rating}/5</span>}
+        {rating > 0 && <span className="text-xs text-ink/40 ml-1">{rating}/5</span>}
       </div>
 
       <textarea
@@ -90,10 +90,10 @@ export default function TestimonialForm({ memberId, existing }: Props) {
         placeholder="Share your experience with Nibedita Yoga Training Centre…"
         maxLength={500}
         required
-        className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm text-gray-800 focus:outline-none focus:border-teal-400 resize-none"
+        className="w-full rounded-xl border border-teal-600/15 px-4 py-3 text-sm text-ink focus:outline-none focus:border-teal-400 resize-none"
       />
       <div className="flex items-center justify-between">
-        <span className="text-xs text-gray-400">{body.length}/500</span>
+        <span className="text-xs text-ink/40">{body.length}/500</span>
         {error && <span className="text-xs text-red-500">{error}</span>}
         <button
           type="submit"
@@ -104,7 +104,7 @@ export default function TestimonialForm({ memberId, existing }: Props) {
           {isPending ? 'Submitting…' : existing ? 'Update' : 'Submit'}
         </button>
       </div>
-      <p className="text-xs text-gray-400">Your testimonial will be reviewed before being published.</p>
+      <p className="text-xs text-ink/40">Your testimonial will be reviewed before being published.</p>
     </form>
   );
 }

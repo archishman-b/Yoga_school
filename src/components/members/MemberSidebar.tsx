@@ -29,7 +29,7 @@ export default function MemberSidebar({ locale }: Props) {
   };
 
   return (
-    <nav className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+    <nav className="bg-cream rounded-card border border-teal-600/10 shadow-card overflow-hidden">
       <div className="p-4 bg-gradient-to-br from-teal-700 to-teal-900 text-white">
         <div className="flex items-center gap-2">
           {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -50,7 +50,7 @@ export default function MemberSidebar({ locale }: Props) {
                 'flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-colors',
                 pathname === link.href
                   ? 'bg-teal-50 text-teal-700'
-                  : 'text-gray-600 hover:bg-gray-50',
+                  : 'text-ink/70 hover:bg-cream-dark/50',
               )}
             >
               {link.icon}
@@ -60,7 +60,7 @@ export default function MemberSidebar({ locale }: Props) {
         ))}
       </ul>
 
-      <div className="p-2 border-t border-gray-100 mt-2">
+      <div className="p-2 border-t border-teal-600/10 mt-2">
         <button
           onClick={handleLogout}
           className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-red-600 hover:bg-red-50 transition-colors"

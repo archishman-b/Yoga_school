@@ -30,16 +30,16 @@ function renderMarkdown(content: string) {
     .split('\n\n')
     .map((block) => {
       if (block.startsWith('## ')) {
-        return `<h2 class="text-2xl font-bold text-gray-900 mt-10 mb-4">${block.slice(3)}</h2>`;
+        return `<h2 class="text-2xl font-bold text-ink mt-10 mb-4">${block.slice(3)}</h2>`;
       }
       if (block.startsWith('### ')) {
-        return `<h3 class="text-xl font-semibold text-gray-800 mt-8 mb-3">${block.slice(4)}</h3>`;
+        return `<h3 class="text-xl font-semibold text-ink mt-8 mb-3">${block.slice(4)}</h3>`;
       }
       // Bold
       const html = block
         .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
         .replace(/\*(.+?)\*/g, '<em>$1</em>');
-      return `<p class="text-gray-700 leading-relaxed mb-5">${html}</p>`;
+      return `<p class="text-ink/80 leading-relaxed mb-5">${html}</p>`;
     })
     .join('\n');
 }
@@ -53,7 +53,7 @@ export default function BlogPostPage({ params }: Props) {
   const content = post[`content_${locale}`] || post.content_en;
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-cream">
       {/* Hero */}
       <div className="bg-gradient-to-br from-teal-900 to-gray-900 text-white py-16 px-4">
         <div className="max-w-3xl mx-auto">
@@ -85,7 +85,7 @@ export default function BlogPostPage({ params }: Props) {
         />
 
         {/* Back link */}
-        <div className="mt-14 pt-8 border-t border-gray-100">
+        <div className="mt-14 pt-8 border-t border-teal-600/10">
           <Link
             href={`/${locale}/yoga`}
             className="inline-flex items-center gap-2 text-teal-700 font-medium hover:text-teal-600 transition-colors"

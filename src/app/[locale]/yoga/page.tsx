@@ -24,7 +24,7 @@ export default function YogaPage({ searchParams }: Props) {
     : blogPosts;
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-cream">
       {/* Header */}
       <div className="bg-gradient-to-br from-teal-900 to-gray-900 text-white py-16 px-4">
         <div className="max-w-7xl mx-auto text-center">
@@ -32,12 +32,12 @@ export default function YogaPage({ searchParams }: Props) {
             Knowledge Base
           </p>
           <h1 className="text-4xl sm:text-5xl font-bold mb-4">{t('heading')}</h1>
-          <p className="text-gray-300 text-lg max-w-2xl mx-auto">{t('subheading')}</p>
+          <p className="text-ink/30 text-lg max-w-2xl mx-auto">{t('subheading')}</p>
         </div>
       </div>
 
       {/* Tag filter */}
-      <div className="sticky top-16 z-30 bg-white border-b border-gray-100 shadow-sm">
+      <div className="sticky top-16 z-30 bg-cream border-b border-teal-600/10 shadow-card">
         <div className="max-w-7xl mx-auto px-4 py-3">
           <TagFilter tags={allTags} activeTag={activeTag} allLabel={t('allTags')} locale={locale} />
         </div>

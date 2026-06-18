@@ -7,6 +7,7 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import WhatsAppButton from '@/components/WhatsAppButton';
 import LocaleWrapper from '@/components/LocaleWrapper';
+import PageAnimations from '@/components/PageAnimations';
 
 export const metadata: Metadata = {
   title: {
@@ -49,6 +50,7 @@ export default async function LocaleLayout({ children, params: { locale } }: Pro
         <main>{children}</main>
         <Footer />
         <WhatsAppButton />
+        <PageAnimations />
       </LocaleWrapper>
     </NextIntlClientProvider>
   );

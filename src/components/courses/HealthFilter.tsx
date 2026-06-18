@@ -30,7 +30,7 @@ export default function HealthFilter({ targets, labels, activeTarget, allLabel, 
           'px-4 py-1.5 rounded-full text-sm font-medium whitespace-nowrap transition-colors',
           !activeTarget
             ? 'bg-saffron-500 text-white'
-            : 'bg-gray-100 text-gray-600 hover:bg-saffron-50 hover:text-saffron-700',
+            : 'bg-cream-dark text-ink/70 hover:bg-saffron-50 hover:text-saffron-700',
         )}
       >
         {allLabel}
@@ -43,7 +43,7 @@ export default function HealthFilter({ targets, labels, activeTarget, allLabel, 
             'px-4 py-1.5 rounded-full text-sm font-medium whitespace-nowrap transition-colors',
             activeTarget === target
               ? 'bg-saffron-500 text-white'
-              : 'bg-gray-100 text-gray-600 hover:bg-saffron-50 hover:text-saffron-700',
+              : 'bg-cream-dark text-ink/70 hover:bg-saffron-50 hover:text-saffron-700',
           )}
         >
           {labels[target]}

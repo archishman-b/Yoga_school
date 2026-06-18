@@ -25,8 +25,8 @@ export default async function EventsPage({ params: { locale } }: Props) {
   return (
     <div className="py-16 px-4 max-w-4xl mx-auto space-y-10">
       <div>
-        <h1 className="text-3xl font-bold text-gray-900">Events & Updates</h1>
-        <p className="text-gray-500 mt-2">Workshops, announcements, and community moments.</p>
+        <h1 className="text-3xl font-bold text-ink">Events & Updates</h1>
+        <p className="text-ink/55 mt-2">Workshops, announcements, and community moments.</p>
       </div>
 
       {pinned.length > 0 && (
@@ -43,7 +43,7 @@ export default async function EventsPage({ params: { locale } }: Props) {
           <EventCard key={event.id} event={event} titleKey={titleKey} bodyKey={bodyKey} />
         ))}
         {events?.length === 0 && (
-          <div className="text-center py-20 text-gray-400">
+          <div className="text-center py-20 text-ink/40">
             <p className="text-4xl mb-4">🌸</p>
             <p>No events yet — check back soon.</p>
           </div>

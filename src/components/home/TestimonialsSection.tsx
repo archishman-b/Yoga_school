@@ -1,5 +1,5 @@
 import { createClient } from '@/lib/supabase/server';
-import { Quote, Star } from 'lucide-react';
+import { Star } from 'lucide-react';
 
 // Fallback testimonials shown when DB has no approved+ordered ones yet
 const FALLBACKS = [
@@ -8,6 +8,7 @@ const FALLBACKS = [
   { body: 'At 65, I thought I was too old to start. The teacher made me feel completely welcome. My sleep and energy have transformed.', full_name: 'Meena Devi', photo_url: null, rating: 5 },
   { body: 'The trilingual teaching is wonderful. I could follow in Bengali from day one, which made everything so much clearer.', full_name: 'Arnab Roy', photo_url: null, rating: 4 },
   { body: 'My blood sugar levels have consistently improved since I started. My doctor is impressed — I am too.', full_name: 'Sunita Agarwal', photo_url: null, rating: 5 },
+  { body: 'The atmosphere here is unlike any gym or fitness studio. It is calm, focused, and deeply supportive. I recommend it to everyone.', full_name: 'Suresh Das', photo_url: null, rating: 5 },
 ];
 
 function Stars({ n }: { n: number | null }) {
@@ -15,7 +16,7 @@ function Stars({ n }: { n: number | null }) {
   return (
     <div className="flex gap-0.5 mb-3">
       {[1,2,3,4,5].map(i => (
-        <Star key={i} size={14} className={i <= n ? 'text-amber-400 fill-amber-400' : 'text-gray-200'} />
+        <Star key={i} size={13} className={i <= n ? 'text-saffron-400 fill-saffron-400' : 'text-ink/10 fill-ink/10'} />
       ))}
     </div>
   );
@@ -42,32 +43,58 @@ export default async function TestimonialsSection() {
     : FALLBACKS;
 
   return (
-    <section className="py-20 bg-gradient-to-br from-gray-50 to-saffron-50/30">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-14">
-          <p className="text-saffron-600 font-semibold text-sm uppercase tracking-widest mb-3">
-            Testimonials
-          </p>
-          <h2 className="text-3xl sm:text-4xl font-bold text-gray-900">What Our Students Say</h2>
+    <section className="py-24 bg-cream overflow-hidden">
+      <div className="max-w-7xl mx-auto px-[clamp(18px,5vw,56px)]">
+
+        {/* ── Section header ────────────────────────────────────────────────── */}
+        <div className="text-center mb-14 reveal">
+          <span className="eyebrow">Testimonials</span>
+          <h2
+            className="font-rozha font-normal text-ink"
+            style={{ fontSize: 'clamp(28px, 4vw, 52px)' }}
+          >
+            What Our Students Say
+          </h2>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {/* ── Cards grid ───────────────────────────────────────────────────── */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
           {items.map((item, idx) => (
-            <div key={idx} className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow flex flex-col">
-              <Quote size={26} className="text-saffron-300 mb-3" />
+            <div
+              key={idx}
+              className="card card-hover flex flex-col p-7"
+            >
+              {/* Large decorative quote mark */}
+              <span
+                className="font-rozha text-saffron-400 leading-none mb-2 block"
+                style={{ fontSize: '52px', lineHeight: 1 }}
+                aria-hidden="true"
+              >
+                &ldquo;
+              </span>
+
               <Stars n={item.rating} />
-              <p className="text-gray-700 leading-relaxed flex-1 italic">"{item.body}"</p>
-              <div className="flex items-center gap-3 pt-4 mt-4 border-t border-gray-50">
+
+              <p className="text-ink/70 leading-relaxed flex-1 text-[15px]">
+                {item.body}
+              </p>
+
+              {/* Author */}
+              <div className="flex items-center gap-3 pt-5 mt-5 border-t border-teal-600/10">
                 {item.photo_url ? (
-                  <img src={item.photo_url} className="w-10 h-10 rounded-full object-cover" alt="" />
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img src={item.photo_url} className="w-10 h-10 rounded-full object-cover shrink-0" alt="" />
                 ) : (
-                  <div className="w-10 h-10 rounded-full bg-saffron-50 flex items-center justify-center text-xl shrink-0">
+                  <div
+                    className="w-10 h-10 rounded-full shrink-0 flex items-center justify-center text-lg"
+                    style={{ background: 'linear-gradient(135deg, #0D6B6E, #E8740C)' }}
+                  >
                     🙏
                   </div>
                 )}
                 <div>
-                  <p className="font-semibold text-gray-900 text-sm">{item.full_name ?? 'Member'}</p>
-                  <p className="text-gray-400 text-xs">Nibedita Yoga Member</p>
+                  <p className="font-semibold text-ink text-sm">{item.full_name ?? 'Member'}</p>
+                  <p className="text-teal-600 text-xs">Nibedita Yoga Member</p>
                 </div>
               </div>
             </div>

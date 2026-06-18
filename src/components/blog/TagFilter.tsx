@@ -26,7 +26,7 @@ export default function TagFilter({ tags, activeTag, allLabel, locale }: Props) 
           'px-4 py-1.5 rounded-full text-sm font-medium transition-colors',
           !activeTag
             ? 'bg-teal-600 text-white'
-            : 'bg-gray-100 text-gray-600 hover:bg-teal-50 hover:text-teal-700',
+            : 'bg-cream-dark text-ink/70 hover:bg-teal-50 hover:text-teal-700',
         )}
       >
         {allLabel}
@@ -39,7 +39,7 @@ export default function TagFilter({ tags, activeTag, allLabel, locale }: Props) 
             'px-4 py-1.5 rounded-full text-sm font-medium transition-colors',
             activeTag === tag
               ? 'bg-teal-600 text-white'
-              : 'bg-gray-100 text-gray-600 hover:bg-teal-50 hover:text-teal-700',
+              : 'bg-cream-dark text-ink/70 hover:bg-teal-50 hover:text-teal-700',
           )}
         >
           {tag}

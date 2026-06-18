@@ -4,13 +4,15 @@
 // suppressHydrationWarning is needed because [locale]/layout.tsx sets
 // lang and className on these elements after hydration.
 
-import { Inter, Noto_Sans_Devanagari, Noto_Sans_Bengali, Rozha_One } from 'next/font/google';
+import { DM_Sans, Noto_Serif_Bengali, Noto_Sans_Devanagari, Rozha_One } from 'next/font/google';
 import './globals.css';
 
-const inter = Inter({
+// Primary UI/body font — matches design prototype (replaces Inter)
+const dmSans = DM_Sans({
   subsets: ['latin'],
-  variable: '--font-inter',
+  variable: '--font-dm-sans',
   display: 'swap',
+  weight: ['400', '500', '600', '700'],
 });
 
 const notoDevanagari = Noto_Sans_Devanagari({
@@ -20,7 +22,8 @@ const notoDevanagari = Noto_Sans_Devanagari({
   weight: ['400', '500', '600', '700'],
 });
 
-const notoBengali = Noto_Sans_Bengali({
+// Bengali script — Serif variant matches design prototype
+const notoBengali = Noto_Serif_Bengali({
   subsets: ['bengali'],
   variable: '--font-noto-bengali',
   display: 'swap',
@@ -38,9 +41,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html
       suppressHydrationWarning
-      className={`${inter.variable} ${notoDevanagari.variable} ${notoBengali.variable} ${rozhaOne.variable}`}
+      className={`${dmSans.variable} ${notoDevanagari.variable} ${notoBengali.variable} ${rozhaOne.variable}`}
     >
-      <body suppressHydrationWarning className="bg-white text-gray-900 antialiased">
+      <body
+        suppressHydrationWarning
+        className="bg-cream text-ink antialiased"
+      >
         {children}
       </body>
     </html>

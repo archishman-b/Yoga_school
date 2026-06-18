@@ -40,7 +40,7 @@ export default function PracticeDetailPage({ params }: Props) {
   const locale = useLocale();
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-cream-dark/50">
 
       {/* ── Hero ── */}
       <div className={`bg-gradient-to-br ${typeGradient[practice.type]} text-white py-12 px-4`}>
@@ -50,7 +50,7 @@ export default function PracticeDetailPage({ params }: Props) {
           </Link>
           <div className="flex items-start gap-4 mb-4">
             <div className="flex flex-col gap-2">
-              <span className="px-3 py-1 bg-white/20 text-white rounded-full text-xs font-semibold w-fit">
+              <span className="px-3 py-1 bg-cream/20 text-white rounded-full text-xs font-semibold w-fit">
                 {practiceTypeLabels[practice.type]}
               </span>
               {practice.supervision_required && (
@@ -67,11 +67,11 @@ export default function PracticeDetailPage({ params }: Props) {
             </p>
           )}
           <div className="flex flex-wrap gap-2 mt-3">
-            <span className={`px-2.5 py-0.5 rounded-full text-xs font-semibold bg-white/20 text-white`}>
+            <span className={`px-2.5 py-0.5 rounded-full text-xs font-semibold bg-cream/20 text-white`}>
               {practice.difficulty}
             </span>
             {practice.duration && (
-              <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-white/20 text-white">
+              <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-cream/20 text-white">
                 ⏱ {practice.duration}
               </span>
             )}
@@ -82,9 +82,9 @@ export default function PracticeDetailPage({ params }: Props) {
       <div className="max-w-3xl mx-auto px-4 py-8 space-y-6">
 
         {/* Image placeholder */}
-        <div className={`h-52 rounded-2xl bg-gradient-to-br ${typeGradient[practice.type]} opacity-10 flex items-center justify-center text-6xl`}>
+        <div className={`h-52 rounded-card bg-gradient-to-br ${typeGradient[practice.type]} opacity-10 flex items-center justify-center text-6xl`}>
           {practice.image_path
-            ? <img src={practice.image_path} alt={practice.name_en} className="h-full w-full object-cover rounded-2xl" />
+            ? <img src={practice.image_path} alt={practice.name_en} className="h-full w-full object-cover rounded-card" />
             : <span className="opacity-60 text-6xl">
                 {practice.type === 'pranayama' ? '🌬️' : practice.type === 'exercise' ? '🤸' : practice.type === 'kriya' ? '✨' : '🧘'}
               </span>
@@ -93,14 +93,14 @@ export default function PracticeDetailPage({ params }: Props) {
         {/* TODO: Add actual practice image to /public/practices/{slug}.jpg */}
 
         {/* Description */}
-        <div className="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm">
-          <h2 className="font-semibold text-gray-900 mb-3">About this Practice</h2>
-          <p className="text-gray-600 leading-relaxed">{practice.description_en}</p>
+        <div className="bg-cream rounded-card border border-teal-600/10 p-6 shadow-card">
+          <h2 className="font-semibold text-ink mb-3">About this Practice</h2>
+          <p className="text-ink/70 leading-relaxed">{practice.description_en}</p>
         </div>
 
         {/* Supervision warning */}
         {practice.supervision_required && (
-          <div className="bg-amber-50 border border-amber-200 rounded-2xl p-5 flex gap-3">
+          <div className="bg-amber-50 border border-amber-200 rounded-card p-5 flex gap-3">
             <span className="text-amber-500 text-xl shrink-0">⚠️</span>
             <div>
               <p className="font-semibold text-amber-800 mb-1">Supervised Practice Only</p>
@@ -113,26 +113,26 @@ export default function PracticeDetailPage({ params }: Props) {
         )}
 
         {/* How to practise */}
-        <div className="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm">
-          <h2 className="font-semibold text-gray-900 mb-4">How to Practise</h2>
+        <div className="bg-cream rounded-card border border-teal-600/10 p-6 shadow-card">
+          <h2 className="font-semibold text-ink mb-4">How to Practise</h2>
           <ol className="space-y-3">
             {practice.steps_en.map((step, i) => (
               <li key={i} className="flex gap-3">
                 <span className="w-6 h-6 rounded-full bg-saffron-100 text-saffron-700 text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">
                   {i + 1}
                 </span>
-                <p className="text-gray-600 text-sm leading-relaxed">{step}</p>
+                <p className="text-ink/70 text-sm leading-relaxed">{step}</p>
               </li>
             ))}
           </ol>
         </div>
 
         {/* Benefits */}
-        <div className="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm">
-          <h2 className="font-semibold text-gray-900 mb-4">Benefits</h2>
+        <div className="bg-cream rounded-card border border-teal-600/10 p-6 shadow-card">
+          <h2 className="font-semibold text-ink mb-4">Benefits</h2>
           <ul className="space-y-2">
             {practice.benefits.map((b, i) => (
-              <li key={i} className="flex gap-2 text-sm text-gray-600">
+              <li key={i} className="flex gap-2 text-sm text-ink/70">
                 <span className="text-teal-500 mt-0.5 shrink-0">✓</span>
                 <span>{b}</span>
               </li>
@@ -141,8 +141,8 @@ export default function PracticeDetailPage({ params }: Props) {
         </div>
 
         {/* Health targets */}
-        <div className="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm">
-          <h2 className="font-semibold text-gray-900 mb-3">Health Goals Addressed</h2>
+        <div className="bg-cream rounded-card border border-teal-600/10 p-6 shadow-card">
+          <h2 className="font-semibold text-ink mb-3">Health Goals Addressed</h2>
           <div className="flex flex-wrap gap-2">
             {practice.health_targets.map((target) => (
               <Link
@@ -158,14 +158,14 @@ export default function PracticeDetailPage({ params }: Props) {
 
         {/* Contraindications */}
         {practice.contraindications && (
-          <div className="bg-red-50 border border-red-100 rounded-2xl p-5">
+          <div className="bg-red-50 border border-red-100 rounded-card p-5">
             <h2 className="font-semibold text-red-800 mb-2">⚠️ Cautions & Contraindications</h2>
             <p className="text-red-700 text-sm leading-relaxed">{practice.contraindications}</p>
           </div>
         )}
 
         {/* CTA */}
-        <div className="bg-gradient-to-br from-teal-700 to-teal-900 rounded-2xl p-6 text-white text-center">
+        <div className="bg-gradient-to-br from-teal-700 to-teal-900 rounded-card p-6 text-white text-center">
           <p className="font-semibold text-lg mb-1">Want to learn this under guidance?</p>
           <p className="text-teal-200 text-sm mb-4">
             All practices in this library are taught systematically at Nibedita Yoga Training Centre.
@@ -173,7 +173,7 @@ export default function PracticeDetailPage({ params }: Props) {
           <div className="flex flex-wrap justify-center gap-3">
             <Link
               href={`/${locale}/courses`}
-              className="px-5 py-2 bg-white text-teal-700 rounded-full text-sm font-semibold hover:bg-teal-50 transition-colors"
+              className="px-5 py-2 bg-cream text-teal-700 rounded-full text-sm font-semibold hover:bg-teal-50 transition-colors"
             >
               View Programmes
             </Link>

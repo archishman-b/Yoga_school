@@ -2,39 +2,312 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ─────────────────────────────────────────────────────────────────────────────
+   DESIGN TOKENS — CSS CUSTOM PROPERTIES
+   Matches the Nibedita Yoga design prototype exactly
+───────────────────────────────────────────────────────────────────────────── */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Colors */
+  --color-cream:        #FAF7F2;
+  --color-cream-dark:   #F1E9DC;
+  --color-cream-card:   #FFFDF9;
+  --color-teal:         #0D6B6E;
+  --color-teal-dark:    #0A5557;
+  --color-teal-deep:    #0A4F51;
+  --color-saffron:      #E8740C;
+  --color-saffron-lt:   #F4A04A;
+  --color-saffron-dk:   #C95E08;
+  --color-ink:          #1C1C1A;
+  --color-ink-deep:     #141413;
+  --color-ink-muted:    rgba(28,28,26,0.72);
+
+  /* Typography */
+  --font-body:          'DM Sans', system-ui, sans-serif;
+  --font-display:       'Rozha One', serif;
+  --font-bengali:       'Noto Serif Bengali', serif;
+  --font-hindi:         'Noto Sans Devanagari', sans-serif;
+
+  /* Radii */
+  --radius-card:        20px;
+  --radius-card-lg:     22px;
+  --radius-pill:        99px;
+  --radius-input:       14px;
+
+  /* Shadows */
+  --shadow-card:        0 14px 34px -26px rgba(28,28,26,0.5);
+  --shadow-card-hover:  0 22px 44px -18px rgba(13,107,110,0.55);
+  --shadow-saffron:     0 6px 16px -6px rgba(232,116,12,0.7);
+  --shadow-saffron-lg:  0 12px 28px -12px rgba(232,116,12,0.9);
+  --shadow-teal:        0 22px 50px -22px rgba(13,107,110,0.6);
+  --shadow-whatsapp:    0 12px 28px -8px rgba(37,211,102,0.7);
+
+  /* Legacy (keep for existing shadcn/ui components) */
+  --background: #FAF7F2;
+  --foreground: #1C1C1A;
+
+  --card: 0 0% 100%;
+  --card-foreground: 20 14.3% 4.1%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 20 14.3% 4.1%;
+  --primary: 24.6 95% 53.1%;
+  --primary-foreground: 60 9.1% 97.8%;
+  --secondary: 60 4.8% 95.9%;
+  --secondary-foreground: 24 9.8% 10%;
+  --muted: 60 4.8% 95.9%;
+  --muted-foreground: 25 5.3% 44.7%;
+  --accent: 60 4.8% 95.9%;
+  --accent-foreground: 24 9.8% 10%;
+  --destructive: 0 84.2% 60.2%;
+  --destructive-foreground: 60 9.1% 97.8%;
+  --border: 20 5.9% 90%;
+  --input: 20 5.9% 90%;
+  --ring: 24.6 95% 53.1%;
+  --radius: 0.5rem;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   BASE OVERRIDES
+───────────────────────────────────────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  color: var(--foreground);
-  background: var(--background);
+  color: var(--color-ink);
+  background: var(--color-cream);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-/* Reusable form input / label helpers */
+::selection {
+  background: var(--color-saffron);
+  color: #fff;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   REUSABLE COMPONENT CLASSES
+───────────────────────────────────────────────────────────────────────────── */
 @layer components {
   .input {
-    @apply w-full px-4 py-2.5 rounded-xl border border-gray-200 text-gray-900 text-sm focus:outline-none focus:border-teal-400 focus:ring-2 focus:ring-teal-100 transition-colors bg-white;
+    @apply w-full px-4 py-3 rounded-[14px] border border-gray-200 text-ink text-sm
+           focus:outline-none focus:border-teal-600 focus:ring-2 focus:ring-teal-100
+           transition-colors bg-white font-sans;
   }
   .label {
-    @apply block text-sm font-medium text-gray-700 mb-1.5;
+    @apply block text-sm font-semibold text-ink mb-1.5;
   }
   .btn-primary {
-    @apply inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-saffron-500 hover:bg-saffron-600 text-white font-semibold rounded-xl transition-colors text-sm;
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3
+           bg-saffron-500 hover:bg-saffron-600 text-white font-bold
+           rounded-pill shadow-saffron transition-colors text-sm;
   }
   .btn-secondary {
-    @apply inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-white border border-gray-200 hover:border-teal-400 text-gray-700 font-medium rounded-xl transition-colors text-sm;
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3
+           bg-white border-2 border-gray-200 hover:border-teal-600
+           text-ink hover:text-teal-600 font-semibold rounded-pill
+           transition-colors text-sm;
   }
   .card {
-    @apply bg-white rounded-2xl border border-gray-100 shadow-sm;
+    @apply bg-cream-card rounded-card border border-gray-100;
+    box-shadow: var(--shadow-card);
+  }
+
+  /* Eyebrow label — "Our Story", "Testimonials", etc. */
+  .eyebrow {
+    @apply inline-block text-xs font-semibold text-saffron-500
+           tracking-[3px] uppercase mb-3;
+  }
+
+  /* Rangoli divider — decorative teal/saffron line */
+  .rangoli-divider {
+    @apply flex items-center gap-2 my-5;
+  }
+  .rangoli-divider::before,
+  .rangoli-divider::after {
+    content: '';
+    @apply h-[1.5px] flex-1;
+  }
+  .rangoli-divider::before { background: var(--color-saffron); flex: 0 0 34px; }
+  .rangoli-divider::after  { background: var(--color-teal); flex: 1; }
+
+  /* Card hover lift — used on testimonials, about stat cards */
+  .card-hover {
+    @apply transition-transform duration-300 ease-out;
+    transition-property: transform, box-shadow;
+    transition-duration: 350ms;
+    transition-timing-function: cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+  .card-hover:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-card-hover);
+  }
+
+  /* Course card — same as card-hover but with lotus rotate */
+  .course-card {
+    @apply transition-all duration-300 ease-out;
+  }
+  .course-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(13,107,110,0.15);
+  }
+  .course-card:active {
+    transform: scale(0.97);
+  }
+  .course-card .lotus-icon {
+    @apply transition-transform duration-300 ease-out;
+  }
+  .course-card:hover .lotus-icon {
+    transform: rotate(15deg);
+  }
+
+  /* Horizontal scroll — thin teal scrollbar */
+  .nyc-scroll::-webkit-scrollbar {
+    height: 6px;
+  }
+  .nyc-scroll::-webkit-scrollbar-thumb {
+    background: rgba(13,107,110,0.3);
+    border-radius: 99px;
+  }
+
+  /* Section reveal — base state (JS will trigger .is-revealed) */
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    will-change: opacity, transform;
+  }
+  .reveal.is-revealed {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .reveal-image {
+    opacity: 0;
+    transition: opacity 0.8s ease-out;
+    will-change: opacity;
+  }
+  .reveal-image.is-revealed {
+    opacity: 1;
+  }
+
+  /* Dot-grid background pattern */
+  .dot-grid {
+    background-image: radial-gradient(rgba(13,107,110,0.10) 1.3px, transparent 1.3px);
+    background-size: 26px 26px;
+  }
+
+  /* Gradient text — saffron (used on hero line 2) */
+  .text-gradient-saffron {
+    background: linear-gradient(100deg, #E8740C, #C95E08);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
   }
 }
 
-/* Article prose styles for blog */
+/* ─────────────────────────────────────────────────────────────────────────────
+   KEYFRAME ANIMATIONS
+───────────────────────────────────────────────────────────────────────────── */
 @layer utilities {
-  .text-balance {
-    text-wrap: balance;
+  /* Saffron CTA pulse glow */
+  @keyframes nyc-pulse {
+    0%, 100% {
+      box-shadow: 0 8px 24px rgba(232,116,12,.35), 0 0 0 0 rgba(232,116,12,.45);
+    }
+    50% {
+      box-shadow: 0 10px 30px rgba(232,116,12,.45), 0 0 0 14px rgba(232,116,12,0);
+    }
+  }
+
+  /* Gentle vertical bounce */
+  @keyframes nyc-bounce {
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(-7px); }
+  }
+
+  /* Slow rotation — mandalas, decorative rings */
+  @keyframes nyc-spin {
+    to { transform: rotate(360deg); }
+  }
+
+  /* Slide up + fade in — batch timings card, announcements */
+  @keyframes nyc-rise {
+    from { opacity: 0; transform: translateY(22px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Simple fade in to full opacity */
+  @keyframes nyc-fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+
+  /* Fade in to 60% opacity — bengali subtitle in hero */
+  @keyframes nyc-fade60 {
+    from { opacity: 0; }
+    to   { opacity: 0.6; }
+  }
+
+  /* Breathing scale — WhatsApp float button */
+  @keyframes nyc-breathe {
+    0%, 100% { transform: scale(1); }
+    50%      { transform: scale(1.08); }
+  }
+
+  /* Stats count-up easing helper (purely CSS token — JS handles values) */
+  @keyframes nyc-count {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Animation utility classes */
+  .animate-nyc-pulse   { animation: nyc-pulse   3s   ease-in-out infinite; }
+  .animate-nyc-bounce  { animation: nyc-bounce  2s   ease-in-out infinite; }
+  .animate-nyc-spin    { animation: nyc-spin    220s linear     infinite; }
+  .animate-nyc-rise    { animation: nyc-rise    0.8s ease-out   both; }
+  .animate-nyc-fadein  { animation: nyc-fadein  0.6s ease-out   both; }
+  .animate-nyc-fade60  { animation: nyc-fade60  0.6s ease-out   both; }
+  .animate-nyc-breathe { animation: nyc-breathe 3s   ease-in-out infinite; }
+  .animate-nyc-count   { animation: nyc-count   0.5s ease-out   both; }
+
+  /* Reduced-motion overrides — accessibility */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation: none !important;
+      transition: none !important;
+    }
+    .reveal,
+    .reveal-image {
+      opacity: 1 !important;
+      transform: none !important;
+    }
+  }
+
+  /* Misc utilities */
+  .text-balance { text-wrap: balance; }
+
+  /* Backdrop blur for nav — Safari needs prefix */
+  .backdrop-blur-nav {
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
   }
 }
 
+/* ─────────────────────────────────────────────────────────────────────────────
+   ARTICLE / BLOG PROSE STYLES
+───────────────────────────────────────────────────────────────────────────── */
+.prose-yoga h2 { font-family: var(--font-display); font-weight: 400; color: var(--color-ink); }
+.prose-yoga h3 { font-weight: 600; color: var(--color-teal); }
+.prose-yoga a  { color: var(--color-saffron); text-decoration: underline; }
+.prose-yoga blockquote {
+  border-left: 3px solid var(--color-saffron);
+  padding-left: 1rem;
+  font-style: italic;
+  color: var(--color-ink-muted);
+}

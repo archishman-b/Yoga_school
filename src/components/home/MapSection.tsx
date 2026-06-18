@@ -5,30 +5,43 @@ const GOOGLE_MAPS_EMBED_URL =
 
 export default function MapSection() {
   return (
-    <section className="py-20 bg-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-10">
-          <p className="text-saffron-600 font-semibold text-sm uppercase tracking-widest mb-3">
-            Find Us
-          </p>
-          <h2 className="text-3xl font-bold text-gray-900">Come Visit the Studio</h2>
-          <p className="text-gray-500 mt-3">
+    <section className="py-24 bg-cream-dark/40">
+      <div className="max-w-7xl mx-auto px-[clamp(18px,5vw,56px)]">
+
+        {/* ── Section header ────────────────────────────────────────────────── */}
+        <div className="text-center mb-12 reveal">
+          <span className="eyebrow">Find Us</span>
+          <h2
+            className="font-rozha font-normal text-ink"
+            style={{ fontSize: 'clamp(26px, 3.5vw, 44px)' }}
+          >
+            Come Visit the Studio
+          </h2>
+          <p className="text-ink/60 mt-3 leading-relaxed">
             12/1, Debaipukur Road, P.O. Hindmotor, Dist. Hooghly, West Bengal — PIN 712 233
           </p>
-          <div className="flex items-center justify-center gap-6 mt-4 text-sm flex-wrap">
-            <a href="tel:03326943100" className="flex items-center gap-1.5 text-teal-600 hover:text-teal-700 font-medium">
-              📞 (033) 2694 3100
-            </a>
-            <a href="tel:+918017112877" className="flex items-center gap-1.5 text-teal-600 hover:text-teal-700 font-medium">
-              📱 +91 80171 12877
-            </a>
-            <a href="tel:+919123991667" className="flex items-center gap-1.5 text-teal-600 hover:text-teal-700 font-medium">
-              📱 +91 91239 91667
-            </a>
+
+          {/* Contact pills */}
+          <div className="flex flex-wrap items-center justify-center gap-3 mt-5">
+            {[
+              { href: 'tel:03326943100', label: '(033) 2694 3100' },
+              { href: 'tel:+918017112877', label: '+91 80171 12877' },
+              { href: 'tel:+919123991667', label: '+91 91239 91667' },
+            ].map(c => (
+              <a
+                key={c.href}
+                href={c.href}
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-pill bg-teal-600/10 text-teal-600 text-sm font-semibold hover:bg-teal-600/20 transition-colors no-underline"
+              >
+                <span className="w-1.5 h-1.5 rounded-full bg-teal-600 block shrink-0" />
+                {c.label}
+              </a>
+            ))}
           </div>
         </div>
 
-        <div className="rounded-2xl overflow-hidden shadow-lg border border-gray-200 h-80 lg:h-96">
+        {/* ── Map embed ────────────────────────────────────────────────────── */}
+        <div className="rounded-card2 overflow-hidden shadow-teal border border-teal-600/10 h-80 lg:h-96 reveal">
           <iframe
             src={GOOGLE_MAPS_EMBED_URL}
             width="100%"
@@ -37,7 +50,7 @@ export default function MapSection() {
             allowFullScreen
             loading="lazy"
             referrerPolicy="no-referrer-when-downgrade"
-            title="School Location"
+            title="Nibedita Yoga Training Centre Location"
           />
         </div>
       </div>

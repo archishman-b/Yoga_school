@@ -69,7 +69,7 @@ export default function RollOffToggle({ enrollmentId, memberId, currentStatus, b
               value={reason}
               onChange={e => setReason(e.target.value)}
               placeholder="e.g. Summer break, travel…"
-              className="w-full px-3 py-2 rounded-lg border border-amber-200 text-sm bg-white focus:outline-none focus:border-amber-400"
+              className="w-full px-3 py-2 rounded-lg border border-amber-200 text-sm bg-cream focus:outline-none focus:border-amber-400"
             />
           </div>
         )}
@@ -79,7 +79,7 @@ export default function RollOffToggle({ enrollmentId, memberId, currentStatus, b
             {loading ? 'Saving…' : 'Confirm'}
           </button>
           <button onClick={() => setShowConfirm(false)}
-            className="px-4 py-1.5 bg-white border border-gray-200 text-gray-600 text-sm rounded-lg hover:bg-gray-50 transition-colors">
+            className="px-4 py-1.5 bg-cream border border-teal-600/15 text-ink/70 text-sm rounded-lg hover:bg-cream-dark/50 transition-colors">
             Cancel
           </button>
         </div>

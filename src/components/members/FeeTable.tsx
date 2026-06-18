@@ -32,7 +32,7 @@ function formatMonth(m: string) {
 export default function FeeTable({ fees }: { fees: FeeRecord[] }) {
   if (fees.length === 0) {
     return (
-      <div className="py-12 text-center text-gray-400 text-sm">
+      <div className="py-12 text-center text-ink/40 text-sm">
         No fee records yet. Your teacher will add them.
       </div>
     );
@@ -42,7 +42,7 @@ export default function FeeTable({ fees }: { fees: FeeRecord[] }) {
     <div className="overflow-x-auto">
       <table className="w-full text-sm">
         <thead>
-          <tr className="bg-gray-50 border-b border-gray-100 text-xs text-gray-500 uppercase tracking-wide">
+          <tr className="bg-cream-dark/50 border-b border-teal-600/10 text-xs text-ink/55 uppercase tracking-wide">
             <th className="text-left px-5 py-3 font-medium">Month</th>
             <th className="text-right px-5 py-3 font-medium">Amount</th>
             <th className="text-left px-5 py-3 font-medium hidden sm:table-cell">Due Date</th>
@@ -53,13 +53,13 @@ export default function FeeTable({ fees }: { fees: FeeRecord[] }) {
         </thead>
         <tbody className="divide-y divide-gray-50">
           {fees.map((fee) => (
-            <tr key={fee.id} className="hover:bg-gray-50/50 transition-colors">
-              <td className="px-5 py-3.5 font-medium text-gray-900">{formatMonth(fee.month)}</td>
-              <td className="px-5 py-3.5 text-right text-gray-900">₹{fee.amount.toLocaleString('en-IN')}</td>
-              <td className="px-5 py-3.5 text-gray-500 hidden sm:table-cell">
+            <tr key={fee.id} className="hover:bg-cream-dark/50/50 transition-colors">
+              <td className="px-5 py-3.5 font-medium text-ink">{formatMonth(fee.month)}</td>
+              <td className="px-5 py-3.5 text-right text-ink">₹{fee.amount.toLocaleString('en-IN')}</td>
+              <td className="px-5 py-3.5 text-ink/55 hidden sm:table-cell">
                 {new Date(fee.due_date).toLocaleDateString('en-IN', { day: '2-digit', month: 'short' })}
               </td>
-              <td className="px-5 py-3.5 text-gray-500 hidden sm:table-cell">
+              <td className="px-5 py-3.5 text-ink/55 hidden sm:table-cell">
                 {fee.paid_date
                   ? new Date(fee.paid_date).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: '2-digit' })
                   : '—'}
@@ -80,7 +80,7 @@ export default function FeeTable({ fees }: { fees: FeeRecord[] }) {
                     View
                   </a>
                 ) : (
-                  <span className="text-gray-300 text-xs">—</span>
+                  <span className="text-ink/30 text-xs">—</span>
                 )}
               </td>
             </tr>

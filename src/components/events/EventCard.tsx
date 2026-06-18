@@ -51,7 +51,7 @@ function DriveEmbed({ url }: { url: string }) {
   const match = url.match(/\/d\/([^/]+)/);
   if (match) embedUrl = `https://drive.google.com/file/d/${match[1]}/preview`;
   return (
-    <div className="aspect-video w-full rounded-xl overflow-hidden bg-gray-100">
+    <div className="aspect-video w-full rounded-xl overflow-hidden bg-cream-dark">
       <iframe src={embedUrl} className="w-full h-full" allow="autoplay" title="Google Drive media" />
     </div>
   );
@@ -75,7 +75,7 @@ export default function EventCard({ event, titleKey, bodyKey }: Props) {
     : new Date(event.created_at).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' });
 
   return (
-    <article className={`bg-white rounded-2xl border shadow-sm overflow-hidden ${event.pinned ? 'border-saffron-200' : 'border-gray-100'}`}>
+    <article className={`bg-cream rounded-card border shadow-card overflow-hidden ${event.pinned ? 'border-saffron-200' : 'border-teal-600/10'}`}>
       {/* Media */}
       {event.media_url && event.media_type === 'youtube' && (
         <div className="p-4 pb-0"><YoutubeEmbed url={event.media_url} /></div>
@@ -99,14 +99,14 @@ export default function EventCard({ event, titleKey, bodyKey }: Props) {
           </div>
         )}
 
-        <h2 className="text-lg font-bold text-gray-900">{title}</h2>
+        <h2 className="text-lg font-bold text-ink">{title}</h2>
 
         {body && (
-          <p className="text-gray-600 text-sm leading-relaxed whitespace-pre-line">{body}</p>
+          <p className="text-ink/70 text-sm leading-relaxed whitespace-pre-line">{body}</p>
         )}
 
         <div className="flex items-center justify-between pt-1">
-          <div className="flex items-center gap-1.5 text-xs text-gray-400">
+          <div className="flex items-center gap-1.5 text-xs text-ink/40">
             <Calendar size={13} />
             <span>{dateStr}</span>
           </div>

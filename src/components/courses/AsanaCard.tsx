@@ -24,7 +24,7 @@ export default function AsanaCard({ asana, locale }: Props) {
   return (
     <Link
       href={`/${locale}/courses/${asana.slug}`}
-      className="group flex flex-col bg-white border border-gray-100 rounded-2xl overflow-hidden hover:shadow-md hover:border-saffron-200 transition-all"
+      className="group flex flex-col bg-cream border border-teal-600/10 rounded-card overflow-hidden hover:shadow-card-hover hover:border-saffron-200 transition-all"
     >
       {/* Image placeholder */}
       <div className="h-40 bg-gradient-to-br from-saffron-50 to-orange-50 flex items-center justify-center text-5xl">
@@ -41,19 +41,19 @@ export default function AsanaCard({ asana, locale }: Props) {
           >
             {asana.difficulty}
           </span>
-          <span className="text-gray-400 text-xs">{nameNative}</span>
+          <span className="text-ink/40 text-xs">{nameNative}</span>
         </div>
 
-        <h3 className="font-bold text-gray-900 mb-2 group-hover:text-saffron-600 transition-colors">
+        <h3 className="font-bold text-ink mb-2 group-hover:text-saffron-600 transition-colors">
           {name}
         </h3>
-        <p className="text-gray-500 text-sm leading-relaxed line-clamp-3 flex-1">{description}</p>
+        <p className="text-ink/55 text-sm leading-relaxed line-clamp-3 flex-1">{description}</p>
 
         <div className="mt-3 flex flex-wrap gap-1.5">
           {asana.health_targets.slice(0, 3).map((target) => (
             <span
               key={target}
-              className="px-2 py-0.5 rounded bg-gray-50 text-gray-500 text-xs border border-gray-100"
+              className="px-2 py-0.5 rounded bg-cream-dark/50 text-ink/55 text-xs border border-teal-600/10"
             >
               {target.replace(/_/g, ' ')}
             </span>

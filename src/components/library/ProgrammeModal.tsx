@@ -74,13 +74,13 @@ export default function ProgrammeModal({ programme, locale, onClose }: Props) {
       />
 
       {/* Slide-over panel */}
-      <div className="fixed inset-y-0 right-0 z-50 w-full max-w-xl bg-white shadow-2xl overflow-y-auto flex flex-col">
+      <div className="fixed inset-y-0 right-0 z-50 w-full max-w-xl bg-cream shadow-2xl overflow-y-auto flex flex-col">
 
         {/* Header */}
-        <div className={`${programme.colour} border-b border-gray-200 px-6 py-5 flex items-start justify-between gap-4`}>
+        <div className={`${programme.colour} border-b border-teal-600/15 px-6 py-5 flex items-start justify-between gap-4`}>
           <div className="flex-1">
-            <h2 className="text-xl font-bold text-gray-900 mb-1">{programme.name}</h2>
-            <p className="text-gray-600 text-sm leading-relaxed">{programme.subtitle}</p>
+            <h2 className="text-xl font-bold text-ink mb-1">{programme.name}</h2>
+            <p className="text-ink/70 text-sm leading-relaxed">{programme.subtitle}</p>
           </div>
           <button
             onClick={onClose}
@@ -95,8 +95,8 @@ export default function ProgrammeModal({ programme, locale, onClose }: Props) {
 
           {/* What to expect */}
           <div>
-            <h3 className="font-semibold text-gray-900 mb-2 text-sm uppercase tracking-wide">What to Expect</h3>
-            <p className="text-gray-600 text-sm leading-relaxed">
+            <h3 className="font-semibold text-ink mb-2 text-sm uppercase tracking-wide">What to Expect</h3>
+            <p className="text-ink/70 text-sm leading-relaxed">
               Your Yogacharya will design a personalised sequence for you after an initial assessment.
               The practices below are <em>illustrative</em> — the specific exercises recommended will
               vary based on your current condition and goals.
@@ -105,11 +105,11 @@ export default function ProgrammeModal({ programme, locale, onClose }: Props) {
 
           {/* Suggested practices */}
           <div>
-            <h3 className="font-semibold text-gray-900 mb-3 text-sm uppercase tracking-wide">
+            <h3 className="font-semibold text-ink mb-3 text-sm uppercase tracking-wide">
               Illustrative Practices
             </h3>
             {mappedPractices.length === 0 ? (
-              <div className="py-8 text-center text-gray-400 text-sm">Loading practices…</div>
+              <div className="py-8 text-center text-ink/40 text-sm">Loading practices…</div>
             ) : (
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {mappedPractices.map((p) => (
@@ -133,7 +133,7 @@ export default function ProgrammeModal({ programme, locale, onClose }: Props) {
         </div>
 
         {/* Footer CTA */}
-        <div className="border-t border-gray-100 px-6 py-4 bg-gray-50 flex flex-col sm:flex-row gap-3">
+        <div className="border-t border-teal-600/10 px-6 py-4 bg-cream-dark/50 flex flex-col sm:flex-row gap-3">
           <a
             href={`https://wa.me/918017112877?text=I'm+interested+in+the+${encodeURIComponent(programme.enquiry)}+at+Nibedita+Yoga`}
             target="_blank"

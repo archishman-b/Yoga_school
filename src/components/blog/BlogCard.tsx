@@ -18,7 +18,7 @@ export default function BlogCard({ post, locale, readMore }: Props) {
   return (
     <Link
       href={`/${locale}/yoga/${post.slug}`}
-      className="group flex flex-col bg-white border border-gray-100 rounded-2xl overflow-hidden hover:shadow-md hover:border-teal-200 transition-all"
+      className="group flex flex-col bg-cream border border-teal-600/10 rounded-card overflow-hidden hover:shadow-card-hover hover:border-teal-200 transition-all"
     >
       {/* Header color band */}
       <div className="h-2 bg-gradient-to-r from-teal-500 to-saffron-400" />
@@ -36,10 +36,10 @@ export default function BlogCard({ post, locale, readMore }: Props) {
           ))}
         </div>
 
-        <h3 className="font-bold text-gray-900 text-lg leading-snug mb-3 group-hover:text-teal-700 transition-colors">
+        <h3 className="font-bold text-ink text-lg leading-snug mb-3 group-hover:text-teal-700 transition-colors">
           {title}
         </h3>
-        <p className="text-gray-600 text-sm leading-relaxed flex-1">{excerpt}</p>
+        <p className="text-ink/70 text-sm leading-relaxed flex-1">{excerpt}</p>
 
         <div className="mt-5 flex items-center gap-1 text-teal-600 text-sm font-medium">
           {readMore}

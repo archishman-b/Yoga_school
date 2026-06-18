@@ -58,10 +58,10 @@ export default async function MemberDashboard({ params: { locale } }: Props) {
     <div className="space-y-6">
       {/* Welcome */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900">
+        <h1 className="text-2xl font-bold text-ink">
           Welcome back{profile.full_name ? `, ${profile.full_name.split(' ')[0]}` : ''}! 🙏
         </h1>
-        <p className="text-gray-500 text-sm mt-1">Here's your practice overview.</p>
+        <p className="text-ink/55 text-sm mt-1">Here's your practice overview.</p>
       </div>
 
       {/* Quick cards */}
@@ -70,14 +70,14 @@ export default async function MemberDashboard({ params: { locale } }: Props) {
           <Link
             key={card.href}
             href={card.href}
-            className="group rounded-2xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-md transition-shadow"
+            className="group rounded-card overflow-hidden shadow-card border border-teal-600/10 hover:shadow-card-hover transition-shadow"
           >
             <div className={`bg-gradient-to-br ${card.colour} p-4 text-white`}>
               {card.icon}
             </div>
-            <div className="p-4 bg-white">
-              <p className="font-semibold text-gray-900">{card.label}</p>
-              <p className="text-gray-500 text-xs mt-0.5">{card.sub}</p>
+            <div className="p-4 bg-cream">
+              <p className="font-semibold text-ink">{card.label}</p>
+              <p className="text-ink/55 text-xs mt-0.5">{card.sub}</p>
             </div>
           </Link>
         ))}
@@ -85,8 +85,8 @@ export default async function MemberDashboard({ params: { locale } }: Props) {
 
       {/* Active batches */}
       {enrollments && enrollments.length > 0 && (
-        <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
-          <h2 className="font-bold text-gray-900 mb-4">Active Batches</h2>
+        <div className="bg-cream rounded-card border border-teal-600/10 shadow-card p-5">
+          <h2 className="font-bold text-ink mb-4">Active Batches</h2>
           <div className="space-y-3">
             {enrollments.map((enr: any) => (
               <div key={enr.id} className="flex items-center gap-4 p-3 rounded-xl bg-teal-50">
@@ -94,8 +94,8 @@ export default async function MemberDashboard({ params: { locale } }: Props) {
                   <CalendarDays size={18} />
                 </div>
                 <div>
-                  <p className="font-medium text-gray-900 text-sm">{enr.batch?.name_en}</p>
-                  <p className="text-gray-500 text-xs">{enr.batch?.timing} · {enr.batch?.days}</p>
+                  <p className="font-medium text-ink text-sm">{enr.batch?.name_en}</p>
+                  <p className="text-ink/55 text-xs">{enr.batch?.timing} · {enr.batch?.days}</p>
                 </div>
               </div>
             ))}
@@ -105,7 +105,7 @@ export default async function MemberDashboard({ params: { locale } }: Props) {
 
       {/* Fee status */}
       {pendingFees.length > 0 && (
-        <div className="bg-amber-50 border border-amber-200 rounded-2xl p-5">
+        <div className="bg-amber-50 border border-amber-200 rounded-card p-5">
           <div className="flex items-center gap-2 mb-3">
             <AlertCircle size={18} className="text-amber-600" />
             <h2 className="font-bold text-amber-800">Payment Due</h2>

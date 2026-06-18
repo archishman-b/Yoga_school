@@ -6,6 +6,27 @@ import type { HealthTarget } from '@/lib/data/asanas';
 
 const ProgrammeModal = dynamic(() => import('@/components/library/ProgrammeModal'), { ssr: false });
 
+// ── Lotus icon — animates on course-card hover via .lotus-icon CSS class ──────
+function LotusIcon({ size = 22, className = '' }: { size?: number; className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 64 64"
+      width={size}
+      height={size}
+      className={`lotus-icon ${className}`}
+      aria-hidden="true"
+    >
+      <g fill="currentColor">
+        <path d="M32 52 C28 36 32 18 32 18 C32 18 36 36 32 52 Z" />
+        <path d="M32 52 C28 36 32 18 32 18 C32 18 36 36 32 52 Z" transform="rotate(-38 32 52)" />
+        <path d="M32 52 C28 36 32 18 32 18 C32 18 36 36 32 52 Z" transform="rotate(38 32 52)" />
+        <path d="M32 52 C28 36 32 18 32 18 C32 18 36 36 32 52 Z" transform="rotate(-19 32 52)" />
+        <path d="M32 52 C28 36 32 18 32 18 C32 18 36 36 32 52 Z" transform="rotate(19 32 52)" />
+      </g>
+    </svg>
+  );
+}
+
 type Programme = {
   id: string;
   emoji: string;
@@ -32,28 +53,46 @@ export default function ProgrammeCardsClient({ programmes, locale }: Props) {
         {programmes.map((p) => (
           <div
             key={p.id}
-            className={`relative border-2 rounded-2xl p-5 flex flex-col gap-3 hover:shadow-md transition-shadow ${p.colour}`}
+            className="course-card relative card flex flex-col gap-3 p-5"
           >
+            {/* Highlight badge */}
             {p.highlight && (
-              <span className="absolute -top-2.5 left-4 text-xs font-bold bg-amber-500 text-white px-2 py-0.5 rounded-full">
+              <span className="absolute -top-2.5 left-4 text-xs font-bold bg-saffron-500 text-white px-2.5 py-0.5 rounded-full">
                 Signature
               </span>
             )}
-            <div className="text-3xl">{p.emoji}</div>
-            <div className="flex-1">
-              <h3 className="font-bold text-gray-900 leading-snug mb-1.5">{p.name}</h3>
-              <p className="text-sm text-gray-600 leading-relaxed">{p.subtitle}</p>
+
+            {/* Emoji + lotus icon row */}
+            <div className="flex items-center justify-between">
+              <span className="text-3xl">{p.emoji}</span>
+              <span className="text-saffron-400/60">
+                <LotusIcon size={18} />
+              </span>
             </div>
+
+            <div className="flex-1">
+              <h3 className="font-rozha font-normal text-ink text-lg leading-snug mb-1.5">
+                {p.name}
+              </h3>
+              <p className="text-sm text-ink/60 leading-relaxed">{p.subtitle}</p>
+            </div>
+
+            {/* Tags */}
             <div className="flex flex-wrap gap-1.5">
               {p.tagLabels.map((tag) => (
-                <span key={tag} className={`text-xs font-medium px-2 py-0.5 rounded-full ${p.badge}`}>
+                <span
+                  key={tag}
+                  className="text-[11px] font-semibold px-2.5 py-0.5 rounded-full bg-teal-600/10 text-teal-600"
+                >
                   {tag}
                 </span>
               ))}
             </div>
+
+            {/* CTA button */}
             <button
               onClick={() => setActiveProgramme(p)}
-              className="mt-1 text-center text-xs font-semibold py-2 px-3 bg-white border border-gray-200 hover:border-teal-400 hover:text-teal-700 rounded-xl transition-colors"
+              className="mt-1 w-full text-center text-xs font-bold py-2.5 px-3 rounded-pill bg-saffron-500/10 text-saffron-600 hover:bg-saffron-500 hover:text-white transition-colors border border-saffron-500/20"
             >
               Enquire / Learn More
             </button>

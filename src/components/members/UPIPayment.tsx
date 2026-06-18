@@ -68,8 +68,8 @@ export default function UPIPayment({ pendingFees, memberId }: Props) {
       <div className="card p-6 border-green-100 bg-green-50/40 flex items-start gap-4">
         <CheckCircle2 size={22} className="text-green-600 shrink-0 mt-0.5" />
         <div>
-          <p className="font-semibold text-gray-900">Screenshot submitted!</p>
-          <p className="text-sm text-gray-500 mt-0.5">
+          <p className="font-semibold text-ink">Screenshot submitted!</p>
+          <p className="text-sm text-ink/55 mt-0.5">
             Your teacher will verify and confirm your payment. Status will update to "Paid" soon.
           </p>
         </div>
@@ -79,7 +79,7 @@ export default function UPIPayment({ pendingFees, memberId }: Props) {
 
   return (
     <div className="card p-6 space-y-5">
-      <h2 className="font-semibold text-gray-900 text-base">Pay via UPI</h2>
+      <h2 className="font-semibold text-ink text-base">Pay via UPI</h2>
 
       {/* Fee selector */}
       {pendingFees.length > 1 && (
@@ -111,24 +111,24 @@ export default function UPIPayment({ pendingFees, memberId }: Props) {
             <img
               src={UPI_QR_URL}
               alt="UPI QR Code"
-              className="w-36 h-36 object-contain border border-gray-100 rounded-xl"
+              className="w-36 h-36 object-contain border border-teal-600/10 rounded-xl"
               onError={(e) => {
                 (e.target as HTMLImageElement).style.display = 'none';
               }}
             />
-            <p className="text-xs text-gray-400">Scan with any UPI app</p>
+            <p className="text-xs text-ink/40">Scan with any UPI app</p>
           </div>
 
           {/* Payment details */}
           <div className="flex-1 space-y-3 min-w-[180px]">
             <div className="bg-saffron-50 border border-saffron-100 rounded-xl px-4 py-3 space-y-1">
-              <p className="text-xs text-gray-500">Pay to</p>
-              <p className="font-semibold text-gray-900 text-sm">{SCHOOL_NAME}</p>
+              <p className="text-xs text-ink/55">Pay to</p>
+              <p className="font-semibold text-ink text-sm">{SCHOOL_NAME}</p>
               <div className="flex items-center gap-2">
                 <code className="text-teal-700 font-mono text-sm">{UPI_ID}</code>
                 <button
                   onClick={handleCopy}
-                  className="text-gray-400 hover:text-teal-600 transition-colors"
+                  className="text-ink/40 hover:text-teal-600 transition-colors"
                   title="Copy UPI ID"
                 >
                   {copied ? <CheckCircle2 size={14} className="text-green-500" /> : <Copy size={14} />}
@@ -136,14 +136,14 @@ export default function UPIPayment({ pendingFees, memberId }: Props) {
               </div>
             </div>
 
-            <div className="flex items-center justify-between bg-gray-50 rounded-xl px-4 py-3">
-              <span className="text-sm text-gray-600">Amount due</span>
-              <span className="text-lg font-bold text-gray-900">
+            <div className="flex items-center justify-between bg-cream-dark/50 rounded-xl px-4 py-3">
+              <span className="text-sm text-ink/70">Amount due</span>
+              <span className="text-lg font-bold text-ink">
                 ₹{selectedFee.amount.toLocaleString('en-IN')}
               </span>
             </div>
 
-            <p className="text-xs text-gray-400 leading-relaxed">
+            <p className="text-xs text-ink/40 leading-relaxed">
               After paying, upload your payment screenshot below. Your status will be updated once verified by your teacher.
             </p>
           </div>
@@ -155,12 +155,12 @@ export default function UPIPayment({ pendingFees, memberId }: Props) {
         <label className="label">Upload Payment Screenshot</label>
         <div
           onClick={() => fileRef.current?.click()}
-          className="border-2 border-dashed border-gray-200 hover:border-teal-300 rounded-xl p-5 text-center cursor-pointer transition-colors"
+          className="border-2 border-dashed border-teal-600/15 hover:border-teal-300 rounded-xl p-5 text-center cursor-pointer transition-colors"
         >
           {preview ? (
             <img src={preview} alt="Screenshot preview" className="mx-auto max-h-40 rounded-lg object-contain" />
           ) : (
-            <div className="flex flex-col items-center gap-2 text-gray-400">
+            <div className="flex flex-col items-center gap-2 text-ink/40">
               <Upload size={24} />
               <p className="text-sm">Click to upload screenshot</p>
               <p className="text-xs">JPG, PNG, or PDF</p>

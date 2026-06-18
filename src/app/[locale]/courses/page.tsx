@@ -152,10 +152,10 @@ export default function CoursesPage({ searchParams: _searchParams }: Props) {
   const locale = useLocale();
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-cream">
 
       {/* ── Hero ── */}
-      <div className="bg-gradient-to-br from-saffron-600 to-orange-700 text-white py-16 px-4">
+      <div className="bg-gradient-to-br from-saffron-500 to-saffron-600 text-white py-16 px-4">
         <div className="max-w-7xl mx-auto text-center">
           <p className="text-saffron-200 font-semibold text-sm uppercase tracking-widest mb-3">
             Programmes & Self-Help Library
@@ -166,16 +166,16 @@ export default function CoursesPage({ searchParams: _searchParams }: Props) {
             development the world has ever known.
           </p>
           <div className="flex flex-wrap justify-center gap-3 mt-6 text-sm">
-            <a href="#programmes" className="px-4 py-2 bg-white/20 hover:bg-white/30 rounded-full transition-colors">
+            <a href="#programmes" className="px-4 py-2 bg-cream/20 hover:bg-cream/30 rounded-full transition-colors">
               Programmes ↓
             </a>
-            <a href="#naval" className="px-4 py-2 bg-white/20 hover:bg-white/30 rounded-full transition-colors">
+            <a href="#naval" className="px-4 py-2 bg-cream/20 hover:bg-cream/30 rounded-full transition-colors">
               Naval Assessment ↓
             </a>
-            <a href="#curriculum" className="px-4 py-2 bg-white/20 hover:bg-white/30 rounded-full transition-colors">
+            <a href="#curriculum" className="px-4 py-2 bg-cream/20 hover:bg-cream/30 rounded-full transition-colors">
               Curriculum ↓
             </a>
-            <Link href={`/${locale}/library`} className="px-4 py-2 bg-white/30 hover:bg-white/40 rounded-full transition-colors font-semibold">
+            <Link href={`/${locale}/library`} className="px-4 py-2 bg-cream/30 hover:bg-cream/40 rounded-full transition-colors font-semibold">
               Practice Library →
             </Link>
           </div>
@@ -190,8 +190,8 @@ export default function CoursesPage({ searchParams: _searchParams }: Props) {
             <p className="text-saffron-600 font-semibold text-sm uppercase tracking-widest mb-2">
               Therapeutic Specialisations
             </p>
-            <h2 className="text-3xl font-bold text-gray-900">Eight programmes for specific needs</h2>
-            <p className="text-gray-500 mt-2 max-w-2xl">
+            <h2 className="text-3xl font-bold text-ink">Eight programmes for specific needs</h2>
+            <p className="text-ink/55 mt-2 max-w-2xl">
               Nibedita Yoga Training Centre offers targeted programmes for specific health goals and
               conditions — not one-size-fits-all classes. Each batch is limited to 30 students for
               personalised attention.
@@ -200,7 +200,7 @@ export default function CoursesPage({ searchParams: _searchParams }: Props) {
 
           <ProgrammeCardsClient programmes={[...PROGRAMMES]} locale={locale} />
 
-          <div className="mt-6 text-sm text-gray-500 bg-gray-50 rounded-xl p-4 flex gap-3">
+          <div className="mt-6 text-sm text-ink/55 bg-cream-dark/50 rounded-xl p-4 flex gap-3">
             <span className="text-lg">ℹ️</span>
             <span>
               After your free trial class, our instructor will recommend the most suitable programme
@@ -210,23 +210,23 @@ export default function CoursesPage({ searchParams: _searchParams }: Props) {
         </section>
 
         {/* ── Naval Examination Explainer ── */}
-        <section id="naval" className="py-12 border-t border-gray-100">
-          <div className="bg-gradient-to-br from-amber-50 to-orange-50 border-2 border-amber-200 rounded-3xl p-8 lg:p-12">
+        <section id="naval" className="py-12 border-t border-teal-600/10">
+          <div className="bg-gradient-to-br from-amber-50 to-orange-50 border-2 border-amber-200 rounded-card2 p-8 lg:p-12">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
               <div>
                 <p className="text-amber-600 font-semibold text-sm uppercase tracking-widest mb-3">
                   Our Signature Assessment
                 </p>
-                <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-4">
+                <h2 className="text-2xl sm:text-3xl font-bold text-ink mb-4">
                   What is the Initial Health & Fitness Assessment?
                 </h2>
-                <p className="text-gray-700 leading-relaxed mb-4">
+                <p className="text-ink/80 leading-relaxed mb-4">
                   Every new student begins with a comprehensive assessment conducted by our lead
                   instructor. The most distinctive element is the <strong>Nabhi (navel) examination</strong>
                   — a traditional yogic diagnostic technique used to identify displacement of the
                   navel centre, which is associated with a range of digestive and systemic complaints.
                 </p>
-                <p className="text-gray-700 leading-relaxed mb-4">
+                <p className="text-ink/80 leading-relaxed mb-4">
                   Based on this assessment and your personal health profile, our instructor assigns
                   you to the most appropriate programme and stage — ensuring your practice is safe,
                   effective, and personalised from day one.
@@ -237,9 +237,9 @@ export default function CoursesPage({ searchParams: _searchParams }: Props) {
                     { q: 'What happens if navel displacement is found?', a: 'You are enrolled in the Naval Correction Programme with targeted corrective asanas under direct supervision.' },
                     { q: 'Who conducts the assessment?', a: 'Rekha Nath, Lead Instructor and Founder of the school.' },
                   ].map(({ q, a }) => (
-                    <div key={q} className="bg-white rounded-xl p-4 border border-amber-100">
-                      <p className="font-semibold text-gray-900 text-sm mb-1">{q}</p>
-                      <p className="text-sm text-gray-600">{a}</p>
+                    <div key={q} className="bg-cream rounded-xl p-4 border border-amber-100">
+                      <p className="font-semibold text-ink text-sm mb-1">{q}</p>
+                      <p className="text-sm text-ink/70">{a}</p>
                     </div>
                   ))}
                 </div>
@@ -248,8 +248,8 @@ export default function CoursesPage({ searchParams: _searchParams }: Props) {
                 <div className="w-40 h-40 bg-amber-100 rounded-full flex items-center justify-center text-7xl mx-auto mb-6">
                   🫀
                 </div>
-                <h3 className="font-bold text-gray-900 text-lg mb-2">Naval Correction Programme</h3>
-                <p className="text-gray-600 text-sm leading-relaxed mb-4">
+                <h3 className="font-bold text-ink text-lg mb-2">Naval Correction Programme</h3>
+                <p className="text-ink/70 text-sm leading-relaxed mb-4">
                   The school's most distinctive offering — yogic assessment and targeted asanas to
                   correct Nabhi (navel) displacement, addressing root causes of digestive and
                   systemic complaints.
@@ -263,13 +263,13 @@ export default function CoursesPage({ searchParams: _searchParams }: Props) {
         </section>
 
         {/* ── Three-Pillar Curriculum ── */}
-        <section id="curriculum" className="py-12 border-t border-gray-100">
+        <section id="curriculum" className="py-12 border-t border-teal-600/10">
           <div className="text-center mb-10">
             <p className="text-saffron-600 font-semibold text-sm uppercase tracking-widest mb-3">
               Your Learning Journey
             </p>
-            <h2 className="text-3xl font-bold text-gray-900">Three Pillars · Three Stages</h2>
-            <p className="text-gray-500 mt-2 max-w-xl mx-auto">
+            <h2 className="text-3xl font-bold text-ink">Three Pillars · Three Stages</h2>
+            <p className="text-ink/55 mt-2 max-w-xl mx-auto">
               Our curriculum is organised across three pillars, each progressing through three stages
               — Foundation, Intermediate, and Advanced Practice.
             </p>
@@ -277,23 +277,23 @@ export default function CoursesPage({ searchParams: _searchParams }: Props) {
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-10">
             {PILLARS.map((p) => (
-              <div key={p.no} className="rounded-2xl overflow-hidden border border-gray-100 shadow-sm">
+              <div key={p.no} className="rounded-card overflow-hidden border border-teal-600/10 shadow-card">
                 <div className={`bg-gradient-to-r ${p.colour} p-6 text-white`}>
                   <p className="font-mono text-5xl font-bold opacity-20 leading-none">{p.no}</p>
                   <h3 className="font-bold text-xl mt-2">{p.name}</h3>
                   <p className="text-white/80 text-sm">{p.subtitle}</p>
                 </div>
-                <div className="p-5 bg-white">
-                  <p className="text-gray-600 text-sm leading-relaxed mb-3">{p.desc}</p>
-                  <span className="text-xs font-semibold text-gray-400 uppercase tracking-wide">{p.count}</span>
+                <div className="p-5 bg-cream">
+                  <p className="text-ink/70 text-sm leading-relaxed mb-3">{p.desc}</p>
+                  <span className="text-xs font-semibold text-ink/40 uppercase tracking-wide">{p.count}</span>
                 </div>
               </div>
             ))}
           </div>
 
           {/* Stage progression */}
-          <div className="bg-gray-50 rounded-2xl p-6 border border-gray-200">
-            <h3 className="font-semibold text-gray-900 mb-5 text-center">Stage Progression</h3>
+          <div className="bg-cream-dark/50 rounded-card p-6 border border-teal-600/15">
+            <h3 className="font-semibold text-ink mb-5 text-center">Stage Progression</h3>
             <div className="flex flex-col sm:flex-row items-center gap-4 justify-center">
               {[
                 { stage: '1st Stage', label: 'Foundation', desc: 'Beginner · New students, health-condition specific', colour: 'bg-green-100 text-green-800 border-green-200' },
@@ -301,12 +301,12 @@ export default function CoursesPage({ searchParams: _searchParams }: Props) {
                 { stage: 'Final Stage', label: 'Advanced Practice', desc: 'Committed long-term practitioners', colour: 'bg-purple-100 text-purple-800 border-purple-200' },
               ].map((s, i) => (
                 <div key={s.stage} className="flex items-center gap-4">
-                  <div className={`text-center border-2 rounded-2xl px-6 py-4 min-w-[160px] ${s.colour}`}>
+                  <div className={`text-center border-2 rounded-card px-6 py-4 min-w-[160px] ${s.colour}`}>
                     <p className="text-xs font-semibold uppercase tracking-wide opacity-70">{s.stage}</p>
                     <p className="font-bold text-lg mt-1">{s.label}</p>
                     <p className="text-xs mt-1 opacity-80 leading-snug">{s.desc}</p>
                   </div>
-                  {i < 2 && <span className="text-gray-300 text-2xl hidden sm:block">→</span>}
+                  {i < 2 && <span className="opacity-40 text-ink/30 text-2xl hidden sm:block">→</span>}
                 </div>
               ))}
             </div>
@@ -314,14 +314,14 @@ export default function CoursesPage({ searchParams: _searchParams }: Props) {
         </section>
 
         {/* ── Pranayams ── */}
-        <section className="py-12 border-t border-gray-100">
+        <section className="py-12 border-t border-teal-600/10">
           <div className="flex items-start justify-between gap-4 flex-wrap mb-8">
             <div>
               <p className="text-saffron-600 font-semibold text-sm uppercase tracking-widest mb-2">
                 Pillar 1
               </p>
-              <h2 className="text-2xl font-bold text-gray-900">Pranayams — Breathing Practices</h2>
-              <p className="text-gray-500 mt-1 text-sm">
+              <h2 className="text-2xl font-bold text-ink">Pranayams — Breathing Practices</h2>
+              <p className="text-ink/55 mt-1 text-sm">
                 Ten pranayama techniques taught at Nibedita Yoga Training Centre
               </p>
             </div>
@@ -329,7 +329,7 @@ export default function CoursesPage({ searchParams: _searchParams }: Props) {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
             {PRANAYAMS.map((p) => (
               <div key={p.name} className="bg-gradient-to-br from-saffron-50 to-orange-50 border border-saffron-100 rounded-xl p-4">
-                <p className="font-semibold text-gray-900 text-sm mb-2">{p.name}</p>
+                <p className="font-semibold text-ink text-sm mb-2">{p.name}</p>
                 <div className="flex flex-wrap gap-1">
                   {p.targets.map((t) => (
                     <span key={t} className="text-xs bg-saffron-100 text-saffron-800 px-1.5 py-0.5 rounded-full">
@@ -343,12 +343,12 @@ export default function CoursesPage({ searchParams: _searchParams }: Props) {
         </section>
 
         {/* ── Dhoti Kriyas ── */}
-        <section className="py-8 border-t border-gray-100">
-          <div className="bg-gradient-to-r from-gray-900 to-gray-800 text-white rounded-2xl p-6 lg:p-8 flex flex-col sm:flex-row gap-6 items-start">
+        <section className="py-8 border-t border-teal-600/10">
+          <div className="bg-gradient-to-r from-gray-900 to-gray-800 text-white rounded-card p-6 lg:p-8 flex flex-col sm:flex-row gap-6 items-start">
             <div className="text-4xl">🔱</div>
             <div>
               <h3 className="font-bold text-lg mb-2">Yogic Dhoti Kriyas — Cleansing Processes</h3>
-              <p className="text-gray-300 text-sm leading-relaxed mb-3">
+              <p className="text-ink/55 text-sm leading-relaxed mb-3">
                 Five advanced internal cleansing practices: Yogic Kunjal (stomach wash), Sanka
                 Prassalam (bowel cleansing), Sahaj Bostikriya, Neti Kriya (nasal cleansing), and
                 Baghi (Tiger Exercise). These are taught <strong className="text-white">under direct
@@ -356,7 +356,7 @@ export default function CoursesPage({ searchParams: _searchParams }: Props) {
               </p>
               <a
                 href={`/${locale}#contact`}
-                className="inline-block text-sm font-semibold px-4 py-2 bg-white/10 hover:bg-white/20 border border-white/20 rounded-xl transition-colors"
+                className="inline-block text-sm font-semibold px-4 py-2 bg-cream/10 hover:bg-cream/20 border border-white/20 rounded-xl transition-colors"
               >
                 Enquire for details →
               </a>
@@ -365,18 +365,18 @@ export default function CoursesPage({ searchParams: _searchParams }: Props) {
         </section>
 
         {/* ── Practice Library CTA ── */}
-        <section id="library" className="py-12 border-t border-gray-100">
-          <div className="rounded-3xl overflow-hidden border-2 border-teal-100 bg-gradient-to-br from-teal-50 via-white to-saffron-50">
+        <section id="library" className="py-12 border-t border-teal-600/10">
+          <div className="rounded-card2 overflow-hidden border-2 border-teal-100 bg-gradient-to-br from-teal-50 via-white to-saffron-50">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-0">
               {/* Left: text + stats */}
               <div className="p-8 lg:p-12 flex flex-col justify-center">
                 <p className="text-teal-600 font-semibold text-sm uppercase tracking-widest mb-3">
                   Complete Reference Guide
                 </p>
-                <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-4 leading-snug">
+                <h2 className="text-2xl sm:text-3xl font-bold text-ink mb-4 leading-snug">
                   Yogic Practice Library
                 </h2>
-                <p className="text-gray-600 leading-relaxed mb-6">
+                <p className="text-ink/70 leading-relaxed mb-6">
                   Every pranayama, preparatory exercise, asana, and kriya taught at Nibedita Yoga Training Centre —
                   with step-by-step instructions, benefits, and health-goal filters. Use it as a reference guide
                   between classes, or explore before you join.
@@ -406,7 +406,7 @@ export default function CoursesPage({ searchParams: _searchParams }: Props) {
                   </Link>
                   <a
                     href={`/${locale}#contact`}
-                    className="px-6 py-3 bg-white border-2 border-gray-200 hover:border-teal-400 text-gray-700 hover:text-teal-700 font-semibold rounded-full transition-colors text-sm"
+                    className="px-6 py-3 bg-cream border-2 border-teal-600/15 hover:border-teal-400 text-ink/80 hover:text-teal-700 font-semibold rounded-full transition-colors text-sm"
                   >
                     Enquire to Join
                   </a>
@@ -414,7 +414,7 @@ export default function CoursesPage({ searchParams: _searchParams }: Props) {
               </div>
 
               {/* Right: feature bullets */}
-              <div className="bg-white/60 p-8 lg:p-12 border-t lg:border-t-0 lg:border-l border-teal-100 flex flex-col justify-center gap-4">
+              <div className="bg-cream/60 p-8 lg:p-12 border-t lg:border-t-0 lg:border-l border-teal-100 flex flex-col justify-center gap-4">
                 {[
                   { icon: '🔍', title: 'Filter by health goal', desc: 'Find practices for your specific condition — weight, digestion, stress, flexibility, and more.' },
                   { icon: '📖', title: 'Step-by-step guides', desc: 'Full instructions, contraindications, and duration for every practice.' },
@@ -424,8 +424,8 @@ export default function CoursesPage({ searchParams: _searchParams }: Props) {
                   <div key={title} className="flex gap-4">
                     <span className="text-2xl shrink-0 mt-0.5">{icon}</span>
                     <div>
-                      <p className="font-semibold text-gray-900 text-sm mb-0.5">{title}</p>
-                      <p className="text-sm text-gray-500 leading-relaxed">{desc}</p>
+                      <p className="font-semibold text-ink text-sm mb-0.5">{title}</p>
+                      <p className="text-sm text-ink/55 leading-relaxed">{desc}</p>
                     </div>
                   </div>
                 ))}

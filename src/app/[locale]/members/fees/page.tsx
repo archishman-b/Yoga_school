@@ -23,8 +23,8 @@ export default async function FeesPage({ params: { locale } }: Props) {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-gray-900">Fee Records</h1>
-        <p className="text-gray-500 text-sm mt-1">Your payment history and pending dues.</p>
+        <h1 className="text-2xl font-bold text-ink">Fee Records</h1>
+        <p className="text-ink/55 text-sm mt-1">Your payment history and pending dues.</p>
       </div>
 
       {/* UPI payment widget — only if there are pending fees */}
@@ -34,8 +34,8 @@ export default async function FeesPage({ params: { locale } }: Props) {
 
       {/* All fee records */}
       <div className="card overflow-hidden">
-        <div className="px-5 py-4 border-b border-gray-100">
-          <h2 className="font-semibold text-gray-900">Payment History</h2>
+        <div className="px-5 py-4 border-b border-teal-600/10">
+          <h2 className="font-semibold text-ink">Payment History</h2>
         </div>
         <FeeTable fees={fees ?? []} />
       </div>

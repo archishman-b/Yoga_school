@@ -20,16 +20,16 @@ function calcAge(dob: string | null) {
 function Field({ label, hint, children }: { label: string; hint?: string; children: React.ReactNode }) {
   return (
     <div>
-      <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">
+      <label className="block text-xs font-semibold text-ink/55 uppercase tracking-wide mb-1">
         {label}
-        {hint && <span className="font-normal normal-case tracking-normal text-gray-400 ml-1">({hint})</span>}
+        {hint && <span className="font-normal normal-case tracking-normal text-ink/40 ml-1">({hint})</span>}
       </label>
       {children}
     </div>
   );
 }
 
-const inputCls = 'w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:border-teal-400 bg-white';
+const inputCls = 'w-full px-3 py-2.5 rounded-xl border border-teal-600/15 text-sm focus:outline-none focus:border-teal-400 bg-cream';
 
 export default function ProfileForm({ profile: p, locale }: Props) {
   const router = useRouter();
@@ -111,8 +111,8 @@ export default function ProfileForm({ profile: p, locale }: Props) {
     <form onSubmit={handleSave} className="space-y-6">
 
       {/* ── Photo + meta ── */}
-      <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
-        <h2 className="font-semibold text-gray-900 mb-4">Profile Photo</h2>
+      <div className="bg-cream rounded-card border border-teal-600/10 shadow-card p-6">
+        <h2 className="font-semibold text-ink mb-4">Profile Photo</h2>
         <div className="flex items-center gap-5">
           <div className="relative">
             <div className="w-20 h-20 rounded-full bg-gradient-to-br from-teal-200 to-teal-400 flex items-center justify-center text-3xl overflow-hidden">
@@ -127,9 +127,9 @@ export default function ProfileForm({ profile: p, locale }: Props) {
             <input ref={fileRef} type="file" accept="image/*" className="hidden" onChange={handlePhotoChange} />
           </div>
           <div>
-            <p className="font-medium text-gray-900 text-sm">{(p as any).full_name ?? 'Your Name'}</p>
-            <p className="text-gray-500 text-xs">{(p as any).email}</p>
-            <p className="text-gray-400 text-xs mt-0.5">
+            <p className="font-medium text-ink text-sm">{(p as any).full_name ?? 'Your Name'}</p>
+            <p className="text-ink/55 text-xs">{(p as any).email}</p>
+            <p className="text-ink/40 text-xs mt-0.5">
               Member since {(p as any).joined_date
                 ? new Date((p as any).joined_date).toLocaleDateString('en-IN', { day:'numeric', month:'long', year:'numeric' })
                 : 'recently'}
@@ -139,8 +139,8 @@ export default function ProfileForm({ profile: p, locale }: Props) {
       </div>
 
       {/* ── Personal Details ── */}
-      <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 space-y-4">
-        <h2 className="font-semibold text-gray-900 text-base">Personal Details</h2>
+      <div className="bg-cream rounded-card border border-teal-600/10 shadow-card p-6 space-y-4">
+        <h2 className="font-semibold text-ink text-base">Personal Details</h2>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <Field label="Full Name">
@@ -165,7 +165,7 @@ export default function ProfileForm({ profile: p, locale }: Props) {
             <input name="date_of_birth" type="date" value={form.date_of_birth} onChange={handleChange} className={inputCls} />
           </Field>
           <Field label="Age">
-            <div className={`${inputCls} bg-gray-50 text-gray-500 cursor-default`}>
+            <div className={`${inputCls} bg-cream-dark/50 text-ink/55 cursor-default`}>
               {age !== null ? `${age} years` : '—'}
             </div>
           </Field>
@@ -235,12 +235,12 @@ export default function ProfileForm({ profile: p, locale }: Props) {
       </div>
 
       {/* ── Health Information ── */}
-      <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 space-y-4">
+      <div className="bg-cream rounded-card border border-teal-600/10 shadow-card p-6 space-y-4">
         <div className="flex items-start gap-2">
           <Info size={16} className="text-teal-500 mt-0.5 shrink-0" />
           <div>
-            <h2 className="font-semibold text-gray-900 text-base">Health Information</h2>
-            <p className="text-xs text-gray-400 mt-0.5">Shared only with your instructor. Helps us adapt your practice safely and effectively.</p>
+            <h2 className="font-semibold text-ink text-base">Health Information</h2>
+            <p className="text-xs text-ink/40 mt-0.5">Shared only with your instructor. Helps us adapt your practice safely and effectively.</p>
           </div>
         </div>
 
@@ -260,23 +260,23 @@ export default function ProfileForm({ profile: p, locale }: Props) {
         </Field>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div className="flex items-center gap-3 bg-gray-50 rounded-xl p-4 border border-gray-200">
+          <div className="flex items-center gap-3 bg-cream-dark/50 rounded-xl p-4 border border-teal-600/15">
             <input
               type="checkbox" id="previous_yoga" name="previous_yoga"
               checked={form.previous_yoga} onChange={handleChange}
               className="w-4 h-4 accent-teal-600 cursor-pointer"
             />
-            <label htmlFor="previous_yoga" className="text-sm font-medium text-gray-700 cursor-pointer leading-snug">
+            <label htmlFor="previous_yoga" className="text-sm font-medium text-ink/80 cursor-pointer leading-snug">
               I have practised yoga before
             </label>
           </div>
-          <div className="flex items-center gap-3 bg-gray-50 rounded-xl p-4 border border-gray-200">
+          <div className="flex items-center gap-3 bg-cream-dark/50 rounded-xl p-4 border border-teal-600/15">
             <input
               type="checkbox" id="doctor_referral" name="doctor_referral"
               checked={form.doctor_referral} onChange={handleChange}
               className="w-4 h-4 accent-teal-600 cursor-pointer"
             />
-            <label htmlFor="doctor_referral" className="text-sm font-medium text-gray-700 cursor-pointer leading-snug">
+            <label htmlFor="doctor_referral" className="text-sm font-medium text-ink/80 cursor-pointer leading-snug">
               I was referred to yoga by a healthcare professional
             </label>
           </div>
@@ -337,7 +337,7 @@ export default function ProfileForm({ profile: p, locale }: Props) {
         {status === 'error' && <span className="text-red-500 text-sm">Could not save. Try again.</span>}
       </div>
 
-      <p className="text-xs text-gray-400">
+      <p className="text-xs text-ink/40">
         After your free trial class, our instructor will review your health profile and recommend the
         most suitable programme and stage for you.
       </p>

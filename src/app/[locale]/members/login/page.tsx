@@ -17,7 +17,7 @@ export default async function LoginPage({ params: { locale } }: Props) {
         <div className="text-center mb-8">
           <span className="text-5xl">🪷</span>
           <h1 className="text-2xl font-bold text-white mt-4">Member Login</h1>
-          <p className="text-gray-400 mt-2 text-sm">
+          <p className="text-ink/40 mt-2 text-sm">
             Enter your email — we'll send you a one-time login link.
           </p>
         </div>
