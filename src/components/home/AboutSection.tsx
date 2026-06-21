@@ -147,7 +147,7 @@ export default function AboutSection() {
               <div className="flex gap-3 text-center">
                 {[
                   { icon: <Award size={16}/>, val: '26+', lbl: 'Years' },
-                  { icon: <Users size={16}/>, val: '12,000+', lbl: 'Students' },
+                  { icon: <Users size={16}/>, val: '10,000+', lbl: 'Students' },
                   { icon: <BookOpen size={16}/>, val: '8', lbl: 'Programmes' },
                 ].map(s => (
                   <div key={s.lbl} className="bg-cream-card rounded-[14px] px-3 py-2.5 shadow-card border border-teal-600/10 text-center">
