@@ -4,9 +4,11 @@ import { useState } from 'react';
 import { createClient } from '@/lib/supabase/client';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { Mail, Lock, Eye, EyeOff, ArrowRight, CheckCircle2 } from 'lucide-react';
+import { Mail, Lock, Eye, EyeOff, ArrowRight, CheckCircle2, Phone, Shield } from 'lucide-react';
 
 type Props = { locale: string };
+type Tab = 'phone' | 'email' | 'magic';
+type PhoneStep = 'input' | 'otp';
 
 function GoogleIcon() {
   return (
@@ -19,35 +21,67 @@ function GoogleIcon() {
   );
 }
 
-type Mode = 'password' | 'magic';
-
 export default function LoginForm({ locale }: Props) {
   const router = useRouter();
-  const [mode,     setMode]     = useState<Mode>('password');
-  const [email,    setEmail]    = useState('');
-  const [password, setPassword] = useState('');
-  const [showPw,   setShowPw]   = useState(false);
-  const [loading,  setLoading]  = useState<string | null>(null);
-  const [sent,     setSent]     = useState(false);
-  const [error,    setError]    = useState('');
+  const [tab,       setTab]       = useState<Tab>('phone');
+  const [phone,     setPhone]     = useState('');
+  const [phoneStep, setPhoneStep] = useState<PhoneStep>('input');
+  const [otp,       setOtp]       = useState('');
+  const [email,     setEmail]     = useState('');
+  const [password,  setPassword]  = useState('');
+  const [showPw,    setShowPw]    = useState(false);
+  const [magicSent, setMagicSent] = useState(false);
+  const [loading,   setLoading]   = useState<string | null>(null);
+  const [error,     setError]     = useState('');
+
+  const e164 = () => {
+    const d = phone.replace(/\D/g, '');
+    return d.startsWith('91') ? `+${d}` : `+91${d}`;
+  };
 
   const handleGoogle = async () => {
     setLoading('google'); setError('');
-    const supabase = createClient();
-    const { error } = await supabase.auth.signInWithOAuth({
+    const { error: err } = await createClient().auth.signInWithOAuth({
       provider: 'google',
-      options: { redirectTo: `${window.location.origin}/auth/callback` },
+      options: { redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL ?? window.location.origin}/auth/callback` },
     });
-    if (error) { setError(error.message); setLoading(null); }
+    if (err) { setError(err.message); setLoading(null); }
   };
 
-  const handlePassword = async (e: React.FormEvent) => {
+  const sendPhoneOtp = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading('password'); setError('');
-    const supabase = createClient();
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    if (phone.replace(/\D/g,'').length < 10) { setError('Enter a valid 10-digit mobile number'); return; }
+    setLoading('phone-send'); setError('');
+    const { error: err } = await createClient().auth.signInWithOtp({
+      phone: e164(),
+      options: { channel: 'sms' },
+    });
     setLoading(null);
-    if (error) { setError(error.message); return; }
+    if (err) { setError(err.message); return; }
+    setPhoneStep('otp');
+  };
+
+  const verifyPhoneOtp = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (otp.length !== 6) { setError('Enter the 6-digit OTP'); return; }
+    setLoading('phone-verify'); setError('');
+    const { error: err } = await createClient().auth.verifyOtp({
+      phone: e164(),
+      token: otp,
+      type: 'sms',
+    });
+    setLoading(null);
+    if (err) { setError(err.message); return; }
+    router.push(`/${locale}/members`);
+    router.refresh();
+  };
+
+  const handleEmailPassword = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading('email'); setError('');
+    const { error: err } = await createClient().auth.signInWithPassword({ email, password });
+    setLoading(null);
+    if (err) { setError(err.message); return; }
     router.push(`/${locale}/members`);
     router.refresh();
   };
@@ -55,31 +89,16 @@ export default function LoginForm({ locale }: Props) {
   const handleMagicLink = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading('magic'); setError('');
-    const supabase = createClient();
-    const { error } = await supabase.auth.signInWithOtp({
+    const { error: err } = await createClient().auth.signInWithOtp({
       email,
-      options: { emailRedirectTo: `${window.location.origin}/auth/callback` },
+      options: { emailRedirectTo: `${process.env.NEXT_PUBLIC_SITE_URL ?? window.location.origin}/auth/callback` },
     });
     setLoading(null);
-    if (error) { setError(error.message); return; }
-    setSent(true);
+    if (err) { setError(err.message); return; }
+    setMagicSent(true);
   };
 
-  if (sent) {
-    return (
-      <div className="bg-white/10 backdrop-blur rounded-2xl p-8 text-center text-white space-y-4">
-        <CheckCircle2 size={48} className="text-teal-400 mx-auto" />
-        <h2 className="text-xl font-bold">Check your email</h2>
-        <p className="text-gray-300 text-sm">
-          Magic link sent to <span className="text-white font-medium">{email}</span>.<br/>
-          Click it to sign in — expires in 1 hour.
-        </p>
-        <button onClick={() => setSent(false)} className="text-teal-400 text-sm hover:text-teal-300 underline">
-          Try a different method
-        </button>
-      </div>
-    );
-  }
+  const switchTab = (t: Tab) => { setTab(t); setError(''); setPhoneStep('input'); setOtp(''); setMagicSent(false); };
 
   return (
     <div className="bg-white/10 backdrop-blur rounded-2xl p-8 space-y-5">
@@ -97,21 +116,68 @@ export default function LoginForm({ locale }: Props) {
         <div className="flex-1 h-px bg-white/20" />
       </div>
 
-      {/* Mode toggle */}
-      <div className="flex rounded-xl overflow-hidden border border-white/20 text-sm font-medium">
-        <button onClick={() => setMode('password')}
-          className={`flex-1 py-2 transition-colors ${mode === 'password' ? 'bg-white/20 text-white' : 'text-gray-400 hover:text-gray-200'}`}>
-          Email & Password
-        </button>
-        <button onClick={() => setMode('magic')}
-          className={`flex-1 py-2 transition-colors ${mode === 'magic' ? 'bg-white/20 text-white' : 'text-gray-400 hover:text-gray-200'}`}>
-          Magic Link
-        </button>
+      {/* Tab switcher */}
+      <div className="grid grid-cols-3 rounded-xl overflow-hidden border border-white/20 text-xs font-medium">
+        {([['phone', 'SMS OTP'], ['email', 'Password'], ['magic', 'Magic Link']] as [Tab, string][]).map(([t, label]) => (
+          <button key={t} onClick={() => switchTab(t)}
+            className={`py-2.5 transition-colors ${tab === t ? 'bg-white/20 text-white' : 'text-gray-400 hover:text-gray-200'}`}>
+            {label}
+          </button>
+        ))}
       </div>
 
-      {/* Email + Password */}
-      {mode === 'password' && (
-        <form onSubmit={handlePassword} className="space-y-4">
+      {/* ── Phone OTP ── */}
+      {tab === 'phone' && phoneStep === 'input' && (
+        <form onSubmit={sendPhoneOtp} className="space-y-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-300 mb-1.5">Mobile number</label>
+            <div className="flex rounded-xl overflow-hidden border border-white/20 focus-within:border-teal-400 transition-colors">
+              <span className="flex items-center gap-1.5 px-3 bg-white/10 text-gray-300 text-sm border-r border-white/20 shrink-0">
+                <Phone size={14} /> +91
+              </span>
+              <input type="tel" required value={phone}
+                onChange={e => setPhone(e.target.value.replace(/\D/g,'').slice(0,10))}
+                placeholder="98765 43210"
+                className="flex-1 px-4 py-3 bg-transparent text-white placeholder-gray-500 focus:outline-none" />
+            </div>
+          </div>
+          {error && <p className="text-red-400 text-sm">{error}</p>}
+          <button type="submit" disabled={!!loading || phone.replace(/\D/g,'').length < 10}
+            className="w-full flex items-center justify-center gap-2 py-3 bg-saffron-500 hover:bg-saffron-600 disabled:opacity-40 text-white font-semibold rounded-xl transition-colors">
+            {loading === 'phone-send' ? 'Sending…' : <><ArrowRight size={18}/> Send OTP</>}
+          </button>
+          <p className="text-xs text-gray-500 text-center">A 6-digit code will be sent to your mobile.</p>
+        </form>
+      )}
+
+      {tab === 'phone' && phoneStep === 'otp' && (
+        <form onSubmit={verifyPhoneOtp} className="space-y-4">
+          <div className="text-center">
+            <Shield size={32} className="text-teal-400 mx-auto mb-2" />
+            <p className="text-white text-sm font-semibold">OTP sent to +91 {phone}</p>
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-300 mb-1.5 text-center">Enter OTP</label>
+            <input type="tel" required maxLength={6} value={otp}
+              onChange={e => setOtp(e.target.value.replace(/\D/g,'').slice(0,6))}
+              placeholder="• • • • • •"
+              className="w-full text-center text-2xl tracking-[0.5em] py-4 rounded-xl bg-white/10 border border-white/20 text-white placeholder-gray-600 focus:outline-none focus:border-teal-400 transition-colors" />
+          </div>
+          {error && <p className="text-red-400 text-sm text-center">{error}</p>}
+          <button type="submit" disabled={!!loading || otp.length !== 6}
+            className="w-full flex items-center justify-center gap-2 py-3 bg-saffron-500 hover:bg-saffron-600 disabled:opacity-40 text-white font-semibold rounded-xl transition-colors">
+            {loading === 'phone-verify' ? 'Verifying…' : <><CheckCircle2 size={18}/> Verify & Sign In</>}
+          </button>
+          <button type="button" onClick={() => { setPhoneStep('input'); setOtp(''); setError(''); }}
+            className="w-full text-center text-xs text-gray-400 hover:text-gray-200 transition-colors">
+            ← Change number / resend
+          </button>
+        </form>
+      )}
+
+      {/* ── Email + Password ── */}
+      {tab === 'email' && (
+        <form onSubmit={handleEmailPassword} className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-gray-300 mb-1.5">Email</label>
             <div className="relative">
@@ -137,13 +203,13 @@ export default function LoginForm({ locale }: Props) {
           {error && <p className="text-red-400 text-sm">{error}</p>}
           <button type="submit" disabled={!!loading}
             className="w-full flex items-center justify-center gap-2 py-3 bg-saffron-500 hover:bg-saffron-600 disabled:opacity-60 text-white font-semibold rounded-xl transition-colors">
-            {loading === 'password' ? 'Signing in…' : <><ArrowRight size={18}/> Sign In</>}
+            {loading === 'email' ? 'Signing in…' : <><ArrowRight size={18}/> Sign In</>}
           </button>
         </form>
       )}
 
-      {/* Magic Link */}
-      {mode === 'magic' && (
+      {/* ── Magic Link ── */}
+      {tab === 'magic' && !magicSent && (
         <form onSubmit={handleMagicLink} className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-gray-300 mb-1.5">Email</label>
@@ -159,12 +225,23 @@ export default function LoginForm({ locale }: Props) {
             className="w-full flex items-center justify-center gap-2 py-3 bg-saffron-500 hover:bg-saffron-600 disabled:opacity-60 text-white font-semibold rounded-xl transition-colors">
             {loading === 'magic' ? 'Sending…' : <><ArrowRight size={18}/> Send Magic Link</>}
           </button>
-          <p className="text-xs text-gray-500 text-center">No password needed — we email you a secure one-time link.</p>
+          <p className="text-xs text-gray-500 text-center">We'll email you a secure one-time sign-in link.</p>
         </form>
       )}
 
+      {tab === 'magic' && magicSent && (
+        <div className="text-center space-y-3">
+          <CheckCircle2 size={40} className="text-teal-400 mx-auto" />
+          <p className="text-white font-semibold">Check your inbox</p>
+          <p className="text-gray-300 text-sm">Magic link sent to <span className="text-white">{email}</span>. Expires in 1 hour.</p>
+          <button onClick={() => setMagicSent(false)} className="text-teal-400 text-sm hover:text-teal-300 underline">
+            Try again
+          </button>
+        </div>
+      )}
+
       {/* Sign up link */}
-      <p className="text-center text-xs text-gray-400 pt-1">
+      <p className="text-center text-xs text-gray-400 pt-1 border-t border-white/10">
         New here?{' '}
         <Link href={`/${locale}/members/signup`} className="text-teal-400 hover:text-teal-300 underline font-medium">
           Create an account
