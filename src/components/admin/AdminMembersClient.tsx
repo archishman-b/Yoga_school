@@ -6,6 +6,7 @@ import { UserPlus, Upload, Pencil, Trash2, AlertTriangle, Search, X } from 'luci
 import AdminMemberDrawer from '@/components/admin/AdminMemberDrawer';
 import ApproveToggle from '@/components/admin/ApproveToggle';
 import type { MemberFormData } from '@/components/admin/AdminMemberForm';
+import { cmToFeetInches } from '@/components/admin/AdminMemberForm';
 
 // ── Types ────────────────────────────────────────────────────────────────────
 type Member     = Record<string, unknown>;
@@ -39,8 +40,34 @@ function FeePill({ status }: { status?: string }) {
   );
 }
 
+// Known checkbox options (must match AdminMemberForm.tsx)
+const MEDICAL_OPTIONS = [
+  'Diabetes', 'Hypertension', 'Heart Disease', 'Thyroid Disorder',
+  'Asthma / Respiratory Issues', 'Arthritis', 'Osteoporosis', 'Kidney Disease',
+];
+const AILMENT_OPTIONS_LIST = [
+  'Lower Back Pain', 'Neck / Cervical Pain', 'Knee Pain', 'Shoulder Pain',
+  'Sciatica', 'Migraine / Headaches', 'Anxiety / Stress', 'Digestive Issues',
+  'Insomnia', 'Naval Displacement',
+];
+
+function splitConditions(raw: string, knownOptions: string[]): { list: string[]; other: string } {
+  const parts  = raw.split(',').map(s => s.trim()).filter(Boolean);
+  const list   = parts.filter(p => knownOptions.includes(p));
+  const others = parts.filter(p => !knownOptions.includes(p));
+  return { list, other: others.join(', ') };
+}
+
 function profileToForm(m: Member): Partial<MemberFormData> {
   const str = (v: unknown) => (v != null ? String(v) : '');
+
+  // Height: convert cm → feet & inches
+  const { ft, in: inches } = cmToFeetInches(m.height_cm as number | null);
+
+  // Medical conditions: split stored comma-separated value → list + other
+  const { list: medList, other: medOther } = splitConditions(str(m.medical_conditions), MEDICAL_OPTIONS);
+  const { list: ailList, other: ailOther } = splitConditions(str(m.ailments), AILMENT_OPTIONS_LIST);
+
   return {
     full_name:                str(m.full_name),
     phone:                    str(m.phone),
@@ -52,18 +79,21 @@ function profileToForm(m: Member): Partial<MemberFormData> {
     marital_status:           str(m.marital_status),
     mother_tongue:            str(m.mother_tongue),
     education:                str(m.education),
-    height_cm:                m.height_cm != null ? String(m.height_cm) : '',
+    height_ft:                ft,
+    height_in:                inches,
     weight_kg:                m.weight_kg != null ? String(m.weight_kg) : '',
     diet_preference:          str(m.diet_preference),
     emergency_contact:        str(m.emergency_contact),
     preferred_language:       str(m.preferred_language) || 'en',
     joined_date:              str(m.joined_date),
     course_interest:          str(m.course_interest),
-    medical_conditions:       str(m.medical_conditions),
+    medical_conditions_list:  medList,
+    medical_conditions_other: medOther,
     cardiovascular_conditions: str(m.cardiovascular_conditions),
     previous_yoga:            Boolean(m.previous_yoga),
     doctor_referral:          Boolean(m.doctor_referral),
-    ailments:                 str(m.ailments),
+    ailments_list:            ailList,
+    ailments_other:           ailOther,
     naval_assessment_result:  str(m.naval_assessment_result),
   };
 }
