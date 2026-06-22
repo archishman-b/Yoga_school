@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server';
-import { createServerClient } from '@supabase/ssr';
-import { cookies } from 'next/headers';
+import { createClient } from '@supabase/supabase-js';
 
 /**
  * POST /api/auth/member-login
@@ -8,9 +7,18 @@ import { cookies } from 'next/headers';
  * Looks up a member by their Member ID (e.g. "NYT-3841") and returns the
  * internal fake email so the client can call signInWithPassword.
  *
- * We never return the fake email pattern for IDs that don't exist — so this
- * route acts as a guard against random guessing.
+ * Uses the SERVICE ROLE key for the lookup so RLS doesn't block the
+ * unauthenticated read — the user isn't logged in yet at this point.
  */
+
+function getAdminClient() {
+  return createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!,
+    { auth: { autoRefreshToken: false, persistSession: false } },
+  );
+}
+
 export async function POST(request: Request) {
   let body: { member_id?: string; password?: string };
   try {
@@ -27,31 +35,31 @@ export async function POST(request: Request) {
   else if (/^NYT\d{4}$/.test(raw)) memberId = `NYT-${raw.slice(3)}`;
 
   if (!/^NYT-\d{4}$/.test(memberId)) {
-    return NextResponse.json({ error: 'Invalid Member ID format. Expected NYT-XXXX (e.g. NYT-3841).' }, { status: 400 });
+    return NextResponse.json(
+      { error: 'Invalid Member ID format. Expected NYT-XXXX (e.g. NYT-3841).' },
+      { status: 400 },
+    );
   }
 
   if (!body.password || body.password.length < 4) {
     return NextResponse.json({ error: 'Password is required.' }, { status: 400 });
   }
 
-  // Verify the member_id actually exists (don't leak fake-email pattern for random IDs)
-  const cookieStore = cookies();
-  const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    { cookies: { getAll: () => cookieStore.getAll(), setAll: () => {} } },
-  );
-
-  const { count } = await supabase
+  // Use service role to bypass RLS — user is not authenticated yet
+  const admin = getAdminClient();
+  const { count } = await admin
     .from('profiles')
     .select('id', { count: 'exact', head: true })
     .eq('member_id', memberId);
 
   if ((count ?? 0) === 0) {
-    return NextResponse.json({ error: 'Member ID not found. Please check with your teacher.' }, { status: 404 });
+    return NextResponse.json(
+      { error: 'Member ID not found. Please check with your teacher.' },
+      { status: 404 },
+    );
   }
 
-  // Derive fake email — deterministic mapping: NYT-3841 → nyt3841@nibedita.yoga
+  // Derive fake email — deterministic: NYT-3841 → nyt3841@nibedita.yoga
   const fakeEmail = memberId.replace('NYT-', 'nyt').toLowerCase() + '@nibedita.yoga';
 
   return NextResponse.json({ ok: true, email: fakeEmail });
