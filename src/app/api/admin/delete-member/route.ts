@@ -25,45 +25,32 @@ async function verifyAdmin(): Promise<boolean> {
   return profile?.role === 'admin';
 }
 
-// Enum/constrained columns — empty string must become null
-const ENUM_COLS = new Set([
-  'gender', 'marital_status', 'diet_preference',
-  'naval_assessment_result', 'preferred_language',
-]);
-
-export async function PATCH(request: Request) {
+/**
+ * POST /api/admin/delete-member
+ * Body: { id: string }  — the auth user UUID
+ *
+ * Deletes the Supabase auth user (which cascades to profiles via FK or trigger),
+ * then removes the profile row explicitly as a safety net.
+ */
+export async function POST(request: Request) {
   if (!(await verifyAdmin())) {
     return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
   }
 
-  let body: Record<string, unknown>;
+  let body: { id?: string };
   try { body = await request.json(); }
   catch { return NextResponse.json({ error: 'Invalid JSON' }, { status: 400 }); }
 
-  const { id, ...fields } = body;
-  if (!id || typeof id !== 'string') {
-    return NextResponse.json({ error: 'id (user UUID) is required' }, { status: 400 });
-  }
-
-  // Coerce fields
-  if (fields.height_cm !== undefined) fields.height_cm = fields.height_cm ? parseFloat(fields.height_cm as string) : null;
-  if (fields.weight_kg !== undefined) fields.weight_kg = fields.weight_kg ? parseFloat(fields.weight_kg as string) : null;
-
-  // Build clean update object — empty strings become null (critical for enum cols)
-  const clean: Record<string, unknown> = {};
-  for (const [k, v] of Object.entries(fields)) {
-    if (v === undefined) continue;
-    if (v === '' || (ENUM_COLS.has(k) && !v)) clean[k] = null;
-    else clean[k] = v;
-  }
-
-  // Never allow role escalation or member_id change
-  delete clean.role;
-  delete clean.member_id;
+  if (!body.id) return NextResponse.json({ error: 'id is required' }, { status: 400 });
 
   const admin = getAdminClient();
-  const { error } = await admin.from('profiles').update(clean).eq('id', id);
 
+  // 1. Delete profile row first (in case FK constraint blocks auth deletion)
+  await admin.from('profiles').delete().eq('id', body.id);
+
+  // 2. Delete the auth user — this removes them from Supabase Auth entirely
+  const { error } = await admin.auth.admin.deleteUser(body.id);
   if (error) return NextResponse.json({ error: error.message }, { status: 500 });
+
   return NextResponse.json({ ok: true });
 }
