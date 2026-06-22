@@ -10,7 +10,7 @@ const blank = () => ({
   timing:           '',
   days:             'Mon–Sat',
   mode:             'offline' as 'online' | 'offline',
-  fee_monthly:      200,
+  fee_monthly:      0,
   display_fill_pct: 40,
   capacity:         30,
   status:           'active',

@@ -62,7 +62,7 @@ export default async function BatchesPage({ params: { locale } }: Props) {
       <div>
         <h1 className="text-2xl font-bold text-ink">Batches</h1>
         <p className="text-ink/55 text-sm mt-1">
-          Monthly fee: <span className="font-semibold text-ink/80">₹200</span> · You can be enrolled in up to <span className="font-semibold text-ink/80">{maxEnrollments}</span> {maxEnrollments === 1 ? 'batch' : 'batches'} at a time.
+          You can be enrolled in up to <span className="font-semibold text-ink/80">{maxEnrollments}</span> {maxEnrollments === 1 ? 'batch' : 'batches'} at a time.
         </p>
       </div>
 
@@ -140,7 +140,7 @@ export default async function BatchesPage({ params: { locale } }: Props) {
                           <AvailabilityPill pct={batch.display_fill_pct ?? 40} />
 
                           <div className="flex items-center justify-between pt-1">
-                            <span className="text-sm text-ink/55">₹{batch.fee_monthly ?? 200}/mo</span>
+                            <span className="text-sm text-ink/55">{batch.timing}</span>
                             {isEnrolled ? (
                               <RollOffToggle
                                 enrollmentId={enrollment.id}

@@ -41,7 +41,7 @@ export default function BatchEditor({ batch }: Props) {
   const [form, setForm] = useState({
     timing:           batch.timing       ?? '',
     days:             batch.days         ?? '',
-    fee_monthly:      batch.fee_monthly  ?? 200,
+    fee_monthly:      batch.fee_monthly  ?? 0,
     display_fill_pct: batch.display_fill_pct ?? 40,
     capacity:         batch.capacity     ?? 30,
     status:           batch.status       ?? 'active',

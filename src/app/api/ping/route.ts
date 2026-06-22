@@ -39,7 +39,7 @@ export async function GET(request: Request) {
     .filter((e: any) => !existingIds.has(e.member_id))
     .map((e: any) => ({
       member_id: e.member_id,
-      amount: (e.batches as any)?.fee_monthly ?? 200,
+      amount: (e.batches as any)?.fee_monthly ?? null,
       month,
       due_date: `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-10`,
       status: 'pending',
