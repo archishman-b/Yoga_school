@@ -2,8 +2,12 @@
 
 import { useState } from 'react';
 import { createClient } from '@/lib/supabase/client';
-import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+
+// Hard-navigate so the server re-reads the auth cookie after sign-in
+function goToMembers(locale: string) {
+  window.location.href = `/${locale}/members`;
+}
 import { Mail, Lock, Eye, EyeOff, ArrowRight, CheckCircle2, Phone, Shield, Hash } from 'lucide-react';
 
 type Props = { locale: string };
@@ -22,7 +26,6 @@ function GoogleIcon() {
 }
 
 export default function LoginForm({ locale }: Props) {
-  const router = useRouter();
   const [tab,       setTab]       = useState<Tab>('phone');
   const [phone,     setPhone]     = useState('');
   const [phoneStep, setPhoneStep] = useState<PhoneStep>('input');
@@ -74,8 +77,7 @@ export default function LoginForm({ locale }: Props) {
     });
     setLoading(null);
     if (err) { setError(err.message); return; }
-    router.push(`/${locale}/members`);
-    router.refresh();
+    goToMembers(locale);
   };
 
   const handleEmailPassword = async (e: React.FormEvent) => {
@@ -84,8 +86,7 @@ export default function LoginForm({ locale }: Props) {
     const { error: err } = await createClient().auth.signInWithPassword({ email, password });
     setLoading(null);
     if (err) { setError(err.message); return; }
-    router.push(`/${locale}/members`);
-    router.refresh();
+    goToMembers(locale);
   };
 
   const handleMagicLink = async (e: React.FormEvent) => {
@@ -127,8 +128,7 @@ export default function LoginForm({ locale }: Props) {
       setError('Incorrect password. Please try again or ask your teacher to reset it.');
       return;
     }
-    router.push(`/${locale}/members`);
-    router.refresh();
+    goToMembers(locale);
   };
 
   const switchTab = (t: Tab) => {
