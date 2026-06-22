@@ -3,7 +3,8 @@ import { createClient } from '@/lib/supabase/server';
 import ProfileForm from '@/components/members/ProfileForm';
 import RollOffToggle from '@/components/members/RollOffToggle';
 import TestimonialForm from '@/components/members/TestimonialForm';
-import { Wifi, Building2, Clock, CheckCircle2, AlertCircle, XCircle, MessageSquareQuote } from 'lucide-react';
+import DownloadProfileCard from '@/components/members/DownloadProfileCard';
+import { Wifi, Building2, Clock, CheckCircle2, AlertCircle, XCircle, MessageSquareQuote, CreditCard } from 'lucide-react';
 import type { Metadata } from 'next';
 
 export const dynamic = 'force-dynamic';
@@ -45,6 +46,22 @@ export default async function ProfilePage({ params: { locale } }: Props) {
       </div>
 
       <ProfileForm profile={profile} locale={locale} />
+
+      {/* ── Admission Card Download ── */}
+      <div className="bg-cream rounded-card border border-teal-600/10 shadow-card overflow-hidden">
+        <div className="px-6 py-4 border-b border-teal-600/10 flex items-center gap-2">
+          <CreditCard size={18} className="text-teal-600" />
+          <div>
+            <h2 className="font-semibold text-ink">Admission Card</h2>
+            <p className="text-xs text-ink/40 mt-0.5">
+              Download your membership card as an image to keep an offline copy or share on WhatsApp.
+            </p>
+          </div>
+        </div>
+        <div className="px-6 py-5">
+          <DownloadProfileCard profile={profile} />
+        </div>
+      </div>
 
       {/* Enrollments + Roll-off */}
       {enrollments && enrollments.length > 0 && (

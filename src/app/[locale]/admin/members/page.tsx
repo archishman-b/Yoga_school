@@ -1,5 +1,6 @@
 import { createClient } from '@/lib/supabase/server';
 import ApproveToggle from '@/components/admin/ApproveToggle';
+import AdminMembersClient from '@/components/admin/AdminMembersClient';
 import { AlertTriangle } from 'lucide-react';
 
 type Props = { params: { locale: string } };
@@ -24,28 +25,24 @@ function FeePill({ status }: { status?: string }) {
 
 export default async function AdminMembersPage({ params: { locale } }: Props) {
   const supabase = createClient();
-  const currentMonth = new Date().toISOString().slice(0, 7); // "2024-06"
+  const currentMonth = new Date().toISOString().slice(0, 7);
 
-  // All members (active + rolled off, excludes cancelled)
   const { data: members } = await supabase
     .from('profiles')
     .select('*')
     .eq('role', 'member')
     .order('full_name');
 
-  // All enrollments (active + paused, not cancelled)
   const { data: enrollments } = await supabase
     .from('enrollments')
     .select('*, batches(id, timing, mode, batch_code)')
     .neq('status', 'cancelled');
 
-  // Current month fee records
   const { data: feeRecords } = await supabase
     .from('fee_records')
     .select('*')
     .eq('month', currentMonth);
 
-  // Index by member_id
   const enrollmentsByMember = new Map<string, any[]>();
   for (const e of enrollments ?? []) {
     if (!enrollmentsByMember.has(e.member_id)) enrollmentsByMember.set(e.member_id, []);
@@ -54,33 +51,18 @@ export default async function AdminMembersPage({ params: { locale } }: Props) {
   const feeByMember = new Map<string, any>();
   for (const f of feeRecords ?? []) feeByMember.set(f.member_id, f);
 
-  const total    = members?.length ?? 0;
-  const active   = members?.filter(m => (enrollmentsByMember.get(m.id) ?? []).some((e: any) => e.status === 'active')).length ?? 0;
-  const rolledOff = total - active;
+  const memberList = members ?? [];
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold text-gray-900">Member Roster</h1>
-          <p className="text-gray-500 text-sm mt-1">
-            {total} total · {active} active · {rolledOff} rolled off
-          </p>
-        </div>
-      </div>
+    <AdminMembersClient locale={locale} members={memberList}>
 
-      {/* Summary chips */}
-      <div className="flex flex-wrap gap-2 text-sm">
-        {['All', 'Active', 'Rolled Off'].map(f => (
-          <span key={f} className="px-3 py-1 rounded-full bg-gray-100 text-gray-600 font-medium">{f}</span>
-        ))}
-      </div>
-
+      {/* ── Member table (server-rendered) ── */}
       <div className="card overflow-x-auto">
-        <table className="w-full text-sm min-w-[860px]">
+        <table className="w-full text-sm min-w-[900px]">
           <thead>
             <tr className="bg-gray-50 border-b border-gray-100 text-xs text-gray-500 uppercase tracking-wide">
               <th className="text-left px-5 py-3 font-medium">Member</th>
+              <th className="text-left px-4 py-3 font-medium">ID</th>
               <th className="text-left px-4 py-3 font-medium">Gender / Age</th>
               <th className="text-left px-4 py-3 font-medium">Phone</th>
               <th className="text-left px-4 py-3 font-medium">Batches</th>
@@ -91,7 +73,7 @@ export default async function AdminMembersPage({ params: { locale } }: Props) {
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-50">
-            {(members ?? []).map((m: any) => {
+            {memberList.map((m: any) => {
               const memberEnrolments = enrollmentsByMember.get(m.id) ?? [];
               const hasActive = memberEnrolments.some((e: any) => e.status === 'active');
               const fee = feeByMember.get(m.id);
@@ -104,7 +86,6 @@ export default async function AdminMembersPage({ params: { locale } }: Props) {
 
               return (
                 <tr key={m.id} className={`hover:bg-gray-50/50 transition-colors ${!hasActive ? 'opacity-60' : ''}`}>
-                  {/* Name + email */}
                   <td className="px-5 py-3">
                     <div className="flex items-center gap-2.5">
                       {m.photo_url
@@ -118,43 +99,32 @@ export default async function AdminMembersPage({ params: { locale } }: Props) {
                       </div>
                     </div>
                   </td>
-
-                  {/* Gender / Age */}
+                  <td className="px-4 py-3">
+                    {m.member_id
+                      ? <span className="font-mono text-xs font-bold text-teal-700 bg-teal-50 px-2 py-0.5 rounded">{m.member_id}</span>
+                      : <span className="text-gray-300 text-xs">—</span>}
+                  </td>
                   <td className="px-4 py-3 text-gray-600 text-xs">
                     {genderLabel[m.gender] ?? '—'} {age !== null ? `· ${age}y` : ''}
                   </td>
-
-                  {/* Phone */}
                   <td className="px-4 py-3 text-gray-500 text-xs">{m.phone ?? '—'}</td>
-
-                  {/* Batches */}
                   <td className="px-4 py-3">
                     <div className="flex flex-wrap gap-1">
                       {memberEnrolments.length === 0
                         ? <span className="text-gray-300 text-xs">None</span>
                         : memberEnrolments.map((e: any) => (
                           <span key={e.id} className={`px-1.5 py-0.5 rounded text-xs font-mono font-medium ${
-                            e.status === 'active'
-                              ? 'bg-teal-50 text-teal-700'
-                              : 'bg-gray-100 text-gray-400 line-through'
+                            e.status === 'active' ? 'bg-teal-50 text-teal-700' : 'bg-gray-100 text-gray-400 line-through'
                           }`}>
                             {e.batches?.batch_code ?? e.batches?.timing ?? '—'}
                           </span>
                         ))}
                     </div>
                   </td>
-
-                  {/* Joined */}
                   <td className="px-4 py-3 text-gray-400 text-xs">
                     {m.joined_date ? new Date(m.joined_date).toLocaleDateString('en-IN', { day:'numeric', month:'short', year:'2-digit' }) : '—'}
                   </td>
-
-                  {/* Fee */}
-                  <td className="px-4 py-3 text-center">
-                    <FeePill status={fee?.status} />
-                  </td>
-
-                  {/* Health flag */}
+                  <td className="px-4 py-3 text-center"><FeePill status={fee?.status} /></td>
                   <td className="px-4 py-3 text-center">
                     {(m.medical_conditions || m.cardiovascular_conditions || m.doctor_referral)
                       ? <span title={[m.medical_conditions, m.cardiovascular_conditions].filter(Boolean).join(' · ')}
@@ -163,8 +133,6 @@ export default async function AdminMembersPage({ params: { locale } }: Props) {
                         </span>
                       : <span className="text-gray-200 text-xs">✓</span>}
                   </td>
-
-                  {/* Active toggle */}
                   <td className="px-4 py-3 text-center">
                     <ApproveToggle memberId={m.id} currentStatus={m.status ?? 'active'} />
                   </td>
@@ -173,15 +141,13 @@ export default async function AdminMembersPage({ params: { locale } }: Props) {
             })}
           </tbody>
         </table>
-        {(!members || members.length === 0) && (
-          <p className="px-5 py-8 text-sm text-gray-400 text-center">No members yet.</p>
+        {memberList.length === 0 && (
+          <p className="px-5 py-8 text-sm text-gray-400 text-center">No members yet. Use "Add Member" or "Bulk Import" to get started.</p>
         )}
       </div>
 
-      {/* Health information detail panel (For Office Use) */}
-      {(members ?? []).some((m: any) =>
-        m.medical_conditions || m.cardiovascular_conditions || m.ailments || m.doctor_referral
-      ) && (
+      {/* ── Health information panel ── */}
+      {memberList.some((m: any) => m.medical_conditions || m.cardiovascular_conditions || m.ailments || m.doctor_referral) && (
         <div className="card p-5 space-y-4">
           <h2 className="font-semibold text-gray-900 text-sm flex items-center gap-2">
             <AlertTriangle size={15} className="text-amber-500" /> Health Information on File
@@ -191,6 +157,7 @@ export default async function AdminMembersPage({ params: { locale } }: Props) {
               <thead>
                 <tr className="text-xs text-gray-400 uppercase tracking-wide border-b border-gray-100">
                   <th className="text-left pb-2 pr-4 font-medium">Member</th>
+                  <th className="text-left pb-2 pr-4 font-medium">ID</th>
                   <th className="text-left pb-2 pr-4 font-medium">Health Conditions</th>
                   <th className="text-left pb-2 pr-4 font-medium">Cardiovascular</th>
                   <th className="text-center pb-2 pr-4 font-medium">Dr. Ref.</th>
@@ -200,12 +167,17 @@ export default async function AdminMembersPage({ params: { locale } }: Props) {
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-50">
-                {(members ?? [])
+                {memberList
                   .filter((m: any) => m.medical_conditions || m.cardiovascular_conditions || m.ailments || m.doctor_referral)
                   .map((m: any) => (
                   <tr key={m.id} className="hover:bg-gray-50/50">
                     <td className="py-2.5 pr-4 font-medium text-gray-800 w-36">{m.full_name ?? m.email}</td>
-                    <td className="py-2.5 pr-4 text-gray-500 text-xs max-w-[180px]">{m.medical_conditions ?? '—'}</td>
+                    <td className="py-2.5 pr-4">
+                      {m.member_id
+                        ? <span className="font-mono text-xs text-teal-700">{m.member_id}</span>
+                        : <span className="text-gray-300 text-xs">—</span>}
+                    </td>
+                    <td className="py-2.5 pr-4 text-gray-500 text-xs max-w-[160px]">{m.medical_conditions ?? '—'}</td>
                     <td className="py-2.5 pr-4 text-xs">
                       {m.cardiovascular_conditions
                         ? <span className="px-1.5 py-0.5 bg-red-50 text-red-700 rounded">{m.cardiovascular_conditions}</span>
@@ -219,19 +191,16 @@ export default async function AdminMembersPage({ params: { locale } }: Props) {
                         ? <span className={`px-1.5 py-0.5 rounded font-medium ${m.naval_assessment_result === 'displaced' ? 'bg-amber-50 text-amber-700' : 'bg-green-50 text-green-700'}`}>
                             {m.naval_assessment_result}
                           </span>
-                        : <span className="text-gray-300 italic">Pending assessment</span>}
+                        : <span className="text-gray-300 italic">Pending</span>}
                     </td>
                   </tr>
                 ))}
               </tbody>
             </table>
           </div>
-          <p className="text-xs text-gray-400">
-            Naval assessment result and instructor notes are set by admin after the initial in-person assessment.
-            Use the Supabase dashboard or a future admin detail page to update these fields.
-          </p>
         </div>
       )}
-    </div>
+
+    </AdminMembersClient>
   );
 }

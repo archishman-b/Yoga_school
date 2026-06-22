@@ -3,20 +3,41 @@
 
 export type Profile = {
   id: string;
-  full_name: string | null;
-  phone: string | null;
-  email: string | null;
-  address: string | null;
-  photo_url: string | null;
-  emergency_contact: string | null;
-  preferred_language: 'en' | 'hi' | 'bn';
-  role: 'member' | 'admin';
-  status: 'active' | 'suspended';
-  joined_date: string | null;
-  gender: 'male' | 'female' | 'other' | 'prefer_not_to_say' | null;
-  date_of_birth: string | null;
-  medical_conditions: string | null;
-  created_at: string;
+  // ── Identity ───────────────────────────────────────────────────────────────
+  member_id:            string | null;  // e.g. "NYT-3841" — set by admin, used for ID-based login
+  full_name:            string | null;
+  phone:                string | null;
+  email:                string | null;
+  address:              string | null;
+  photo_url:            string | null;
+  emergency_contact:    string | null;
+  preferred_language:   'en' | 'hi' | 'bn';
+  role:                 'member' | 'admin';
+  status:               'active' | 'suspended';
+  joined_date:          string | null;
+  // ── Demographics ──────────────────────────────────────────────────────────
+  gender:               'male' | 'female' | 'other' | 'prefer_not_to_say' | null;
+  date_of_birth:        string | null;
+  guardian_name:        string | null;
+  occupation:           string | null;
+  marital_status:       'single' | 'married' | 'widowed' | 'divorced' | 'other' | null;
+  mother_tongue:        string | null;
+  education:            string | null;
+  // ── Physical ──────────────────────────────────────────────────────────────
+  height_cm:            number | null;
+  weight_kg:            number | null;
+  diet_preference:      'vegetarian' | 'non-vegetarian' | 'vegan' | 'other' | null;
+  // ── Health & medical ──────────────────────────────────────────────────────
+  medical_conditions:         string | null;
+  cardiovascular_conditions:  string | null;
+  previous_yoga:              boolean | null;
+  doctor_referral:            boolean | null;
+  ailments:                   string | null;   // therapeutic ailments text
+  naval_assessment_result:    'normal' | 'displaced' | null;  // set by admin after assessment
+  // ── Course interest ───────────────────────────────────────────────────────
+  course_interest:      string | null;
+  // ── Timestamps ────────────────────────────────────────────────────────────
+  created_at:           string;
 };
 
 export type Batch = {
@@ -104,7 +125,7 @@ export type Testimonial = {
   id: string;
   member_id: string;
   body: string;
-  rating: number | null;           // 1–5
+  rating: number | null;           // 1-5
   status: 'pending' | 'approved' | 'rejected';
   display_order: number | null;    // non-null = shown on landing page, value = sequence
   created_at: string;

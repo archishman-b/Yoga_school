@@ -1,61 +1,85 @@
-import { getTranslations } from 'next-intl/server';
+// Wellness guidelines from the school's official prospectus.
+// Water Drinking Protocol, Food Timing, Practice Rules, and Yogic Diet.
 
-export default async function WellnessGuide() {
-  const t = await getTranslations('wellness');
+const WATER_SCHEDULE = [
+  { time: 'Before leaving bed',         amount: '1 glass',  icon: '🌅' },
+  { time: 'One hour before breakfast',  amount: '1 glass',  icon: '☀️' },
+  { time: 'One hour after breakfast',   amount: '1 glass',  icon: '🥣' },
+  { time: 'One hour before lunch',      amount: '1 glass',  icon: '🌞' },
+  { time: 'One hour after lunch',       amount: '1 glass',  icon: '🍱' },
+  { time: 'One hour before dinner',     amount: '1 glass',  icon: '🌆' },
+  { time: 'One hour after dinner',      amount: '1 glass',  icon: '🌙' },
+];
 
-  const WATER_SCHEDULE = [
-    { time: t('waterTime1'), amount: t('water1Glass'), icon: '🌅' },
-    { time: t('waterTime2'), amount: t('water1Glass'), icon: '☀️' },
-    { time: t('waterTime3'), amount: t('water1Glass'), icon: '🥣' },
-    { time: t('waterTime4'), amount: t('water1Glass'), icon: '🌞' },
-    { time: t('waterTime5'), amount: t('water1Glass'), icon: '🍱' },
-    { time: t('waterTime6'), amount: t('water1Glass'), icon: '🌆' },
-    { time: t('waterTime7'), amount: t('water1Glass'), icon: '🌙' },
-  ];
+const FOOD_TIMING = [
+  { meal: 'Breakfast',          time: '6:00 AM – 8:00 AM',   icon: '🥣' },
+  { meal: 'Lunch',              time: '12:00 noon – 1:00 PM', icon: '🍱' },
+  { meal: 'Light Refreshment',  time: '5:00 PM – 6:00 PM',   icon: '🫖' },
+  { meal: 'Dinner',             time: '8:00 PM – 9:00 PM',   icon: '🍽️' },
+];
 
-  const FOOD_TIMING = [
-    { meal: t('mealBreakfast'),    time: t('mealBreakfastTime'),    icon: '🥣' },
-    { meal: t('mealLunch'),        time: t('mealLunchTime'),        icon: '🍱' },
-    { meal: t('mealRefreshment'),  time: t('mealRefreshmentTime'),  icon: '🫖' },
-    { meal: t('mealDinner'),       time: t('mealDinnerTime'),       icon: '🍽️' },
-  ];
+const PRACTICE_RULES = [
+  'Practise selected exercises under expert guidance for at least 3–5 days before independent practice.',
+  'Duration depends on individual capacity — never force or rush your practice.',
+  'If you can hold a posture comfortably for more than two minutes, a single round is sufficient.',
+  'Practise on a clean, flat, comfortable surface.',
+  'Never practise in a hurried or distracted state.',
+  'Your practice space should be free from dust, smoke, and disturbance.',
+  'All asanas and yogic exercises must be done on an empty stomach.',
+  'Asanas may be performed 4 hours after a meal.',
+  'We never force progress — each body finds its own pace.',
+  'Women are advised to rest from physical practice during menstruation.',
+  'Cross-ventilation is important during asana practice.',
+  'The Yamas and Niyamas — yoga\'s ethical foundation — are observed as part of your practice.',
+  'Avoid smoking, alcohol, and mental tension.',
+  'A vegetarian diet supports faster and deeper results.',
+  'Your results are a reflection of your sincerity and devotion to practice.',
+];
 
-  const PRACTICE_RULES = [
-    t('practiceRule1'),  t('practiceRule2'),  t('practiceRule3'),
-    t('practiceRule4'),  t('practiceRule5'),  t('practiceRule6'),
-    t('practiceRule7'),  t('practiceRule8'),  t('practiceRule9'),
-    t('practiceRule10'), t('practiceRule11'), t('practiceRule12'),
-    t('practiceRule13'), t('practiceRule14'), t('practiceRule15'),
-  ];
+const FOOD_TYPES = [
+  {
+    type: 'Sattvic Foods',
+    subtitle: 'Pure, fresh, and life-giving',
+    desc: 'The ideal diet for yoga students. Light, fresh, and nourishing.',
+    examples: 'Whole grains, fresh fruits and vegetables, pure fruit juices, milk, butter, cheese, nuts, seeds, sprouted seeds, honey',
+    colour: 'bg-green-50 border-green-200',
+    badge: 'bg-green-100 text-green-800',
+    icon: '🌿',
+    ratio: '2/3 fruits & vegetables + 1/3 cereals (rice & roti)',
+  },
+  {
+    type: 'Rajasic Foods',
+    subtitle: 'Stimulating and overpowering to the senses',
+    desc: 'To be minimised. Stimulates the mind but disturbs the inner calm needed for practice.',
+    examples: 'Spicy foods, strong condiments, caffeinated drinks, excessive salt and sugar',
+    colour: 'bg-amber-50 border-amber-200',
+    badge: 'bg-amber-100 text-amber-800',
+    icon: '🌶️',
+    ratio: 'Minimise',
+  },
+  {
+    type: 'Tamasic Foods',
+    subtitle: 'Heavy, processed, and energy-depleting',
+    desc: 'To be avoided. Creates heaviness, lethargy, and a dull mind — incompatible with yoga.',
+    examples: 'Stale or reheated food, processed and packaged foods, alcohol, excessive meat',
+    colour: 'bg-red-50 border-red-200',
+    badge: 'bg-red-100 text-red-800',
+    icon: '⚠️',
+    ratio: 'Avoid',
+  },
+];
 
-  const FOOD_TYPES = [
-    {
-      type: t('dietSattvicType'), subtitle: t('dietSattvicSubtitle'),
-      desc: t('dietSattvicDesc'), examples: t('dietSattvicExamples'),
-      ratio: t('dietSattvicRatio'),
-      colour: 'bg-green-50 border-green-200', badge: 'bg-green-100 text-green-800', icon: '🌿',
-    },
-    {
-      type: t('dietRajasicType'), subtitle: t('dietRajasicSubtitle'),
-      desc: t('dietRajasicDesc'), examples: t('dietRajasicExamples'),
-      ratio: t('dietRajasicRatio'),
-      colour: 'bg-amber-50 border-amber-200', badge: 'bg-amber-100 text-amber-800', icon: '🌶️',
-    },
-    {
-      type: t('dietTamasicType'), subtitle: t('dietTamasicSubtitle'),
-      desc: t('dietTamasicDesc'), examples: t('dietTamasicExamples'),
-      ratio: t('dietTamasicRatio'),
-      colour: 'bg-red-50 border-red-200', badge: 'bg-red-100 text-red-800', icon: '⚠️',
-    },
-  ];
-
+export default function WellnessGuide() {
   return (
     <div className="space-y-10">
 
       {/* ── Section intro ── */}
       <div>
-        <h1 className="text-2xl font-bold text-ink">{t('heading')}</h1>
-        <p className="text-ink/55 text-sm mt-1">{t('subheading')}</p>
+        <h1 className="text-2xl font-bold text-ink">Wellness Guidelines</h1>
+        <p className="text-ink/55 text-sm mt-1">
+          Official guidelines from the school's prospectus — your complete guide to supporting
+          your practice with the right habits.
+        </p>
       </div>
 
       {/* ── Siva Samhita quote ── */}
@@ -63,9 +87,10 @@ export default async function WellnessGuide() {
         <div className="absolute top-4 left-6 text-teal-600 text-8xl font-serif leading-none opacity-30 select-none">"</div>
         <div className="relative z-10">
           <p className="text-xl sm:text-2xl font-light italic leading-relaxed mb-4">
-            {t('sivaQuote')}
+            Let the yogic eat moderately and abstemiously, otherwise, however clever, he cannot gain
+            success.
           </p>
-          <p className="text-teal-300 font-semibold text-sm">{t('sivaAttrib')}</p>
+          <p className="text-teal-300 font-semibold text-sm">— Siva Samhita</p>
         </div>
       </div>
 
@@ -74,11 +99,14 @@ export default async function WellnessGuide() {
         <div className="px-6 py-4 border-b border-teal-600/10 bg-blue-50">
           <h2 className="font-semibold text-ink flex items-center gap-2">
             <span className="text-xl">💧</span>
-            {t('waterHeading')}
+            Daily Water Drinking Protocol
           </h2>
-          <p className="text-xs text-ink/55 mt-0.5">{t('waterSubheading')}</p>
+          <p className="text-xs text-ink/55 mt-0.5">
+            7 glasses per day at specific intervals — a cornerstone of the school's wellness approach
+          </p>
         </div>
         <div className="p-6">
+          {/* Visual timeline */}
           <div className="grid grid-cols-1 sm:grid-cols-7 gap-3">
             {WATER_SCHEDULE.map((w, i) => (
               <div key={i} className="relative">
@@ -97,6 +125,12 @@ export default async function WellnessGuide() {
               </div>
             ))}
           </div>
+          <p className="text-center text-sm text-blue-600 font-semibold mt-6">
+            Total: 7 glasses per day — at specific, timed intervals
+          </p>
+          <p className="text-center text-xs text-ink/40 mt-1">
+            This is not just "drink more water" — the timing is precise and intentional.
+          </p>
         </div>
       </div>
 
@@ -105,9 +139,11 @@ export default async function WellnessGuide() {
         <div className="px-6 py-4 border-b border-teal-600/10 bg-orange-50">
           <h2 className="font-semibold text-ink flex items-center gap-2">
             <span className="text-xl">🕐</span>
-            {t('foodTimingHeading')}
+            Recommended Meal Timing
           </h2>
-          <p className="text-xs text-ink/55 mt-0.5">{t('foodTimingSubheading')}</p>
+          <p className="text-xs text-ink/55 mt-0.5">
+            Aligned with the school's yoga schedule for maximum benefit
+          </p>
         </div>
         <div className="grid grid-cols-2 sm:grid-cols-4 divide-x divide-y sm:divide-y-0 divide-gray-100">
           {FOOD_TIMING.map(f => (
@@ -118,12 +154,21 @@ export default async function WellnessGuide() {
             </div>
           ))}
         </div>
+        <div className="px-6 py-3 bg-cream-dark/50 border-t border-teal-600/10">
+          <p className="text-xs text-ink/55">
+            <strong>Remember:</strong> Asanas must be practised on an empty stomach. Allow at least
+            4 hours after a meal before practice.
+          </p>
+        </div>
       </div>
 
-      {/* ── Yogic Diet ── */}
+      {/* ── Yogic Diet — 3 food types ── */}
       <div>
-        <h2 className="font-semibold text-ink text-lg mb-1">{t('dietHeading')}</h2>
-        <p className="text-sm text-ink/55 mb-5">{t('dietSubheading')}</p>
+        <h2 className="font-semibold text-ink text-lg mb-1">Yogic Diet Philosophy</h2>
+        <p className="text-sm text-ink/55 mb-5">
+          Yogic science classifies all food into three categories. What we eat nourishes the body —
+          but the essence of food also forms the mind.
+        </p>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
           {FOOD_TYPES.map(f => (
             <div key={f.type} className={`border-2 rounded-card p-5 space-y-3 ${f.colour}`}>
@@ -143,6 +188,10 @@ export default async function WellnessGuide() {
             </div>
           ))}
         </div>
+        <div className="mt-4 bg-green-50 border border-green-200 rounded-xl p-4 text-sm text-green-800">
+          <strong>Recommended ratio:</strong> 1/3 cereals (rice and roti) + 2/3 fruits and vegetables
+          — full of prana, a pure and moderated diet is the surest guarantee of physical and mental harmony.
+        </div>
       </div>
 
       {/* ── Practice Rules ── */}
@@ -150,9 +199,11 @@ export default async function WellnessGuide() {
         <div className="px-6 py-4 border-b border-teal-600/10">
           <h2 className="font-semibold text-ink flex items-center gap-2">
             <span className="text-xl">📋</span>
-            {t('practiceRulesHeading')}
+            Practice Guidelines
           </h2>
-          <p className="text-xs text-ink/55 mt-0.5">{t('practiceRulesSubheading')}</p>
+          <p className="text-xs text-ink/55 mt-0.5">
+            Official guidelines from the school's prospectus — please read carefully
+          </p>
         </div>
         <ul className="divide-y divide-gray-50">
           {PRACTICE_RULES.map((rule, i) => (

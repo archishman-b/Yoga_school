@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import { useTranslations } from 'next-intl';
 import { createClient } from '@/lib/supabase/client';
 import type { Batch } from '@/lib/supabase/types';
 import { cn } from '@/lib/utils';
@@ -13,12 +12,11 @@ type Props = {
   isEnrolled: boolean;
   memberId: string;
   locale: string;
-  compact?: boolean;
-  disabled?: boolean;
+  compact?: boolean;   // inline button only, no card wrapper
+  disabled?: boolean;  // batch full
 };
 
 export default function BatchEnrolCard({ batch, isEnrolled, memberId, locale, compact, disabled }: Props) {
-  const t = useTranslations('batches');
   const router = useRouter();
   const [status, setStatus] = useState<'idle' | 'loading' | 'done' | 'error'>(
     isEnrolled ? 'done' : 'idle'
@@ -41,7 +39,7 @@ export default function BatchEnrolCard({ batch, isEnrolled, memberId, locale, co
 
   const button = isDone ? (
     <div className="flex items-center gap-1.5 text-teal-600 text-sm font-medium">
-      <CheckCircle2 size={15} /> {t('enrolled')}
+      <CheckCircle2 size={15} /> Enrolled
     </div>
   ) : (
     <button
@@ -55,7 +53,7 @@ export default function BatchEnrolCard({ batch, isEnrolled, memberId, locale, co
         status === 'loading' && 'opacity-60 cursor-wait'
       )}
     >
-      {status === 'loading' ? t('enrolling') : disabled ? t('full') : t('enrol')}
+      {status === 'loading' ? 'Enrolling…' : disabled ? 'Full' : 'Enrol'}
     </button>
   );
 
@@ -66,6 +64,7 @@ export default function BatchEnrolCard({ batch, isEnrolled, memberId, locale, co
     </div>
   );
 
+  // Full card (legacy usage)
   return (
     <div className={cn('card p-5 flex flex-col gap-3', isEnrolled && 'border-teal-200 bg-teal-50/30')}>
       <div className="flex items-start justify-between">
