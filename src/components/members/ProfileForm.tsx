@@ -63,6 +63,7 @@ export default function ProfileForm({ profile: p, locale }: Props) {
 
   const [status, setStatus]             = useState<'idle'|'saving'|'saved'|'error'>('idle');
   const [photoPreview, setPhotoPreview] = useState<string|null>((p as any).photo_url);
+  const [photoError,  setPhotoError]   = useState<string|null>(null);
   const fileRef = useRef<HTMLInputElement>(null);
 
   const set = (name: string, value: any) =>
@@ -74,6 +75,8 @@ export default function ProfileForm({ profile: p, locale }: Props) {
   const handlePhotoChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
+    setPhotoError(null);
+    // Show local preview immediately
     const reader = new FileReader();
     reader.onload = () => setPhotoPreview(reader.result as string);
     reader.readAsDataURL(file);
@@ -81,10 +84,13 @@ export default function ProfileForm({ profile: p, locale }: Props) {
     const ext = file.name.split('.').pop();
     const path = `${p.id}/avatar.${ext}`;
     const { error } = await supabase.storage.from('profile-photos').upload(path, file, { upsert: true });
-    if (!error) {
-      const { data } = supabase.storage.from('profile-photos').getPublicUrl(path);
-      await supabase.from('profiles').update({ photo_url: data.publicUrl }).eq('id', p.id);
+    if (error) {
+      setPhotoError(`Upload failed: ${error.message}`);
+      return;
     }
+    const { data } = supabase.storage.from('profile-photos').getPublicUrl(path);
+    const { error: updateErr } = await supabase.from('profiles').update({ photo_url: data.publicUrl }).eq('id', p.id);
+    if (updateErr) setPhotoError(`Saved photo but couldn't update profile: ${updateErr.message}`);
   };
 
   const handleSave = async (e: React.FormEvent) => {
@@ -117,7 +123,8 @@ export default function ProfileForm({ profile: p, locale }: Props) {
           <div className="relative">
             <div className="w-20 h-20 rounded-full bg-gradient-to-br from-teal-200 to-teal-400 flex items-center justify-center text-3xl overflow-hidden">
               {photoPreview
-                ? <img src={photoPreview} alt="Profile" className="w-full h-full object-cover" />
+                ? <img src={photoPreview} alt="" className="w-full h-full object-cover"
+                    onError={() => setPhotoError('Could not load photo. The storage bucket may not be public.')} />
                 : '🧘'}
             </div>
             <button type="button" onClick={() => fileRef.current?.click()}
@@ -136,6 +143,9 @@ export default function ProfileForm({ profile: p, locale }: Props) {
             </p>
           </div>
         </div>
+        {photoError && (
+          <p className="mt-3 text-xs text-red-500">{photoError}</p>
+        )}
       </div>
 
       {/* ── Personal Details ── */}
