@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { X } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import { practicesBySlug, DEFAULT_PROGRAMME_MAPPINGS, type Practice } from '@/lib/data/practices';
 import PracticeCard from '@/components/library/PracticeCard';
 
@@ -22,10 +23,10 @@ type Props = {
 };
 
 export default function ProgrammeModal({ programme, locale, onClose }: Props) {
+  const t = useTranslations('programmeModal');
   const [mappedPractices, setMappedPractices] = useState<Practice[]>([]);
 
   useEffect(() => {
-    // Try to load mappings from Supabase; fall back to static defaults
     const loadMappings = async () => {
       try {
         const { createClient } = await import('@/lib/supabase/client');
@@ -43,10 +44,9 @@ export default function ProgrammeModal({ programme, locale, onClose }: Props) {
           return;
         }
       } catch {
-        // Supabase not available — fall through to static defaults
+        // fall through
       }
 
-      // Static defaults
       const slugs = DEFAULT_PROGRAMME_MAPPINGS[programme.id] ?? [];
       const practices = slugs
         .map((s) => practicesBySlug.get(s))
@@ -57,7 +57,6 @@ export default function ProgrammeModal({ programme, locale, onClose }: Props) {
     loadMappings();
   }, [programme.id]);
 
-  // Close on Escape key
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
     window.addEventListener('keydown', handleKey);
@@ -85,7 +84,7 @@ export default function ProgrammeModal({ programme, locale, onClose }: Props) {
           <button
             onClick={onClose}
             className="mt-0.5 p-2 rounded-full hover:bg-black/10 transition-colors shrink-0"
-            aria-label="Close"
+            aria-label={t('close')}
           >
             <X size={20} />
           </button>
@@ -95,21 +94,19 @@ export default function ProgrammeModal({ programme, locale, onClose }: Props) {
 
           {/* What to expect */}
           <div>
-            <h3 className="font-semibold text-ink mb-2 text-sm uppercase tracking-wide">What to Expect</h3>
+            <h3 className="font-semibold text-ink mb-2 text-sm uppercase tracking-wide">{t('whatToExpect')}</h3>
             <p className="text-ink/70 text-sm leading-relaxed">
-              Your Yogacharya will design a personalised sequence for you after an initial assessment.
-              The practices below are <em>illustrative</em> — the specific exercises recommended will
-              vary based on your current condition and goals.
+              {t('whatToExpectDesc')}
             </p>
           </div>
 
           {/* Suggested practices */}
           <div>
             <h3 className="font-semibold text-ink mb-3 text-sm uppercase tracking-wide">
-              Illustrative Practices
+              {t('illustrativePractices')}
             </h3>
             {mappedPractices.length === 0 ? (
-              <div className="py-8 text-center text-ink/40 text-sm">Loading practices…</div>
+              <div className="py-8 text-center text-ink/40 text-sm">{t('loadingPractices')}</div>
             ) : (
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {mappedPractices.map((p) => (
@@ -121,15 +118,14 @@ export default function ProgrammeModal({ programme, locale, onClose }: Props) {
               href={`/${locale}/library`}
               className="mt-3 inline-block text-teal-600 hover:underline text-sm"
             >
-              Browse the full practice library →
+              {t('browseLibrary')}
             </Link>
           </div>
 
           {/* Admission info */}
-          <div className="bg-saffron-50 border border-saffron-200 rounded-xl p-4 text-sm text-saffron-800">
-            <strong>Joining is simple.</strong> Fill out the online profile, attend an initial assessment session
-            with the Yogacharya, and begin in the batch that suits your schedule.
-          </div>
+          <div className="bg-saffron-50 border border-saffron-200 rounded-xl p-4 text-sm text-saffron-800"
+            dangerouslySetInnerHTML={{ __html: t.raw('admissionNote') }}
+          />
         </div>
 
         {/* Footer CTA */}
@@ -140,13 +136,13 @@ export default function ProgrammeModal({ programme, locale, onClose }: Props) {
             rel="noopener noreferrer"
             className="flex-1 py-2.5 px-4 bg-green-500 text-white rounded-full text-sm font-semibold text-center hover:bg-green-600 transition-colors"
           >
-            Enquire on WhatsApp
+            {t('enquireWhatsapp')}
           </a>
           <Link
             href={`/${locale}/members`}
             className="flex-1 py-2.5 px-4 bg-teal-600 text-white rounded-full text-sm font-semibold text-center hover:bg-teal-700 transition-colors"
           >
-            Register Online
+            {t('registerOnline')}
           </Link>
         </div>
       </div>

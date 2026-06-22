@@ -1,24 +1,26 @@
-// Replace GOOGLE_MAPS_EMBED_URL with your embed URL from:
-// Google Maps → Share → Embed a map → copy the src URL
+import { getTranslations } from 'next-intl/server';
+
 const GOOGLE_MAPS_EMBED_URL =
   'https://maps.google.com/maps?q=22.686103,88.347538&z=16&ie=UTF8&iwloc=&output=embed';
 
-export default function MapSection() {
+export default async function MapSection() {
+  const t = await getTranslations('map');
+
   return (
     <section className="py-24 bg-cream-dark/40">
       <div className="max-w-7xl mx-auto px-[clamp(18px,5vw,56px)]">
 
         {/* ── Section header ────────────────────────────────────────────────── */}
         <div className="text-center mb-12 reveal">
-          <span className="eyebrow">Find Us</span>
+          <span className="eyebrow">{t('eyebrow')}</span>
           <h2
             className="font-rozha font-normal text-ink"
             style={{ fontSize: 'clamp(26px, 3.5vw, 44px)' }}
           >
-            Come Visit the Studio
+            {t('heading')}
           </h2>
           <p className="text-ink/60 mt-3 leading-relaxed">
-            12/1, Debaipukur Road, P.O. Hindmotor, Dist. Hooghly, West Bengal — PIN 712 233
+            {t('address')}
           </p>
 
           {/* Contact pills */}

@@ -1,38 +1,28 @@
+import { getTranslations } from 'next-intl/server';
 import { Heart, Wind, Brain, Activity, Award, Users, BookOpen } from 'lucide-react';
 
-// ── Data ──────────────────────────────────────────────────────────────────────
-const BODY_SYSTEMS = [
-  { icon: Heart,    label: 'Circulatory System',  desc: 'Strengthens the heart and improves blood circulation' },
-  { icon: Wind,     label: 'Respiratory System',  desc: 'Deepens breathing capacity through pranayama' },
-  { icon: Activity, label: 'Digestive System',    desc: 'Tones abdominal organs and improves metabolism' },
-  { icon: Brain,    label: 'Excretory System',    desc: "Aids the body's natural detoxification processes" },
-];
+export default async function AboutSection() {
+  const t = await getTranslations('about');
 
-const HEALTH_DIMS = [
-  { label: 'Mental Well-being',  desc: 'Calm the mind. Build concentration, clarity, and emotional resilience.' },
-  { label: 'Physical Health',    desc: 'Strengthen muscles, joints, and the spine. Improve posture and flexibility.' },
-  { label: 'Social Well-being',  desc: 'Yoga belongs to everyone — all ages, professions, and backgrounds.' },
-];
+  const BODY_SYSTEMS = [
+    { icon: Heart,    label: t('sysCirculatoryLabel'), desc: t('sysCirculatoryDesc') },
+    { icon: Wind,     label: t('sysRespiratoryLabel'), desc: t('sysRespiratoryDesc') },
+    { icon: Activity, label: t('sysDigestiveLabel'),   desc: t('sysDigestiveDesc') },
+    { icon: Brain,    label: t('sysExcretoryLabel'),   desc: t('sysExcretoryDesc') },
+  ];
 
-const ACCESSIBILITY = [
-  {
-    icon: '🛏️',
-    title: 'No special space needed',
-    desc: 'Yoga can be practised in even the smallest space — Rekha Nath herself says: "Even on the own bed."',
-  },
-  {
-    icon: '👕',
-    title: 'No special clothing',
-    desc: 'Comfortable, loose clothing is all you need. No mat brand, no yoga pants required.',
-  },
-  {
-    icon: '🌱',
-    title: 'All levels welcome',
-    desc: 'Beginners, seniors, those with health conditions — our curriculum has a path for everyone.',
-  },
-];
+  const HEALTH_DIMS = [
+    { label: t('healthDimMentalLabel'),   desc: t('healthDimMentalDesc') },
+    { label: t('healthDimPhysicalLabel'), desc: t('healthDimPhysicalDesc') },
+    { label: t('healthDimSocialLabel'),   desc: t('healthDimSocialDesc') },
+  ];
 
-export default function AboutSection() {
+  const ACCESSIBILITY = [
+    { icon: '🛏️', title: t('accessSpaceTitle'),    desc: t('accessSpaceDesc') },
+    { icon: '👕', title: t('accessClothingTitle'), desc: t('accessClothingDesc') },
+    { icon: '🌱', title: t('accessLevelsTitle'),   desc: t('accessLevelsDesc') },
+  ];
+
   return (
     <section id="about" className="py-24 bg-cream">
       <div className="max-w-7xl mx-auto px-[clamp(18px,5vw,56px)] space-y-24">
@@ -42,23 +32,19 @@ export default function AboutSection() {
 
           {/* Left: text */}
           <div>
-            <span className="eyebrow">Our Story</span>
+            <span className="eyebrow">{t('eyebrow')}</span>
             <h2 className="font-rozha font-normal text-ink mb-6 leading-[1.1]"
                 style={{ fontSize: 'clamp(30px, 4.5vw, 52px)' }}>
-              Yoga for everyone.<br />
-              <span className="text-gradient-saffron">No special equipment.</span><br />
-              No prior experience.<br />
-              Just sincerity.
+              {t('headingLine1')}<br />
+              <span className="text-gradient-saffron">{t('headingHighlight')}</span><br />
+              {t('headingLine3')}<br />
+              {t('headingLine4')}
             </h2>
             <p className="text-ink/70 leading-relaxed text-lg mb-4">
-              Nibedita Yoga Training Centre was founded with a single conviction: that yoga belongs
-              to everyone — every profession, every age, every background. You need no special
-              clothing, no equipment, and no prior experience. Just the willingness to begin.
+              {t('schoolDesc1')}
             </p>
             <p className="text-ink/60 leading-relaxed">
-              Our practice works on every dimension of health simultaneously. The asanas strengthen
-              muscles and joints, tone the spine, and keep the skeletal system supple — while
-              working on the internal organs, glands, and nervous system.
+              {t('schoolDesc2')}
             </p>
           </div>
 
@@ -92,12 +78,11 @@ export default function AboutSection() {
           </span>
           <div className="relative z-10 max-w-3xl mx-auto text-center">
             <p className="text-xl sm:text-2xl font-light leading-relaxed italic mb-6">
-              Yoga is a complete science of life that originated in India many thousands of years
-              ago. It is the oldest system of personal development in the world.
+              {t('founderQuote')}
             </p>
             <div className="flex items-center justify-center gap-3">
               <span className="w-8 h-px bg-saffron-400/50 block" />
-              <p className="text-saffron-400 font-semibold text-sm tracking-wide">Rekha Nath, Founder</p>
+              <p className="text-saffron-400 font-semibold text-sm tracking-wide">{t('founderAttrib')}</p>
               <span className="w-8 h-px bg-saffron-400/50 block" />
             </div>
           </div>
@@ -106,14 +91,13 @@ export default function AboutSection() {
         {/* ── Four body systems ─────────────────────────────────────────────── */}
         <div className="reveal">
           <div className="text-center mb-12">
-            <span className="eyebrow">The Four Systems</span>
+            <span className="eyebrow">{t('fourSystemsEyebrow')}</span>
             <h2 className="font-rozha font-normal text-ink"
                 style={{ fontSize: 'clamp(26px, 3.5vw, 42px)' }}>
-              What our curriculum addresses
+              {t('fourSystemsHeading')}
             </h2>
             <p className="text-ink/60 mt-4 max-w-2xl mx-auto leading-relaxed">
-              Established to keep the body&apos;s four main systems fit, healthy, and strong — through
-              the integrated practice of asana, pranayama, and kriya.
+              {t('fourSystemsDesc')}
             </p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
@@ -146,9 +130,9 @@ export default function AboutSection() {
               />
               <div className="flex gap-3 text-center">
                 {[
-                  { icon: <Award size={16}/>, val: '26+', lbl: 'Years' },
-                  { icon: <Users size={16}/>, val: '10,000+', lbl: 'Students' },
-                  { icon: <BookOpen size={16}/>, val: '8', lbl: 'Programmes' },
+                  { icon: <Award size={16}/>, val: '26+', lbl: t('statYears') },
+                  { icon: <Users size={16}/>, val: '10,000+', lbl: t('statStudents') },
+                  { icon: <BookOpen size={16}/>, val: '8', lbl: t('statProgrammes') },
                 ].map(s => (
                   <div key={s.lbl} className="bg-cream-card rounded-[14px] px-3 py-2.5 shadow-card border border-teal-600/10 text-center">
                     <div className="text-teal-600 flex justify-center mb-1">{s.icon}</div>
@@ -161,27 +145,14 @@ export default function AboutSection() {
 
             {/* Bio text */}
             <div className="lg:col-span-2 space-y-4">
-              <span className="eyebrow">Lead Instructor &amp; Founder</span>
+              <span className="eyebrow">{t('teacherEyebrow')}</span>
               <h3 className="font-rozha font-normal text-ink" style={{ fontSize: 'clamp(22px, 3vw, 34px)' }}>
-                Rekha Nath
+                {t('teacherName')}
               </h3>
-              <p className="text-ink/70 leading-relaxed">
-                Nibedita Yoga Training Centre was established to develop three dimensions of
-                health — mental, physical, and social well-being — while keeping the body&apos;s four
-                main systems fit, healthy, and strong.
-              </p>
-              <p className="text-ink/70 leading-relaxed">
-                Most people come to yoga to keep their bodies fit and supple. Some come seeking
-                help for a specific complaint — tension, frustration, or back pain. All these
-                aims can be achieved if men, women, students, and youth practise yoga sincerely,
-                honestly, and regularly, following the Yamas and Niyamas.
-              </p>
-              <p className="text-ink/70 leading-relaxed">
-                Whether you come seeking fitness, relief from a specific condition, or simply a
-                steadier life — these goals are all achievable through sincere, regular practice.
-              </p>
+              <p className="text-ink/70 leading-relaxed">{t('teacherBio1')}</p>
+              <p className="text-ink/70 leading-relaxed">{t('teacherBio2')}</p>
+              <p className="text-ink/70 leading-relaxed">{t('teacherBio3')}</p>
               <div className="bg-saffron-500/10 border border-saffron-500/20 rounded-input px-4 py-3 text-xs text-saffron-600 mt-2">
-                {/* TODO: Update with Rekha Nath's formal qualifications and training lineage */}
                 <span className="font-semibold">📋 Note for admin:</span> Please provide Rekha
                 Nath&apos;s formal qualifications, certifications, and training lineage to complete
                 this section.

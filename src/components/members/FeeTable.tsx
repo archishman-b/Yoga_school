@@ -1,3 +1,6 @@
+'use client';
+
+import { useTranslations } from 'next-intl';
 import { cn } from '@/lib/utils';
 
 type FeeRecord = {
@@ -11,17 +14,10 @@ type FeeRecord = {
 };
 
 const STATUS_STYLES: Record<FeeRecord['status'], string> = {
-  pending: 'bg-yellow-50 text-yellow-700 border border-yellow-200',
+  pending:             'bg-yellow-50 text-yellow-700 border border-yellow-200',
   screenshot_uploaded: 'bg-blue-50 text-blue-700 border border-blue-200',
-  confirmed: 'bg-green-50 text-green-700 border border-green-200',
-  overdue: 'bg-red-50 text-red-700 border border-red-200',
-};
-
-const STATUS_LABEL: Record<FeeRecord['status'], string> = {
-  pending: 'Pending',
-  screenshot_uploaded: 'Verifying',
-  confirmed: 'Paid',
-  overdue: 'Overdue',
+  confirmed:           'bg-green-50 text-green-700 border border-green-200',
+  overdue:             'bg-red-50 text-red-700 border border-red-200',
 };
 
 function formatMonth(m: string) {
@@ -30,10 +26,19 @@ function formatMonth(m: string) {
 }
 
 export default function FeeTable({ fees }: { fees: FeeRecord[] }) {
+  const t = useTranslations('fees');
+
+  const STATUS_LABEL: Record<FeeRecord['status'], string> = {
+    pending:             t('statusPending'),
+    screenshot_uploaded: t('statusVerifying'),
+    confirmed:           t('statusPaid'),
+    overdue:             t('statusOverdue'),
+  };
+
   if (fees.length === 0) {
     return (
       <div className="py-12 text-center text-ink/40 text-sm">
-        No fee records yet. Your teacher will add them.
+        {t('noRecords')}
       </div>
     );
   }
@@ -43,12 +48,12 @@ export default function FeeTable({ fees }: { fees: FeeRecord[] }) {
       <table className="w-full text-sm">
         <thead>
           <tr className="bg-cream-dark/50 border-b border-teal-600/10 text-xs text-ink/55 uppercase tracking-wide">
-            <th className="text-left px-5 py-3 font-medium">Month</th>
-            <th className="text-right px-5 py-3 font-medium">Amount</th>
-            <th className="text-left px-5 py-3 font-medium hidden sm:table-cell">Due Date</th>
-            <th className="text-left px-5 py-3 font-medium hidden sm:table-cell">Paid On</th>
-            <th className="text-left px-5 py-3 font-medium">Status</th>
-            <th className="text-left px-5 py-3 font-medium hidden md:table-cell">Receipt</th>
+            <th className="text-left px-5 py-3 font-medium">{t('colMonth')}</th>
+            <th className="text-right px-5 py-3 font-medium">{t('colAmount')}</th>
+            <th className="text-left px-5 py-3 font-medium hidden sm:table-cell">{t('colDueDate')}</th>
+            <th className="text-left px-5 py-3 font-medium hidden sm:table-cell">{t('colPaidOn')}</th>
+            <th className="text-left px-5 py-3 font-medium">{t('colStatus')}</th>
+            <th className="text-left px-5 py-3 font-medium hidden md:table-cell">{t('colReceipt')}</th>
           </tr>
         </thead>
         <tbody className="divide-y divide-gray-50">
@@ -77,7 +82,7 @@ export default function FeeTable({ fees }: { fees: FeeRecord[] }) {
                     rel="noopener noreferrer"
                     className="text-teal-600 hover:text-teal-700 text-xs underline underline-offset-2"
                   >
-                    View
+                    {t('viewReceipt')}
                   </a>
                 ) : (
                   <span className="text-ink/30 text-xs">—</span>

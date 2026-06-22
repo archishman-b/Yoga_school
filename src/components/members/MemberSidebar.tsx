@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import { createClient } from '@/lib/supabase/client';
 import { useRouter } from 'next/navigation';
 import { User, CalendarDays, CreditCard, LogOut, LayoutDashboard, Leaf } from 'lucide-react';
@@ -10,15 +11,16 @@ import { cn } from '@/lib/utils';
 type Props = { locale: string };
 
 export default function MemberSidebar({ locale }: Props) {
+  const t = useTranslations('members');
   const pathname = usePathname();
   const router = useRouter();
 
   const links = [
-    { href: `/${locale}/members`,          label: 'Dashboard',       icon: <LayoutDashboard size={18} /> },
-    { href: `/${locale}/members/profile`,  label: 'My Profile',      icon: <User size={18} /> },
-    { href: `/${locale}/members/batches`,  label: 'My Batches',      icon: <CalendarDays size={18} /> },
-    { href: `/${locale}/members/fees`,     label: 'Fee Records',     icon: <CreditCard size={18} /> },
-    { href: `/${locale}/members/wellness`, label: 'Wellness Guide',  icon: <Leaf size={18} /> },
+    { href: `/${locale}/members`,          label: t('navDashboard'),  icon: <LayoutDashboard size={18} /> },
+    { href: `/${locale}/members/profile`,  label: t('navProfile'),    icon: <User size={18} /> },
+    { href: `/${locale}/members/batches`,  label: t('navBatches'),    icon: <CalendarDays size={18} /> },
+    { href: `/${locale}/members/fees`,     label: t('navFees'),       icon: <CreditCard size={18} /> },
+    { href: `/${locale}/members/wellness`, label: t('navWellness'),   icon: <Leaf size={18} /> },
   ];
 
   const handleLogout = async () => {
@@ -35,8 +37,8 @@ export default function MemberSidebar({ locale }: Props) {
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/logo.png" alt="" className="w-9 h-9 rounded-full object-cover shrink-0" />
           <div>
-            <p className="font-semibold text-sm">Member Portal</p>
-            <p className="text-teal-300 text-xs">Nibedita Yoga Training Centre</p>
+            <p className="font-semibold text-sm">{t('portalLabel')}</p>
+            <p className="text-teal-300 text-xs">{t('portalSubtitle')}</p>
           </div>
         </div>
       </div>
@@ -66,7 +68,7 @@ export default function MemberSidebar({ locale }: Props) {
           className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-red-600 hover:bg-red-50 transition-colors"
         >
           <LogOut size={18} />
-          Sign Out
+          {t('signOut')}
         </button>
       </div>
     </nav>

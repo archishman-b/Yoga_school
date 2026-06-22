@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
+import { useTranslations } from 'next-intl';
 
 function LotusIcon({ size = 22, className = '' }: { size?: number; className?: string }) {
   return (
@@ -16,19 +17,20 @@ function LotusIcon({ size = 22, className = '' }: { size?: number; className?: s
   );
 }
 
-const STATS = [
-  { value: 26, suffix: '+', label: 'Years Teaching' },
-  { value: 10000, suffix: '+', label: 'Happy Students' },
-  { value: 3, suffix: '', label: 'Batch Levels' },
-];
-
 function easeOutQuart(t: number): number {
   return 1 - Math.pow(1 - t, 4);
 }
 
 export default function StatsSection() {
+  const t = useTranslations('stats');
   const sectionRef = useRef<HTMLElement>(null);
   const firedRef = useRef(false);
+
+  const STATS = [
+    { value: 26, suffix: '+', label: t('years') },
+    { value: 10000, suffix: '+', label: t('students') },
+    { value: 3, suffix: '', label: t('batches') },
+  ];
 
   useEffect(() => {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;

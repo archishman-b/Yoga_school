@@ -34,7 +34,6 @@ export default function EnquiryForm() {
       className="relative py-24 overflow-hidden"
       style={{ background: 'linear-gradient(160deg, #0D6B6E 0%, #0A4F51 100%)' }}
     >
-      {/* Decorative dot-grid overlay */}
       <div
         className="absolute inset-0 pointer-events-none opacity-10"
         style={{
@@ -51,7 +50,7 @@ export default function EnquiryForm() {
             className="inline-block text-xs font-semibold tracking-[3px] uppercase mb-3"
             style={{ color: 'rgba(244,160,74,0.9)' }}
           >
-            Book Your Trial
+            {t('eyebrow')}
           </span>
           <h2
             className="font-rozha font-normal text-white mb-4"
@@ -97,7 +96,7 @@ export default function EnquiryForm() {
                       background: 'rgba(255,253,249,0.08)',
                       border: '1px solid rgba(250,247,242,0.15)',
                     }}
-                    placeholder="Your full name"
+                    placeholder={t('namePlaceholder')}
                   />
                 </div>
                 <div>
@@ -115,7 +114,7 @@ export default function EnquiryForm() {
                       background: 'rgba(255,253,249,0.08)',
                       border: '1px solid rgba(250,247,242,0.15)',
                     }}
-                    placeholder="+91 XXXXX XXXXX"
+                    placeholder={t('phonePlaceholder')}
                   />
                 </div>
               </div>
@@ -134,7 +133,7 @@ export default function EnquiryForm() {
                     background: 'rgba(255,253,249,0.08)',
                     border: '1px solid rgba(250,247,242,0.15)',
                   }}
-                  placeholder="your@email.com"
+                  placeholder={t('emailPlaceholder')}
                 />
               </div>
 
@@ -153,7 +152,7 @@ export default function EnquiryForm() {
                     background: 'rgba(255,253,249,0.08)',
                     border: '1px solid rgba(250,247,242,0.15)',
                   }}
-                  placeholder="I'd like to book a free trial class..."
+                  placeholder={t('messagePlaceholder')}
                 />
               </div>
 
@@ -168,7 +167,7 @@ export default function EnquiryForm() {
                 style={{ boxShadow: '0 8px 24px -8px rgba(232,116,12,0.8)' }}
               >
                 {status === 'loading' ? (
-                  'Sending…'
+                  t('sending')
                 ) : (
                   <>
                     <Send size={16} />

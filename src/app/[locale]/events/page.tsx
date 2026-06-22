@@ -1,4 +1,5 @@
 import { createClient } from '@/lib/supabase/server';
+import { getTranslations } from 'next-intl/server';
 import EventCard from '@/components/events/EventCard';
 import type { Metadata } from 'next';
 
@@ -8,6 +9,7 @@ type Props = { params: { locale: string } };
 export const revalidate = 60;
 
 export default async function EventsPage({ params: { locale } }: Props) {
+  const t = await getTranslations('events');
   const supabase = createClient();
   const { data: events } = await supabase
     .from('events')
@@ -25,13 +27,13 @@ export default async function EventsPage({ params: { locale } }: Props) {
   return (
     <div className="py-16 px-4 max-w-4xl mx-auto space-y-10">
       <div>
-        <h1 className="text-3xl font-bold text-ink">Events & Updates</h1>
-        <p className="text-ink/55 mt-2">Workshops, announcements, and community moments.</p>
+        <h1 className="text-3xl font-bold text-ink">{t('heading')}</h1>
+        <p className="text-ink/55 mt-2">{t('subheading')}</p>
       </div>
 
       {pinned.length > 0 && (
         <div className="space-y-4">
-          <p className="text-xs text-saffron-600 font-semibold uppercase tracking-widest">📌 Pinned</p>
+          <p className="text-xs text-saffron-600 font-semibold uppercase tracking-widest">{t('pinned')}</p>
           {pinned.map((event: any) => (
             <EventCard key={event.id} event={event} titleKey={titleKey} bodyKey={bodyKey} />
           ))}
@@ -45,7 +47,7 @@ export default async function EventsPage({ params: { locale } }: Props) {
         {events?.length === 0 && (
           <div className="text-center py-20 text-ink/40">
             <p className="text-4xl mb-4">🌸</p>
-            <p>No events yet — check back soon.</p>
+            <p>{t('noEvents')}</p>
           </div>
         )}
       </div>

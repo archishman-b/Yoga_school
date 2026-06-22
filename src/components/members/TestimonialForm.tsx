@@ -3,10 +3,12 @@
 import { useState, useTransition } from 'react';
 import { createClient } from '@/lib/supabase/client';
 import { Star, Send, CheckCircle2 } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 
 type Props = { memberId: string; existing?: { id: string; body: string; rating: number | null; status: string } | null };
 
 export default function TestimonialForm({ memberId, existing }: Props) {
+  const t = useTranslations('testimonialForm');
   const [body, setBody] = useState(existing?.body ?? '');
   const [rating, setRating] = useState(existing?.rating ?? 0);
   const [hover, setHover] = useState(0);
@@ -40,25 +42,25 @@ export default function TestimonialForm({ memberId, existing }: Props) {
       <div className="flex items-center gap-3 py-4 text-teal-700">
         <CheckCircle2 size={20} className="shrink-0" />
         <span className="text-sm font-medium">
-          {existing ? 'Testimonial updated.' : 'Testimonial submitted.'} It will appear on the site after admin review.
+          {existing ? t('updated') : t('submitted')} {t('afterReview')}
         </span>
       </div>
     );
   }
 
   const statusPill = existing?.status === 'approved'
-    ? <span className="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full font-medium">Approved ✓</span>
+    ? <span className="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full font-medium">{t('statusApproved')}</span>
     : existing?.status === 'pending'
-    ? <span className="text-xs bg-amber-100 text-amber-700 px-2 py-0.5 rounded-full font-medium">Pending review</span>
+    ? <span className="text-xs bg-amber-100 text-amber-700 px-2 py-0.5 rounded-full font-medium">{t('statusPending')}</span>
     : existing?.status === 'rejected'
-    ? <span className="text-xs bg-red-100 text-red-700 px-2 py-0.5 rounded-full font-medium">Not selected</span>
+    ? <span className="text-xs bg-red-100 text-red-700 px-2 py-0.5 rounded-full font-medium">{t('statusRejected')}</span>
     : null;
 
   return (
     <form onSubmit={submit} className="space-y-4">
       {existing && (
         <div className="flex items-center gap-2 text-sm text-ink/70">
-          <span>Your testimonial</span>
+          <span>{t('yourTestimonial')}</span>
           {statusPill}
         </div>
       )}
@@ -87,7 +89,7 @@ export default function TestimonialForm({ memberId, existing }: Props) {
         value={body}
         onChange={e => setBody(e.target.value)}
         rows={4}
-        placeholder="Share your experience with Nibedita Yoga Training Centre…"
+        placeholder={t('placeholder')}
         maxLength={500}
         required
         className="w-full rounded-xl border border-teal-600/15 px-4 py-3 text-sm text-ink focus:outline-none focus:border-teal-400 resize-none"
@@ -101,10 +103,10 @@ export default function TestimonialForm({ memberId, existing }: Props) {
           className="flex items-center gap-2 px-4 py-2 bg-teal-600 text-white text-sm font-semibold rounded-xl hover:bg-teal-700 disabled:opacity-40 transition-colors"
         >
           <Send size={14} />
-          {isPending ? 'Submitting…' : existing ? 'Update' : 'Submit'}
+          {isPending ? t('submitting') : existing ? t('update') : t('submit')}
         </button>
       </div>
-      <p className="text-xs text-ink/40">Your testimonial will be reviewed before being published.</p>
+      <p className="text-xs text-ink/40">{t('reviewNote')}</p>
     </form>
   );
 }

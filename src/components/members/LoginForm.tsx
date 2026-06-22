@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { createClient } from '@/lib/supabase/client';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
@@ -22,6 +23,7 @@ function GoogleIcon() {
 }
 
 export default function LoginForm({ locale }: Props) {
+  const t = useTranslations('login');
   const router = useRouter();
   const [tab,       setTab]       = useState<Tab>('phone');
   const [phone,     setPhone]     = useState('');
@@ -98,7 +100,13 @@ export default function LoginForm({ locale }: Props) {
     setMagicSent(true);
   };
 
-  const switchTab = (t: Tab) => { setTab(t); setError(''); setPhoneStep('input'); setOtp(''); setMagicSent(false); };
+  const switchTab = (newTab: Tab) => { setTab(newTab); setError(''); setPhoneStep('input'); setOtp(''); setMagicSent(false); };
+
+  const TABS: [Tab, string][] = [
+    ['phone', t('tabPhone')],
+    ['email', t('tabEmail')],
+    ['magic', t('tabMagic')],
+  ];
 
   return (
     <div className="bg-white/10 backdrop-blur rounded-2xl p-8 space-y-5">
@@ -107,20 +115,20 @@ export default function LoginForm({ locale }: Props) {
       <button type="button" onClick={handleGoogle} disabled={!!loading}
         className="w-full flex items-center justify-center gap-3 py-3 bg-white hover:bg-gray-50 disabled:opacity-60 text-gray-800 font-semibold rounded-xl transition-colors shadow-sm">
         <GoogleIcon />
-        {loading === 'google' ? 'Redirecting…' : 'Continue with Google'}
+        {loading === 'google' ? t('redirecting') : t('continueGoogle')}
       </button>
 
       <div className="flex items-center gap-3">
         <div className="flex-1 h-px bg-white/20" />
-        <span className="text-xs text-gray-400">or</span>
+        <span className="text-xs text-gray-400">{t('or')}</span>
         <div className="flex-1 h-px bg-white/20" />
       </div>
 
       {/* Tab switcher */}
       <div className="grid grid-cols-3 rounded-xl overflow-hidden border border-white/20 text-xs font-medium">
-        {([['phone', 'SMS OTP'], ['email', 'Password'], ['magic', 'Magic Link']] as [Tab, string][]).map(([t, label]) => (
-          <button key={t} onClick={() => switchTab(t)}
-            className={`py-2.5 transition-colors ${tab === t ? 'bg-white/20 text-white' : 'text-gray-400 hover:text-gray-200'}`}>
+        {TABS.map(([tabKey, label]) => (
+          <button key={tabKey} onClick={() => switchTab(tabKey)}
+            className={`py-2.5 transition-colors ${tab === tabKey ? 'bg-white/20 text-white' : 'text-gray-400 hover:text-gray-200'}`}>
             {label}
           </button>
         ))}
@@ -130,23 +138,23 @@ export default function LoginForm({ locale }: Props) {
       {tab === 'phone' && phoneStep === 'input' && (
         <form onSubmit={sendPhoneOtp} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-300 mb-1.5">Mobile number</label>
+            <label className="block text-sm font-medium text-gray-300 mb-1.5">{t('mobileLabel')}</label>
             <div className="flex rounded-xl overflow-hidden border border-white/20 focus-within:border-teal-400 transition-colors">
               <span className="flex items-center gap-1.5 px-3 bg-white/10 text-gray-300 text-sm border-r border-white/20 shrink-0">
                 <Phone size={14} /> +91
               </span>
               <input type="tel" required value={phone}
                 onChange={e => setPhone(e.target.value.replace(/\D/g,'').slice(0,10))}
-                placeholder="98765 43210"
+                placeholder={t('mobilePlaceholder')}
                 className="flex-1 px-4 py-3 bg-transparent text-white placeholder-gray-500 focus:outline-none" />
             </div>
           </div>
           {error && <p className="text-red-400 text-sm">{error}</p>}
           <button type="submit" disabled={!!loading || phone.replace(/\D/g,'').length < 10}
             className="w-full flex items-center justify-center gap-2 py-3 bg-saffron-500 hover:bg-saffron-600 disabled:opacity-40 text-white font-semibold rounded-xl transition-colors">
-            {loading === 'phone-send' ? 'Sending…' : <><ArrowRight size={18}/> Send OTP</>}
+            {loading === 'phone-send' ? t('sendingOtp') : <><ArrowRight size={18}/> {t('sendOtp')}</>}
           </button>
-          <p className="text-xs text-gray-500 text-center">A 6-digit code will be sent to your mobile.</p>
+          <p className="text-xs text-gray-500 text-center">{t('mobileHint')}</p>
         </form>
       )}
 
@@ -154,10 +162,10 @@ export default function LoginForm({ locale }: Props) {
         <form onSubmit={verifyPhoneOtp} className="space-y-4">
           <div className="text-center">
             <Shield size={32} className="text-teal-400 mx-auto mb-2" />
-            <p className="text-white text-sm font-semibold">OTP sent to +91 {phone}</p>
+            <p className="text-white text-sm font-semibold">{t('otpSentTo')} {phone}</p>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-300 mb-1.5 text-center">Enter OTP</label>
+            <label className="block text-sm font-medium text-gray-300 mb-1.5 text-center">{t('enterOtp')}</label>
             <input type="tel" required maxLength={6} value={otp}
               onChange={e => setOtp(e.target.value.replace(/\D/g,'').slice(0,6))}
               placeholder="• • • • • •"
@@ -166,11 +174,11 @@ export default function LoginForm({ locale }: Props) {
           {error && <p className="text-red-400 text-sm text-center">{error}</p>}
           <button type="submit" disabled={!!loading || otp.length !== 6}
             className="w-full flex items-center justify-center gap-2 py-3 bg-saffron-500 hover:bg-saffron-600 disabled:opacity-40 text-white font-semibold rounded-xl transition-colors">
-            {loading === 'phone-verify' ? 'Verifying…' : <><CheckCircle2 size={18}/> Verify & Sign In</>}
+            {loading === 'phone-verify' ? t('verifying') : <><CheckCircle2 size={18}/> {t('verifySignIn')}</>}
           </button>
           <button type="button" onClick={() => { setPhoneStep('input'); setOtp(''); setError(''); }}
             className="w-full text-center text-xs text-gray-400 hover:text-gray-200 transition-colors">
-            ← Change number / resend
+            {t('changeResend')}
           </button>
         </form>
       )}
@@ -179,20 +187,20 @@ export default function LoginForm({ locale }: Props) {
       {tab === 'email' && (
         <form onSubmit={handleEmailPassword} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-300 mb-1.5">Email</label>
+            <label className="block text-sm font-medium text-gray-300 mb-1.5">{t('emailLabel')}</label>
             <div className="relative">
               <Mail size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
               <input type="email" required value={email} onChange={e => setEmail(e.target.value)}
-                placeholder="you@example.com"
+                placeholder={t('emailPlaceholder')}
                 className="w-full pl-9 pr-4 py-3 rounded-xl bg-white/10 border border-white/20 text-white placeholder-gray-500 focus:outline-none focus:border-teal-400 transition-colors" />
             </div>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-300 mb-1.5">Password</label>
+            <label className="block text-sm font-medium text-gray-300 mb-1.5">{t('passwordLabel')}</label>
             <div className="relative">
               <Lock size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
               <input type={showPw ? 'text' : 'password'} required value={password} onChange={e => setPassword(e.target.value)}
-                placeholder="Your password"
+                placeholder={t('passwordPlaceholder')}
                 className="w-full pl-9 pr-10 py-3 rounded-xl bg-white/10 border border-white/20 text-white placeholder-gray-500 focus:outline-none focus:border-teal-400 transition-colors" />
               <button type="button" onClick={() => setShowPw(v => !v)}
                 className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-200">
@@ -203,7 +211,7 @@ export default function LoginForm({ locale }: Props) {
           {error && <p className="text-red-400 text-sm">{error}</p>}
           <button type="submit" disabled={!!loading}
             className="w-full flex items-center justify-center gap-2 py-3 bg-saffron-500 hover:bg-saffron-600 disabled:opacity-60 text-white font-semibold rounded-xl transition-colors">
-            {loading === 'email' ? 'Signing in…' : <><ArrowRight size={18}/> Sign In</>}
+            {loading === 'email' ? t('signingIn') : <><ArrowRight size={18}/> {t('signIn')}</>}
           </button>
         </form>
       )}
@@ -212,39 +220,39 @@ export default function LoginForm({ locale }: Props) {
       {tab === 'magic' && !magicSent && (
         <form onSubmit={handleMagicLink} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-300 mb-1.5">Email</label>
+            <label className="block text-sm font-medium text-gray-300 mb-1.5">{t('emailLabel')}</label>
             <div className="relative">
               <Mail size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
               <input type="email" required value={email} onChange={e => setEmail(e.target.value)}
-                placeholder="you@example.com"
+                placeholder={t('emailPlaceholder')}
                 className="w-full pl-9 pr-4 py-3 rounded-xl bg-white/10 border border-white/20 text-white placeholder-gray-500 focus:outline-none focus:border-teal-400 transition-colors" />
             </div>
           </div>
           {error && <p className="text-red-400 text-sm">{error}</p>}
           <button type="submit" disabled={!!loading}
             className="w-full flex items-center justify-center gap-2 py-3 bg-saffron-500 hover:bg-saffron-600 disabled:opacity-60 text-white font-semibold rounded-xl transition-colors">
-            {loading === 'magic' ? 'Sending…' : <><ArrowRight size={18}/> Send Magic Link</>}
+            {loading === 'magic' ? t('sending') : <><ArrowRight size={18}/> {t('sendMagicLink')}</>}
           </button>
-          <p className="text-xs text-gray-500 text-center">We'll email you a secure one-time sign-in link.</p>
+          <p className="text-xs text-gray-500 text-center">{t('magicLinkHint')}</p>
         </form>
       )}
 
       {tab === 'magic' && magicSent && (
         <div className="text-center space-y-3">
           <CheckCircle2 size={40} className="text-teal-400 mx-auto" />
-          <p className="text-white font-semibold">Check your inbox</p>
-          <p className="text-gray-300 text-sm">Magic link sent to <span className="text-white">{email}</span>. Expires in 1 hour.</p>
+          <p className="text-white font-semibold">{t('checkInbox')}</p>
+          <p className="text-gray-300 text-sm">{t('magicSentTo')} <span className="text-white">{email}</span>. {t('magicExpiry')}</p>
           <button onClick={() => setMagicSent(false)} className="text-teal-400 text-sm hover:text-teal-300 underline">
-            Try again
+            {t('tryAgain')}
           </button>
         </div>
       )}
 
       {/* Sign up link */}
       <p className="text-center text-xs text-gray-400 pt-1 border-t border-white/10">
-        New here?{' '}
+        {t('newHere')}{' '}
         <Link href={`/${locale}/members/signup`} className="text-teal-400 hover:text-teal-300 underline font-medium">
-          Create an account
+          {t('createAccount')}
         </Link>
       </p>
     </div>

@@ -1,7 +1,7 @@
 import { createClient } from '@/lib/supabase/server';
+import { getTranslations } from 'next-intl/server';
 import { Star } from 'lucide-react';
 
-// Fallback testimonials shown when DB has no approved+ordered ones yet
 const FALLBACKS = [
   { body: 'Joining Nibedita Yoga Training Centre was the best decision I made for my health. My back pain of 10 years is almost completely gone.', full_name: 'Priya Sharma', photo_url: null, rating: 5 },
   { body: 'I came here skeptical — yoga seemed too gentle for me. Six months later, I have never been stronger or more flexible. The teaching is exceptional.', full_name: 'Rahul Verma', photo_url: null, rating: 5 },
@@ -23,6 +23,7 @@ function Stars({ n }: { n: number | null }) {
 }
 
 export default async function TestimonialsSection() {
+  const t = await getTranslations('testimonials');
   const supabase = createClient();
   const { data: rows } = await supabase
     .from('testimonials')
@@ -48,12 +49,12 @@ export default async function TestimonialsSection() {
 
         {/* ── Section header ────────────────────────────────────────────────── */}
         <div className="text-center mb-14 reveal">
-          <span className="eyebrow">Testimonials</span>
+          <span className="eyebrow">{t('eyebrow')}</span>
           <h2
             className="font-rozha font-normal text-ink"
             style={{ fontSize: 'clamp(28px, 4vw, 52px)' }}
           >
-            What Our Students Say
+            {t('heading')}
           </h2>
         </div>
 
@@ -64,7 +65,6 @@ export default async function TestimonialsSection() {
               key={idx}
               className="card card-hover flex flex-col p-7"
             >
-              {/* Large decorative quote mark */}
               <span
                 className="font-rozha text-saffron-400 leading-none mb-2 block"
                 style={{ fontSize: '52px', lineHeight: 1 }}
@@ -79,7 +79,6 @@ export default async function TestimonialsSection() {
                 {item.body}
               </p>
 
-              {/* Author */}
               <div className="flex items-center gap-3 pt-5 mt-5 border-t border-teal-600/10">
                 {item.photo_url ? (
                   // eslint-disable-next-line @next/next/no-img-element
@@ -94,7 +93,7 @@ export default async function TestimonialsSection() {
                 )}
                 <div>
                   <p className="font-semibold text-ink text-sm">{item.full_name ?? 'Member'}</p>
-                  <p className="text-teal-600 text-xs">Nibedita Yoga Member</p>
+                  <p className="text-teal-600 text-xs">{t('memberLabel')}</p>
                 </div>
               </div>
             </div>

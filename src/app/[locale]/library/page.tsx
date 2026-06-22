@@ -1,4 +1,4 @@
-import { useLocale } from 'next-intl';
+import { getLocale, getTranslations } from 'next-intl/server';
 import Link from 'next/link';
 import type { Metadata } from 'next';
 import {
@@ -20,13 +20,6 @@ type Props = { searchParams: { type?: string; target?: string } };
 
 const ALL_TYPES: PracticeType[] = ['pranayama', 'exercise', 'asana', 'kriya'];
 
-const typeLabels: Record<PracticeType, string> = {
-  pranayama: 'Pranayamas',
-  exercise:  'Exercises',
-  asana:     'Asanas',
-  kriya:     'Kriyas',
-};
-
 const typeColours: Record<PracticeType, { active: string; inactive: string }> = {
   pranayama: { active: 'bg-sky-600 text-white',     inactive: 'bg-sky-50 text-sky-700 hover:bg-sky-100 border border-sky-200' },
   exercise:  { active: 'bg-teal-600 text-white',    inactive: 'bg-teal-50 text-teal-700 hover:bg-teal-100 border border-teal-200' },
@@ -34,10 +27,21 @@ const typeColours: Record<PracticeType, { active: string; inactive: string }> = 
   kriya:     { active: 'bg-purple-600 text-white',  inactive: 'bg-purple-50 text-purple-700 hover:bg-purple-100 border border-purple-200' },
 };
 
-export default function LibraryPage({ searchParams }: Props) {
-  const locale = useLocale();
-  const activeType  = searchParams.type as PracticeType | undefined;
+export default async function LibraryPage({ searchParams }: Props) {
+  const locale = await getLocale();
+  const t = await getTranslations('library');
+  const tCourses = await getTranslations('courses');
+
+  const activeType   = searchParams.type as PracticeType | undefined;
   const activeTarget = searchParams.target as HealthTarget | undefined;
+
+  // Translated type labels
+  const typeLabels: Record<PracticeType, string> = {
+    pranayama: t('typePranayama'),
+    exercise:  t('typeExercise'),
+    asana:     t('typeAsana'),
+    kriya:     t('typeKriya'),
+  };
 
   // Filter
   let filtered = practices;
@@ -46,13 +50,22 @@ export default function LibraryPage({ searchParams }: Props) {
 
   function buildHref(overrides: { type?: string | null; target?: string | null }) {
     const params = new URLSearchParams();
-    const t   = 'type'   in overrides ? overrides.type   : activeType;
+    const tp  = 'type'   in overrides ? overrides.type   : activeType;
     const tgt = 'target' in overrides ? overrides.target : activeTarget;
-    if (t)   params.set('type', t);
+    if (tp)  params.set('type', tp);
     if (tgt) params.set('target', tgt);
     const qs = params.toString();
     return `/${locale}/library${qs ? `?${qs}` : ''}`;
   }
+
+  // Translated health target labels (from courses namespace)
+  const getTargetLabel = (target: HealthTarget) => {
+    try {
+      return tCourses(`healthTargets.${target}` as any) || healthTargetLabels[target];
+    } catch {
+      return healthTargetLabels[target];
+    }
+  };
 
   return (
     <div className="min-h-screen bg-cream-dark/50">
@@ -61,13 +74,10 @@ export default function LibraryPage({ searchParams }: Props) {
       <div className="bg-gradient-to-br from-teal-700 to-teal-900 text-white py-14 px-4">
         <div className="max-w-7xl mx-auto">
           <p className="text-teal-300 font-semibold text-sm uppercase tracking-widest mb-3">
-            Complete Self-Practice Reference
+            {t('eyebrow')}
           </p>
-          <h1 className="text-4xl sm:text-5xl font-bold mb-3">Yogic Practice Library</h1>
-          <p className="text-teal-100 text-lg max-w-2xl mb-6">
-            Your complete reference for pranayamas, preparatory exercises, asanas, and kriyas —
-            as taught at Nibedita Yoga Training Centre. Filter by health goal to find what your body needs.
-          </p>
+          <h1 className="text-4xl sm:text-5xl font-bold mb-3">{t('heading')}</h1>
+          <p className="text-teal-100 text-lg max-w-2xl mb-6">{t('subheading')}</p>
 
           {/* Stats row */}
           <div className="flex flex-wrap gap-4">
@@ -79,7 +89,7 @@ export default function LibraryPage({ searchParams }: Props) {
             ))}
             <div className="bg-cream/10 rounded-xl px-4 py-2 text-center min-w-[90px]">
               <p className="text-2xl font-bold">{practices.length}</p>
-              <p className="text-teal-200 text-xs">Total</p>
+              <p className="text-teal-200 text-xs">{t('typeTotal')}</p>
             </div>
           </div>
         </div>
@@ -89,7 +99,7 @@ export default function LibraryPage({ searchParams }: Props) {
 
         {/* ── Type filter tabs ── */}
         <div className="bg-cream rounded-card border border-teal-600/10 p-4 shadow-card">
-          <p className="text-xs text-ink/40 uppercase tracking-wide font-medium mb-3">Practice Type</p>
+          <p className="text-xs text-ink/40 uppercase tracking-wide font-medium mb-3">{t('typeFilterLabel')}</p>
           <div className="flex flex-wrap gap-2">
             <Link
               href={buildHref({ type: null })}
@@ -99,7 +109,7 @@ export default function LibraryPage({ searchParams }: Props) {
                   : 'bg-cream-dark text-ink/70 hover:bg-gray-200'
               }`}
             >
-              All ({practices.length})
+              {t('allPractices', { count: practices.length })}
             </Link>
             {ALL_TYPES.map((type) => {
               const isActive = activeType === type;
@@ -118,33 +128,34 @@ export default function LibraryPage({ searchParams }: Props) {
           </div>
         </div>
 
-        {/* ── Health target filter ── */}
+        {/* ── Health-goal filter ── */}
         <div className="bg-cream rounded-card border border-teal-600/10 p-4 shadow-card">
-          <p className="text-xs text-ink/40 uppercase tracking-wide font-medium mb-3">Filter by Health Goal</p>
+          <p className="text-xs text-ink/40 uppercase tracking-wide font-medium mb-3">{t('goalFilterLabel')}</p>
           <div className="flex flex-wrap gap-2">
             <Link
               href={buildHref({ target: null })}
               className={`px-3 py-1.5 rounded-full text-xs font-semibold transition-colors ${
-                !activeTarget
-                  ? 'bg-saffron-500 text-white'
-                  : 'bg-cream-dark text-ink/55 hover:bg-gray-200'
+                !activeTarget ? 'bg-gray-800 text-white' : 'bg-cream-dark text-ink/70 hover:bg-gray-200'
               }`}
             >
-              All Goals
+              {t('allGoals')}
             </Link>
-            {allHealthTargets.map((target) => (
-              <Link
-                key={target}
-                href={buildHref({ target: activeTarget === target ? null : target })}
-                className={`px-3 py-1.5 rounded-full text-xs font-semibold transition-colors ${
-                  activeTarget === target
-                    ? 'bg-saffron-500 text-white'
-                    : 'bg-cream-dark text-ink/55 hover:bg-gray-200'
-                }`}
-              >
-                {healthTargetLabels[target]}
-              </Link>
-            ))}
+            {allHealthTargets.map((target) => {
+              const isActive = activeTarget === target;
+              return (
+                <Link
+                  key={target}
+                  href={buildHref({ target: isActive ? null : target })}
+                  className={`px-3 py-1.5 rounded-full text-xs font-semibold transition-colors ${
+                    isActive
+                      ? 'bg-saffron-500 text-white'
+                      : 'bg-saffron-50 text-saffron-700 hover:bg-saffron-100 border border-saffron-200'
+                  }`}
+                >
+                  {getTargetLabel(target)}
+                </Link>
+              );
+            })}
           </div>
         </div>
 
@@ -152,13 +163,13 @@ export default function LibraryPage({ searchParams }: Props) {
         <div>
           <div className="flex items-center justify-between mb-4">
             <p className="text-sm text-ink/55">
-              {filtered.length} practice{filtered.length !== 1 ? 's' : ''}
+              {filtered.length} {filtered.length !== 1 ? t('practiceCount', { count: filtered.length }) : t('practiceCountSingular', { count: filtered.length })}
               {activeType && ` · ${typeLabels[activeType]}`}
-              {activeTarget && ` · ${healthTargetLabels[activeTarget]}`}
+              {activeTarget && ` · ${getTargetLabel(activeTarget)}`}
             </p>
             {(activeType || activeTarget) && (
               <Link href={`/${locale}/library`} className="text-xs text-saffron-600 hover:underline">
-                Clear filters
+                {t('clearFilters')}
               </Link>
             )}
           </div>
@@ -166,9 +177,9 @@ export default function LibraryPage({ searchParams }: Props) {
           {filtered.length === 0 ? (
             <div className="text-center py-16 text-ink/40">
               <p className="text-4xl mb-3">🔍</p>
-              <p className="font-medium text-ink/70">No practices match this filter combination.</p>
+              <p className="font-medium text-ink/70">{t('noResults')}</p>
               <Link href={`/${locale}/library`} className="mt-3 inline-block text-saffron-600 hover:underline text-sm">
-                Clear filters
+                {t('noResultsBack')}
               </Link>
             </div>
           ) : (
@@ -180,16 +191,15 @@ export default function LibraryPage({ searchParams }: Props) {
                     <div className="flex items-center gap-3 mb-4">
                       <div className="h-px flex-1 bg-gray-200" />
                       <span className="text-xs font-bold text-purple-700 uppercase tracking-wider px-2">
-                        ✨ Kriyas — Supervision Required
+                        {t('kriyaSection')}
                       </span>
                       <div className="h-px flex-1 bg-gray-200" />
                     </div>
                   )}
-                  <div className="bg-purple-50 border border-purple-100 rounded-card p-4 mb-4 text-sm text-purple-800">
-                    <strong>Note:</strong> Kriyas (internal cleansing practices) marked ⚠️ must only be
-                    performed under the direct supervision of a trained teacher.
-                    Contact us to arrange a supervised session.
-                  </div>
+                  <div
+                    className="bg-purple-50 border border-purple-100 rounded-card p-4 mb-4 text-sm text-purple-800"
+                    dangerouslySetInnerHTML={{ __html: t.raw('kriyaNote') }}
+                  />
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
                     {filtered.filter((p) => p.type === 'kriya').map((p) => (
                       <PracticeCard key={p.slug} practice={p} locale={locale} />
@@ -228,7 +238,7 @@ export default function LibraryPage({ searchParams }: Props) {
         {/* ── Back to courses ── */}
         <div className="border-t border-teal-600/15 pt-6 flex items-center justify-between text-sm">
           <Link href={`/${locale}/courses`} className="text-teal-600 hover:underline">
-            ← Back to Programmes
+            {t('backToProgrammes')}
           </Link>
           <Link
             href={`https://wa.me/918017112877?text=I'd+like+to+enquire+about+joining+Nibedita+Yoga+Training+Centre`}
@@ -236,7 +246,7 @@ export default function LibraryPage({ searchParams }: Props) {
             rel="noopener noreferrer"
             className="px-4 py-2 bg-teal-600 text-white rounded-full hover:bg-teal-700 transition-colors"
           >
-            Enquire About Joining
+            {t('enquireJoining')}
           </Link>
         </div>
       </div>

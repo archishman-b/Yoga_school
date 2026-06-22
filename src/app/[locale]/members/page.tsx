@@ -1,7 +1,8 @@
 import { requireAuth } from '@/lib/supabase/auth';
 import { createClient } from '@/lib/supabase/server';
+import { getTranslations } from 'next-intl/server';
 import Link from 'next/link';
-import { User, CalendarDays, CreditCard, CheckCircle2, AlertCircle, Clock } from 'lucide-react';
+import { User, CalendarDays, CreditCard, AlertCircle } from 'lucide-react';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = { title: 'Member Dashboard' };
@@ -9,17 +10,16 @@ export const metadata: Metadata = { title: 'Member Dashboard' };
 type Props = { params: { locale: string } };
 
 export default async function MemberDashboard({ params: { locale } }: Props) {
+  const t = await getTranslations('members');
   const { profile } = await requireAuth(locale);
   const supabase = createClient();
 
-  // Fetch enrollments with batch details
   const { data: enrollments } = await supabase
     .from('enrollments')
     .select('*, batch:batches(*)')
     .eq('member_id', profile.id)
     .eq('status', 'active');
 
-  // Fetch fee summary
   const { data: fees } = await supabase
     .from('fee_records')
     .select('status, amount')
@@ -28,28 +28,28 @@ export default async function MemberDashboard({ params: { locale } }: Props) {
     .limit(12);
 
   const pendingFees = fees?.filter((f) => f.status !== 'confirmed') ?? [];
-  const paidFees = fees?.filter((f) => f.status === 'confirmed') ?? [];
+  const enrollCount = enrollments?.length ?? 0;
 
   const cards = [
     {
       href: `/${locale}/members/profile`,
       icon: <User size={22} />,
-      label: 'My Profile',
+      label: t('myProfile'),
       sub: profile.full_name ?? 'Complete your profile',
       colour: 'from-teal-500 to-teal-700',
     },
     {
       href: `/${locale}/members/batches`,
       icon: <CalendarDays size={22} />,
-      label: 'My Batches',
-      sub: `${enrollments?.length ?? 0} active enrollment${(enrollments?.length ?? 0) !== 1 ? 's' : ''}`,
+      label: t('myBatches'),
+      sub: `${enrollCount} ${enrollCount !== 1 ? t('activeEnrollments') : t('activeEnrollment')}`,
       colour: 'from-saffron-500 to-orange-600',
     },
     {
       href: `/${locale}/members/fees`,
       icon: <CreditCard size={22} />,
-      label: 'Fee Records',
-      sub: pendingFees.length > 0 ? `${pendingFees.length} payment pending` : 'All payments up to date',
+      label: t('feeRecords'),
+      sub: pendingFees.length > 0 ? t('paymentPending') : t('paymentsUpToDate'),
       colour: 'from-purple-500 to-purple-700',
     },
   ];
@@ -59,9 +59,9 @@ export default async function MemberDashboard({ params: { locale } }: Props) {
       {/* Welcome */}
       <div>
         <h1 className="text-2xl font-bold text-ink">
-          Welcome back{profile.full_name ? `, ${profile.full_name.split(' ')[0]}` : ''}! 🙏
+          {t('welcomeBack')}{profile.full_name ? `, ${profile.full_name.split(' ')[0]}` : ''}! 🙏
         </h1>
-        <p className="text-ink/55 text-sm mt-1">Here's your practice overview.</p>
+        <p className="text-ink/55 text-sm mt-1">{t('practiceOverview')}</p>
       </div>
 
       {/* Quick cards */}
@@ -86,7 +86,7 @@ export default async function MemberDashboard({ params: { locale } }: Props) {
       {/* Active batches */}
       {enrollments && enrollments.length > 0 && (
         <div className="bg-cream rounded-card border border-teal-600/10 shadow-card p-5">
-          <h2 className="font-bold text-ink mb-4">Active Batches</h2>
+          <h2 className="font-bold text-ink mb-4">{t('myBatches')}</h2>
           <div className="space-y-3">
             {enrollments.map((enr: any) => (
               <div key={enr.id} className="flex items-center gap-4 p-3 rounded-xl bg-teal-50">
@@ -108,16 +108,13 @@ export default async function MemberDashboard({ params: { locale } }: Props) {
         <div className="bg-amber-50 border border-amber-200 rounded-card p-5">
           <div className="flex items-center gap-2 mb-3">
             <AlertCircle size={18} className="text-amber-600" />
-            <h2 className="font-bold text-amber-800">Payment Due</h2>
+            <h2 className="font-bold text-amber-800">{t('paymentPending')}</h2>
           </div>
-          <p className="text-amber-700 text-sm mb-3">
-            You have {pendingFees.length} pending payment{pendingFees.length > 1 ? 's' : ''}.
-          </p>
           <Link
             href={`/${locale}/members/fees`}
             className="inline-flex items-center gap-1 text-sm font-semibold text-amber-700 underline underline-offset-2 hover:text-amber-900"
           >
-            Pay now →
+            {t('feeRecords')} →
           </Link>
         </div>
       )}

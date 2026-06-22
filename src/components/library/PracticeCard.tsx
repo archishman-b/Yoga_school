@@ -1,4 +1,7 @@
+'use client';
+
 import Link from 'next/link';
+import { useTranslations } from 'next-intl';
 import type { Practice, PracticeType } from '@/lib/data/practices';
 import { cn } from '@/lib/utils';
 
@@ -8,14 +11,21 @@ type Props = {
   compact?: boolean;
 };
 
-const typeConfig: Record<PracticeType, { label: string; colour: string; emoji: string }> = {
-  pranayama: { label: 'Pranayama',   colour: 'bg-sky-100 text-sky-700',       emoji: '🌬️' },
-  exercise:  { label: 'Exercise',    colour: 'bg-green-100 text-green-700',   emoji: '🤸' },
-  asana:     { label: 'Asana',       colour: 'bg-saffron-100 text-saffron-700', emoji: '🧘' },
-  kriya:     { label: 'Kriya',       colour: 'bg-purple-100 text-purple-700', emoji: '✨' },
+const typeColours: Record<PracticeType, string> = {
+  pranayama: 'bg-sky-100 text-sky-700',
+  exercise:  'bg-green-100 text-green-700',
+  asana:     'bg-saffron-100 text-saffron-700',
+  kriya:     'bg-purple-100 text-purple-700',
 };
 
-const difficultyColour = {
+const typeEmoji: Record<PracticeType, string> = {
+  pranayama: '🌬️',
+  exercise:  '🤸',
+  asana:     '🧘',
+  kriya:     '✨',
+};
+
+const difficultyColour: Record<string, string> = {
   Beginner:     'bg-green-50 text-green-700',
   Intermediate: 'bg-amber-50 text-amber-700',
   Advanced:     'bg-red-50 text-red-700',
@@ -29,7 +39,17 @@ const gradientByType: Record<PracticeType, string> = {
 };
 
 export default function PracticeCard({ practice, locale, compact = false }: Props) {
-  const tc = typeConfig[practice.type];
+  const t = useTranslations('practiceCard');
+
+  // Locale-aware name
+  const nameKey = locale === 'hi' ? 'name_hi' : locale === 'bn' ? 'name_bn' : 'name_en';
+  const displayName = (practice as any)[nameKey] || practice.name_en;
+
+  // Translated type label
+  const typeLabel = t(`type${practice.type.charAt(0).toUpperCase() + practice.type.slice(1)}` as any);
+
+  // Translated difficulty label
+  const diffLabel = t(`diff${practice.difficulty}` as any);
 
   return (
     <Link
@@ -47,7 +67,7 @@ export default function PracticeCard({ practice, locale, compact = false }: Prop
         )}>
           {practice.image_path
             ? <img src={practice.image_path} alt={practice.name_en} className="h-full w-full object-cover" />
-            : <span>{tc.emoji}</span>
+            : <span>{typeEmoji[practice.type]}</span>
           }
         </div>
       )}
@@ -55,11 +75,11 @@ export default function PracticeCard({ practice, locale, compact = false }: Prop
       <div className={cn('p-4 flex-1 flex flex-col', compact && 'p-3')}>
         {/* Type + difficulty badges */}
         <div className="flex items-center justify-between mb-2 gap-2">
-          <span className={cn('px-2 py-0.5 rounded-full text-xs font-semibold', tc.colour)}>
-            {tc.label}
+          <span className={cn('px-2 py-0.5 rounded-full text-xs font-semibold', typeColours[practice.type])}>
+            {typeLabel}
           </span>
           <span className={cn('px-2 py-0.5 rounded-full text-xs font-medium', difficultyColour[practice.difficulty])}>
-            {practice.difficulty}
+            {diffLabel}
           </span>
         </div>
 
@@ -68,11 +88,14 @@ export default function PracticeCard({ practice, locale, compact = false }: Prop
           'font-bold text-ink group-hover:text-saffron-600 transition-colors leading-snug',
           compact ? 'text-sm mb-1' : 'text-base mb-1.5',
         )}>
-          {practice.name_en}
+          {displayName}
         </h3>
 
-        {/* Native script name */}
-        {practice.name_hi && (
+        {/* Secondary name (EN when showing non-EN) */}
+        {locale !== 'en' && practice.name_en !== displayName && (
+          <p className="text-ink/40 text-xs mb-2">{practice.name_en}</p>
+        )}
+        {locale === 'en' && practice.name_hi && (
           <p className="text-ink/40 text-xs mb-2">{practice.name_hi}</p>
         )}
 
@@ -86,7 +109,7 @@ export default function PracticeCard({ practice, locale, compact = false }: Prop
         {/* Supervision badge for kriyas */}
         {practice.supervision_required && (
           <span className="mt-2 inline-flex items-center gap-1 text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded-full px-2 py-0.5 w-fit">
-            ⚠️ Supervision required
+            {t('supervisionRequired')}
           </span>
         )}
 

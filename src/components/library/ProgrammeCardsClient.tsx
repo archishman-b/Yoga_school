@@ -1,12 +1,11 @@
 'use client';
 
 import { useState } from 'react';
+import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
-import type { HealthTarget } from '@/lib/data/asanas';
 
 const ProgrammeModal = dynamic(() => import('@/components/library/ProgrammeModal'), { ssr: false });
 
-// ── Lotus icon — animates on course-card hover via .lotus-icon CSS class ──────
 function LotusIcon({ size = 22, className = '' }: { size?: number; className?: string }) {
   return (
     <svg
@@ -45,6 +44,8 @@ type Props = {
 };
 
 export default function ProgrammeCardsClient({ programmes, locale }: Props) {
+  const t = useTranslations('programmeModal');
+  const tCourses = useTranslations('courses');
   const [activeProgramme, setActiveProgramme] = useState<Programme | null>(null);
 
   return (
@@ -58,7 +59,7 @@ export default function ProgrammeCardsClient({ programmes, locale }: Props) {
             {/* Highlight badge */}
             {p.highlight && (
               <span className="absolute -top-2.5 left-4 text-xs font-bold bg-saffron-500 text-white px-2.5 py-0.5 rounded-full">
-                Signature
+                {tCourses('signatureBadge')}
               </span>
             )}
 
@@ -94,7 +95,7 @@ export default function ProgrammeCardsClient({ programmes, locale }: Props) {
               onClick={() => setActiveProgramme(p)}
               className="mt-1 w-full text-center text-xs font-bold py-2.5 px-3 rounded-pill bg-saffron-500/10 text-saffron-600 hover:bg-saffron-500 hover:text-white transition-colors border border-saffron-500/20"
             >
-              Enquire / Learn More
+              {tCourses('enquireLearnMore')}
             </button>
           </div>
         ))}
